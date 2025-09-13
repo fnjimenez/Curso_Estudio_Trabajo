@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>Curso Estudio y Diseño del Trabajo 2025 - 12 Semanas</title>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=JetBrains+Mono:wght@400;600&display=swap');
+    
+    :root{
+      --bg:#f8f9fa;
+      --panel:#ffffff;
+      --ink:#1a1a1a;
+      --muted:#6c757d;
+      --primary:#ff6b35;
+      --secondary:#2563eb;
+      --accent:#059669;
+      --warning:#f59e0b;
+      --danger:#dc2626;
+      --steel:#475569;
+      
+      --grad-primary: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+      --grad-steel: linear-gradient(145deg, #64748b 0%, #475569 100%);
+      --grad-panel: linear-gradient(180deg, #ffffff, #f8fafc);
+      --shadow: 0 10px 25px rgba(0,0,0,0.1);
+    }
+    
+    [data-theme="dark"] {
+      --bg: #0f172a;
+      --panel: #1e293b;
+      --ink: #f1f5f9;
+      --muted: #94a3b8;
+      --primary: #ff6b35;
+      --secondary: #3b82f6;
+      --accent: #10b981;
+      --grad-panel: linear-gradient(180deg, #1e293b, #0f172a);
+      --shadow: 0 10px 25px rgba(0,0,0,0.3);
+    }
+    
+    *{box-sizing:border-box}
+    html,body{height:100%; margin:0; padding:0}
+    
+    body{
+      font:16px/1.6 'Inter', system-ui, sans-serif; 
+      color:var(--ink); 
+      background: var(--bg);
+      overflow-x: hidden;
+      position: relative;
+    }
+    
+    /* Patrón de fondo industrial */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: 
+        linear-gradient(90deg, rgba(255, 107, 53, 0.02) 1px, transparent 1px),
+        linear-gradient(rgba(37, 99, 235, 0.02) 1px, transparent 1px),
+        radial-gradient(circle at 25% 75%, rgba(255, 107, 53, 0.05) 0%, transparent 50%),
+        radial-gradient(circle at 75% 25%, rgba(37, 99, 235, 0.05) 0%, transparent 50%);
+      background-size: 50px 50px, 50px 50px, 200px 200px, 200px 200px;
+      opacity: 0.4;
+      z-index: 0;
+    }
+
+    /* Header principal */
+    .header {
+      position: relative;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 0 20px;
+      z-index: 1;
+      background: linear-gradient(135deg, rgba(255, 107, 53, 0.1) 0%, rgba(37, 99, 235, 0.1) 100%);
+    }
+    
+    .hero-title {
+      font: 900 clamp(2.5rem, 8vw, 6rem)/1.1 'Inter', sans-serif;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 50%, var(--accent) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 1rem;
+      text-shadow: 0 0 50px rgba(255, 107, 53, 0.3);
+      animation: titleGlow 3s ease-in-out infinite alternate;
+    }
+    
+    @keyframes titleGlow {
+      from { filter: drop-shadow(0 0 20px rgba(255, 107, 53, 0.3)); }
+      to { filter: drop-shadow(0 0 30px rgba(37, 99, 235, 0.4)); }
+    }
+    
+    .hero-subtitle {
+      font: 600 clamp(1.2rem, 3vw, 2rem)/1.3 'Inter', sans-serif;
+      color: var(--muted);
+      margin-bottom: 2rem;
+      opacity: 0.9;
+    }
+    
+    .hero-description {
+      font-size: clamp(1rem, 2vw, 1.3rem);
+      color: var(--steel);
+      max-width: 800px;
+      margin-bottom: 3rem;
+      line-height: 1.7;
+    }
+    
+    .hero-stats {
+      display: flex;
+      gap: 3rem;
+      margin-bottom: 3rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    
+    .stat {
+      text-align: center;
+      background: var(--panel);
+      padding: 1.5rem;
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(255, 107, 53, 0.1);
+    }
+    
+    .stat-number {
+      font: 700 2.5rem/1 'JetBrains Mono', monospace;
+      color: var(--primary);
+      display: block;
+      text-shadow: 0 0 15px rgba(255, 107, 53, 0.5);
+    }
+    
+    .stat-label {
+      font-size: 0.9rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-top: 0.5rem;
+      font-weight: 600;
+    }
+    
+    .start-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 18px 35px;
+      background: var(--grad-primary);
+      color: white;
+      text-decoration: none;
+      border-radius: 50px;
+      font: 600 1.1rem 'Inter', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      transition: all 0.3s ease;
+      box-shadow: 
+        0 10px 30px rgba(255, 107, 53, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .start-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: 0.5s;
+    }
+    
+    .start-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 
+        0 15px 40px rgba(255, 107, 53, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    }
+    
+    .start-btn:hover::before {
+      left: 100%;
+    }
+
+    /* Contenido principal */
+    .main-content {
+      position: relative;
+      z-index: 1;
+      padding: 4rem 2rem;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    
+    .section-title {
+      font: 700 clamp(2rem, 4vw, 3rem)/1.2 'Inter', sans-serif;
+      color: var(--primary);
+      text-align: center;
+      margin-bottom: 3rem;
+      text-shadow: 0 0 20px rgba(255, 107, 53, 0.3);
+    }
+    
+    /* Grid de semanas */
+    .weeks-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 2rem;
+      margin-bottom: 4rem;
+    }
+    
+    .week-card {
+      background: var(--grad-panel);
+      border: 1px solid rgba(255, 107, 53, 0.2);
+      border-radius: 24px;
+      padding: 2rem;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      color: inherit;
+      backdrop-filter: blur(10px);
+      box-shadow: var(--shadow);
+    }
+    
+    .week-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: var(--grad-primary);
+      border-radius: 24px 24px 0 0;
+    }
+    
+    .week-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: 
+        linear-gradient(45deg, rgba(255, 107, 53, 0.03) 25%, transparent 25%),
+        linear-gradient(-45deg, rgba(37, 99, 235, 0.03) 25%, transparent 25%);
+      background-size: 20px 20px;
+      opacity: 0.5;
+      z-index: 0;
+    }
+    
+    .week-card:hover {
+      transform: translateY(-8px);
+      border-color: rgba(255, 107, 53, 0.6);
+      box-shadow: 
+        0 20px 50px rgba(255, 107, 53, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    }
+    
+    .week-number {
+      font: 700 1rem 'JetBrains Mono', monospace;
+      color: var(--secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 1rem;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .week-title {
+      font: 600 1.4rem/1.3 'Inter', sans-serif;
+      color: var(--ink);
+      margin-bottom: 1rem;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .week-description {
+      color: var(--muted);
+      line-height: 1.6;
+      font-size: 0.95rem;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .week-status {
+      display: inline-block;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font: 600 0.8rem 'JetBrains Mono', monospace;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-top: 1rem;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .status-available {
+      background: linear-gradient(135deg, rgba(5, 150, 105, 0.2), rgba(5, 150, 105, 0.1));
+      color: var(--accent);
+      border: 1px solid rgba(5, 150, 105, 0.3);
+    }
+    
+    .status-coming {
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(245, 158, 11, 0.1));
+      color: var(--warning);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+    }
+
+    /* Información del curso */
+    .course-info {
+      background: var(--grad-panel);
+      border: 1px solid rgba(255, 107, 53, 0.2);
+      border-radius: 24px;
+      padding: 3rem;
+      margin: 4rem 0;
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(10px);
+      box-shadow: var(--shadow);
+    }
+    
+    .course-info::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+      border-radius: 24px 24px 0 0;
+    }
+    
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+    
+    .info-item {
+      text-align: center;
+      padding: 2rem;
+      background: rgba(255, 107, 53, 0.05);
+      border-radius: 16px;
+      border: 1px solid rgba(255, 107, 53, 0.1);
+    }
+    
+    .info-icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      display: block;
+    }
+    
+    .info-title {
+      font: 600 1.2rem 'Inter', sans-serif;
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    
+    .info-text {
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      padding: 3rem 2rem;
+      border-top: 1px solid rgba(255, 107, 53, 0.2);
+      margin-top: 4rem;
+      color: var(--muted);
+      background: var(--panel);
+    }
+    
+    .footer-title {
+      font: 700 1.5rem 'Inter', sans-serif;
+      color: var(--primary);
+      margin-bottom: 1rem;
+    }
+
+    /* Brand bar */
+    .brand-bar{
+      margin: 8px clamp(8px,2vw,24px);
+      padding: 12px 16px;
+      background: var(--panel);
+      border: 1px solid rgba(255, 107, 53, 0.2);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      z-index: 10;
+      position: relative;
+    }
+    .brand-logo{ 
+      height: 48px; 
+      width: 48px; 
+      border-radius: 12px; 
+      background: var(--grad-primary); 
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 700;
+      font-size: 1.2rem;
+    }
+    .brand-meta{ 
+      display: flex; 
+      flex-direction: column; 
+      line-height: 1.2; 
+    }
+    .brand-title{ 
+      font-size: 1rem; 
+      font-weight: 700;
+      color: var(--ink);
+    }
+    .brand-course{ 
+      font-size: 0.9rem; 
+      color: var(--primary);
+      font-weight: 600;
+    }
+    .brand-teacher{ 
+      font-size: 0.85rem; 
+      color: var(--muted);
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+      .hero-stats {
+        gap: 1.5rem;
+      }
+      
+      .weeks-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+      
+      .course-info {
+        padding: 2rem;
+        margin: 2rem 0;
+      }
+      
+      .info-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+      
+      .brand-meta{ 
+        display: none; 
+      }
+    }
+    
+    /* Scroll suave */
+    html {
+      scroll-behavior: smooth;
+    }
+    
+    /* Animación de entrada */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(30px);
+      animation: fadeIn 0.8s ease forwards;
+    }
+    
+    @keyframes fadeIn {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Theme toggle */
+    .theme-toggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: var(--panel);
+      border: 1px solid rgba(255, 107, 53, 0.2);
+      border-radius: 50px;
+      padding: 10px 16px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--ink);
+      z-index: 100;
+      transition: all 0.3s ease;
+      box-shadow: var(--shadow);
+    }
+    
+    .theme-toggle:hover {
+      background: var(--primary);
+      color: white;
+    }
+  </style>
+</head>
+<body>
+<div class="theme-toggle" onclick="toggleTheme()">🌓 Tema</div>
+<div aria-label="Identidad del curso" class="brand brand-bar" role="group">
+<div class="brand-logo">EDT</div>
+<div class="brand-meta">
+<strong class="brand-title">Universidad SABES</strong>
+<span class="brand-course">Estudio y Diseño del Trabajo</span>
+<span class="brand-teacher">Docente: Fausto Noé Jiménez</span>
+</div>
+</div>
+<!-- Header Hero -->
+<header class="header">
+<h1 class="hero-title">Estudio y Diseño del Trabajo</h1>
+<h2 class="hero-subtitle">Curso Completo 2025</h2>
+<p class="hero-description">
+      Domina los principios de ergonomía, productividad y diseño de sistemas de trabajo. 
+      Un programa integral de 12 semanas para ingenieros industriales y profesionales de la optimización laboral.
+    </p>
+<div class="hero-stats">
+<div class="stat">
+<span class="stat-number">12</span>
+<div class="stat-label">Semanas</div>
+</div>
+<div class="stat">
+<span class="stat-number">144+</span>
+<div class="stat-label">Diapositivas</div>
+</div>
+<div class="stat">
+<span class="stat-number">15</span>
+<div class="stat-label">Estudios de Caso</div>
+</div>
+<div class="stat">
+<span class="stat-number">36</span>
+<div class="stat-label">Horas</div>
+</div>
+</div>
+<a class="start-btn" href="#semanas">
+      🔧 Comenzar Curso
+    </a>
+</header>
+<!-- Contenido principal -->
+<main class="main-content">
+<section id="semanas">
+<h2 class="section-title">Plan de Estudios</h2>
+<div class="weeks-grid">
+<!-- Semana 1 -->
+<a class="week-card fade-in" href="semana1_estudio_trabajo_2025.html">
+<div class="week-number">Semana 01</div>
+<h3 class="week-title">Módulo I: Introducción a la Ingeniería de Métodos y Productividad (1.1–1.2)</h3>
+<p class="week-description">Desarrollo histórico y etapas de la revolución industrial; precursores de la ingeniería industrial.</p>
+<span class="week-status status-available">✅ Disponible</span>
+</a>
+<!-- Semana 2 -->
+<a class="week-card fade-in" href="semana2_estudio_trabajo_2025.html">
+<div class="week-number">Semana 02</div>
+<h3 class="week-title">Módulo I: Ingeniería de métodos y estudio del trabajo (1.3)</h3>
+<p class="week-description">Definición de ingeniería de métodos; estudio del trabajo y estudio de tiempos.</p>
+<span class="week-status status-coming">🔄 Próximamente</span>
+</a>
+<!-- Semana 3 -->
+<a class="week-card fade-in" href="semana3_estudio_trabajo_2025.html">
+<div class="week-number">Semana 03</div>
+<h3 class="week-title">Módulo I: Producción y productividad (1.4–1.5)</h3>
+<p class="week-description">Definición de producción y productividad; factores que afectan la productividad y mejora continua.</p>
+<span class="week-status status-coming">🔄 Próximamente</span>
+</a>
+<!-- Semana 4 -->
+<a class="week-card fade-in" href="semana4_estudio_trabajo_2025.html">
+<div class="week-number">Semana 04</div>
+<h3 class="week-title">Unidad II: Estudio del trabajo — Diagrama de Proceso de Operación (2.1)</h3>
+<p class="week-description">Simbolización, elaboración e interpretación del DPO; ejemplo aplicado.</p>
+<span class="week-status status-coming">🔄 Próximamente</span>
+</a>
+<!-- Semana 5 -->
+<a class="week-card fade-in" href="semana5_estudio_trabajo_2025.html">
+<div class="week-number">Semana 05</div>
+<h3 class="week-title">Unidad II: Cursograma sinóptico (2.2)</h3>
+<p class="week-description">Diagrama de proceso de flujo (cursograma); convenciones, construcción y análisis.</p>
+<span class="week-status status-coming">🔄 Próximamente</span>
+</a>
+<!-- Semana 6 -->
+<a class="week-card fade-in" href="semana6_estudio_trabajo_2025.html">
+<div class="week-number">Semana 06</div>
+<h3 class="week-title">Unidad II: Diagrama de Recorrido (2.3)</h3>
+<p class="week-description">Layout y rutas; levantamiento y optimización de recorridos.</p>
+<span class="week-status status-coming">🔄 Próximamente</span>
+</a>
+<!-- Semana 7 -->
+<a class="week-card fade-in" href="semana7_estudio_trabajo_2025.html">
+<div class="week-number">Semana 07</div>
+<h3 class="week-title">Unidad II: Diagrama Bimanual (2.4)</h3>
+<p class="week-description">Movimientos simultáneos de manos; economía de movimientos.</p>
+<span class="week-status status-coming">🔄 Próximamente</span>
+</a>
+<!-- Semana 8 -->
+<a class="week-card fade-in" href="semana8_estudio_trabajo_2025.html">
+<div class="week-number">Semana 08</div>
+<h3 class="week-title">Unidad II: Hombre–Máquina y Proceso de Grupo (2.5–2.6)</h3>
+<p class="week-description">Balanceo de cargas entre operador y equipo; coordinación de procesos múltiples.</p>
+<span class="week-status status-coming">🔄 Próximamente</span>
+</a>
+<!-- Semana 9 -->
+<a class="week-card fade-in" href="semana9_estudio_trabajo_2025.html">
+<div class="week-number">Semana 09</div>
+<h3 class="week-title">Unidad III: Estudio de Tiempos — Tipos y técnicas (3.1)</h3>
+<p class="week-description">Estudios con cronómetro, muestreo, y sistemas predeterminados (visión general).</p>
+<span class="week-status status-coming">🔄 Próximamente</span>
+</a>
+<!-- Semana 10 -->
+<a class="week-card fade-in" href="semana10_estudio_trabajo_2025.html">
+<div class="week-number">Semana 10</div>
+<h3 class="week-title">Unidad III: Cálculo del tiempo estándar (3.2)</h3>
+<p class="week-description">Cronometraje, calificación de la actuación, suplementos por fatiga y demoras.</p>
+<span class="week-status status-coming">🔄 Próximamente</span>
+</a>
+<!-- Semana 11 -->
+<a class="week-card fade-in" href="semana11_estudio_trabajo_2025.html">
+<div class="week-number">Semana 11</div>
+<h3 class="week-title">Unidad III: Tiempos predeterminados y muestreo del trabajo (3.3–3.4)</h3>
+<p class="week-description">MTM/MOST; diseño y ejecución de muestreo; estimación de proporciones.</p>
+<span class="week-status status-coming">🔄 Próximamente</span>
+</a>
+<!-- Semana 12 -->
+<a class="week-card fade-in" href="semana12_estudio_trabajo_2025.html">
+<div class="week-number">Semana 12</div>
+<h3 class="week-title">Unidad IV: Ergonomía y Antropometría aplicadas (4.1–4.5)</h3>
+<p class="week-description">Tipos de ergonomía; antropometría; biomecánica y aplicaciones a sitios de trabajo; relación con higiene ocupacional.</p>
+<span class="week-status status-coming">🔄 Próximamente</span>
+</a>
+</div>
+</section>
+<!-- Información del curso -->
+<section class="course-info">
+<h2 class="section-title">¿Qué incluye este curso?</h2>
+<div class="info-grid">
+<div class="info-item">
+<span class="info-icon">⚙️</span>
+<h3 class="info-title">Enfoque Práctico</h3>
+<p class="info-text">
+            Análisis de casos reales industriales, proyectos de mejora de métodos 
+            y aplicaciones en entornos productivos.
+          </p>
+</div>
+<div class="info-item">
+<span class="info-icon">🔬</span>
+<h3 class="info-title">Metodologías Avanzadas</h3>
+<p class="info-text">
+            Desde técnicas clásicas de Taylor hasta metodologías modernas 
+            de Lean Manufacturing y ergonomía digital.
+          </p>
+</div>
+<div class="info-item">
+<span class="info-icon">📊</span>
+<h3 class="info-title">Base Científica</h3>
+<p class="info-text">
+            Fundamentos en biomecánica, psicología del trabajo 
+            y estadística aplicada a la mejora de procesos.
+          </p>
+</div>
+<div class="info-item">
+<span class="info-icon">🏭</span>
+<h3 class="info-title">Aplicación Industrial</h3>
+<p class="info-text">
+            Herramientas para implementación inmediata, software especializado 
+            y casos de éxito en la industria.
+          </p>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="footer">
+<h3 class="footer-title">Curso de Estudio y Diseño del Trabajo 2025</h3>
+<p>Desarrollado con metodologías pedagógicas modernas • Optimizado para la experiencia de aprendizaje profesional</p>
+<p style="margin-top: 1rem; font-size: 0.9rem; opacity: 0.7;">
+      Navegación: Usa las tarjetas superiores para acceder a cada semana del curso
+    </p>
+</footer>
+<script>
+    // Theme toggle functionality
+    function toggleTheme() {
+      const body = document.documentElement;
+      const currentTheme = body.getAttribute('data-theme');
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      body.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+    }
+
+    // Load saved theme
+    document.addEventListener('DOMContentLoaded', function() {
+      const savedTheme = localStorage.getItem('theme') || 'light';
+      document.documentElement.setAttribute('data-theme', savedTheme);
+
+      // Animaciones de entrada
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.style.animationDelay = Math.random() * 0.3 + 's';
+            entry.target.classList.add('fade-in');
+          }
+        });
+      });
+
+      document.querySelectorAll('.week-card').forEach(card => {
+        observer.observe(card);
+      });
+
+      // Scroll suave para el botón de inicio
+      document.querySelector('.start-btn').addEventListener('click', function(e) {
+        e.preventDefault();
+        document.querySelector('#semanas').scrollIntoView({
+          behavior: 'smooth'
+        });
+      });
+
+      // Efecto en hover para las tarjetas
+      document.querySelectorAll('.week-card').forEach(card => {
+        card.addEventListener('mouseenter', function() {
+          this.style.transform = 'translateY(-8px) scale(1.02)';
+        });
+        
+        card.addEventListener('mouseleave', function() {
+          this.style.transform = 'translateY(0) scale(1)';
+        });
+      });
+    });
+  </script>
+</body>
+</html>
