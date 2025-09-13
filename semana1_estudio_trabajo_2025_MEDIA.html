@@ -1,0 +1,1734 @@
+<!DOCTYPE html>
+
+<html data-theme="light" lang="es">
+<head>
+<meta content="Curso de Estudio y Diseño del Trabajo – Diapositivas interactivas por semanas." name="description"/>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>Semana 1: Fundamentos del Estudio del Trabajo - Curso EDT 2025</title>
+<style>
+  /* A11y: Skip link and focus visible */
+  .skip-link{position:absolute;left:-9999px;top:auto}
+  .skip-link:focus{left:12px;top:12px;background:#000;color:#fff;padding:8px 12px;border-radius:8px;z-index:1000}
+  .btn:focus-visible{outline:2px dashed var(--primary);outline-offset:3px;box-shadow:0 0 0 3px rgba(255,107,53,.25)}
+
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=JetBrains+Mono:wght@400;600&display=swap');
+    
+    :root{ --base-font:16px; 
+      --bg:#f8f9fa;
+      --panel:#ffffff;
+      --ink:#1a1a1a;
+      --muted:#6c757d;
+      --primary:#ff6b35;
+      --secondary:#2563eb;
+      --accent:#059669;
+      --success:#10b981;
+      --warn:#f59e0b;
+      --danger:#dc2626;
+      --steel:#475569;
+      
+      --grad-primary: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+      --grad-steel: linear-gradient(145deg, #64748b 0%, #475569 100%);
+      --grad-panel: linear-gradient(180deg, #ffffff, #f8fafc);
+      --shadow: 0 10px 25px rgba(0,0,0,0.1);
+    }
+    
+    [data-theme="dark"] {
+      --bg: #0f172a;
+      --panel: #1e293b;
+      --ink: #f1f5f9;
+      --muted: #94a3b8;
+      --grad-panel: linear-gradient(180deg, #1e293b, #0f172a);
+      --shadow: 0 10px 25px rgba(0,0,0,0.3);
+    }
+    
+    *{box-sizing:border-box}
+    html,body{ min-height:100dvh; overflow:auto; font-size:var(--base-font); line-height:1.65; }
+    
+    body{
+      margin:0;
+      font:16px/1.6 'Inter', system-ui, sans-serif; 
+      color:var(--ink); 
+      background: var(--bg);
+      overflow:auto;
+      position: relative;
+     min-height:100dvh; }
+    
+    /* Patrón de fondo industrial */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: 
+        linear-gradient(90deg, rgba(255, 107, 53, 0.02) 1px, transparent 1px),
+        linear-gradient(rgba(37, 99, 235, 0.02) 1px, transparent 1px),
+        radial-gradient(circle at 25% 75%, rgba(255, 107, 53, 0.05) 0%, transparent 50%),
+        radial-gradient(circle at 75% 25%, rgba(5, 150, 105, 0.05) 0%, transparent 50%);
+      background-size: 40px 40px, 40px 40px, 200px 200px, 200px 200px;
+      opacity: 0.4;
+      animation: industrialFlow 30s linear infinite;
+      z-index: 0;
+    }
+    
+    @keyframes industrialFlow {
+      from { transform: translate(0, 0); }
+      to { transform: translate(-40px, -40px); }
+    }
+
+    /* Ribbon superior mejorado */
+    .ribbon{
+      position:fixed; 
+      inset:10px 10px auto 10px; 
+      display:flex; 
+      gap:12px; 
+      z-index:60; 
+      backdrop-filter:blur(12px);
+    }
+    
+    .ribbon .block{
+      display:flex; 
+      align-items:center; 
+      gap:10px; 
+      padding:12px 16px; 
+      border-radius:16px; 
+      background: var(--panel); 
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(255, 107, 53, 0.2);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .ribbon .block::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 2px;
+      background: var(--grad-primary);
+      animation: scanLine 3s ease-in-out infinite;
+    }
+    
+    @keyframes scanLine {
+      0%, 100% { left: -100%; }
+      50% { left: 100%; }
+    }
+    
+    .ribbon .block h4{
+      margin:0 10px 0 0; 
+      color:var(--muted); 
+      font-weight:700; 
+      letter-spacing:.05em;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      text-transform: uppercase;
+    }
+    
+    .btn{
+      appearance:none; 
+      border:none; 
+      border-radius:12px; 
+      padding:10px 14px; 
+      color:var(--ink); 
+      background: var(--panel); 
+      cursor:pointer; 
+      display:inline-flex; 
+      align-items:center; 
+      gap:8px; 
+      transition:.2s all;
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      font-size: 13px;
+      border: 1px solid rgba(255, 107, 53, 0.2);
+      position: relative;
+      overflow: hidden;
+      text-decoration: none;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 107, 53, 0.1), transparent);
+      transition: 0.3s;
+    }
+    
+    .btn:hover{
+      transform:translateY(-2px); 
+      box-shadow: 0 8px 20px rgba(255, 107, 53, 0.2);
+      border-color: var(--primary);
+      background: rgba(255, 107, 53, 0.05);
+    }
+    
+    .btn:hover::before {
+      left: 100%;
+    }
+    
+    .btn[aria-pressed="true"]{
+      outline:2px solid var(--primary);
+      background: var(--grad-primary);
+      color: white;
+      box-shadow: 0 0 20px rgba(255, 107, 53, 0.4);
+    }
+    
+    .btn .kbd{
+      font:11px/1 'JetBrains Mono', monospace; 
+      color:var(--muted); 
+      background: rgba(0,0,0,0.05); 
+      padding:3px 8px; 
+      border-radius:6px; 
+      border:1px solid rgba(0,0,0,0.1);
+      font-weight: 400;
+    }
+
+    /* Contenedor principal mejorado */
+    .deck{
+      position:fixed; 
+      inset:80px 0 0 0; 
+      display:grid; 
+      grid-template-columns:1fr; 
+      place-items:center;
+    }
+    
+    .slide{
+      width:min(1160px, 94vw); 
+      height:min(660px, 82vh); 
+      border-radius:24px; 
+      background: var(--grad-panel); 
+      box-shadow: var(--shadow);
+      padding:32px 40px; 
+      display:none; 
+      grid-template-rows:auto 1fr auto; 
+      gap:18px; 
+      position:relative; 
+      overflow:hidden;
+      border: 1px solid rgba(255, 107, 53, 0.1);
+    }
+    
+    .slide::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: var(--grad-primary);
+      border-radius: 24px 24px 0 0;
+    }
+    
+    /* Patrón industrial en el fondo */
+    .slide::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: 
+        linear-gradient(45deg, rgba(255, 107, 53, 0.02) 25%, transparent 25%),
+        linear-gradient(-45deg, rgba(37, 99, 235, 0.02) 25%, transparent 25%);
+      background-size: 30px 30px;
+      opacity: 0.3;
+      z-index: 0;
+    }
+    
+    .slide.active{
+      display:grid; 
+      animation:slideIn .4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    @keyframes slideIn{
+      from{opacity:0; transform:translateY(20px) scale(0.98)} 
+      to{opacity:1; transform:translateY(0) scale(1)}
+    }
+
+    .badge{
+      font:12px/1 'JetBrains Mono', monospace; 
+      letter-spacing:.2em; 
+      text-transform:uppercase; 
+      color:var(--primary); 
+      background: rgba(255, 107, 53, 0.1); 
+      border:1px solid rgba(255, 107, 53, 0.3); 
+      padding:8px 14px; 
+      border-radius:20px; 
+      align-self:flex-start;
+      font-weight: 700;
+      box-shadow: 0 0 15px rgba(255, 107, 53, 0.2);
+      position: relative;
+      z-index: 1;
+    }
+    
+    h1,h2,h3{margin:0; position: relative; z-index: 1;}
+    h1{
+      font:clamp(26px, 3.4vw, 38px)/1.2 'Inter', sans-serif; 
+      font-weight: 900;
+      background: linear-gradient(135deg, var(--ink) 0%, var(--primary) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-shadow: 0 0 30px rgba(255, 107, 53, 0.3);
+    }
+    h2{
+      font:clamp(22px, 2.8vw, 32px)/1.3 'Inter', sans-serif; 
+      color: var(--ink);
+      font-weight: 700;
+    }
+    h3{
+      font:clamp(18px, 2.4vw, 26px)/1.3 'Inter', sans-serif; 
+      color:var(--primary);
+      font-weight: 600;
+    }
+    p{margin:0 0 12px; position: relative; z-index: 1;}
+    ul{margin:0; padding-left:24px; position: relative; z-index: 1;}
+    li{margin:10px 0}
+    em{color:var(--secondary); font-style: normal; font-weight: 600;}
+    strong{color:var(--primary);}
+
+    /* Barra inferior mejorada */
+    .footer{
+      display:flex; 
+      align-items:center; 
+      justify-content:space-between; 
+      color:var(--muted);
+      position: relative;
+      z-index: 1;
+    }
+    
+    .progress{
+      height:8px; 
+      width:45%; 
+      background: rgba(0,0,0,0.1); 
+      border-radius:999px; 
+      overflow:hidden; 
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+      position: relative;
+    }
+    
+    .progress > i{
+      display:block; 
+      height:100%; 
+      width:0; 
+      background:var(--grad-primary); 
+      transition:width .4s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 0 10px rgba(255, 107, 53, 0.5);
+      position: relative;
+    }
+    
+    .progress > i::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 20px;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3));
+      animation: progressGlow 2s ease-in-out infinite;
+    }
+    
+    @keyframes progressGlow {
+      0%, 100% { opacity: 0; }
+      50% { opacity: 1; }
+    }
+
+    /* Tarjetas de contenido mejoradas */
+    .card{
+      background: var(--panel); 
+      border:1px solid rgba(255, 107, 53, 0.2); 
+      border-radius:16px; 
+      padding:20px 22px; 
+      margin:12px 0;
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(5px);
+      box-shadow: var(--shadow);
+    }
+    
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--grad-primary);
+      opacity: 0.6;
+    }
+    
+    .card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 35px rgba(255, 107, 53, 0.15);
+      border-color: rgba(255, 107, 53, 0.4);
+    }
+    
+    .two-col{
+      display:grid; 
+      grid-template-columns:1fr 1fr; 
+      gap:18px;
+    }
+    @media (max-width:900px){.two-col{grid-template-columns:1fr}}
+
+    /* Chips mejorados */
+    .chip{
+      display:inline-block; 
+      padding:6px 12px; 
+      border-radius:16px; 
+      background: rgba(255, 107, 53, 0.1); 
+      border:1px solid rgba(255, 107, 53, 0.3); 
+      color:var(--primary); 
+      font:11px/1 'JetBrains Mono', monospace; 
+      margin:3px 8px 3px 0;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      transition: 0.2s all;
+    }
+    
+    .chip:hover {
+      background: rgba(255, 107, 53, 0.2);
+      transform: translateY(-1px);
+    }
+
+    /* Cajas informativas */
+    .tip-box {
+      margin: 12px 0;
+      padding: 12px 16px;
+      background: rgba(245, 158, 11, 0.1);
+      border-left: 4px solid var(--warn);
+      border-radius: 8px;
+      position: relative;
+      font-size: 0.9rem;
+    }
+    
+    .info-box {
+      margin: 12px 0;
+      padding: 12px 16px;
+      background: rgba(37, 99, 235, 0.1);
+      border-left: 4px solid var(--secondary);
+      border-radius: 8px;
+      position: relative;
+      font-size: 0.9rem;
+    }
+    
+    .warning-box {
+      margin: 12px 0;
+      padding: 12px 16px;
+      background: rgba(220, 38, 38, 0.1);
+      border-left: 4px solid var(--danger);
+      border-radius: 8px;
+      position: relative;
+      font-size: 0.9rem;
+    }
+    
+    .success-box {
+      margin: 12px 0;
+      padding: 12px 16px;
+      background: rgba(16, 185, 129, 0.1);
+      border-left: 4px solid var(--success);
+      border-radius: 8px;
+      position: relative;
+      font-size: 0.9rem;
+    }
+    
+    /* Tarjetas flotantes */
+    .floating-card {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: var(--grad-panel);
+      border: 1px solid rgba(255, 107, 53, 0.3);
+      border-radius: 20px;
+      padding: 24px;
+      max-width: 600px;
+      width: 90vw;
+      z-index: 100;
+      display: none;
+      box-shadow: 0 25px 70px rgba(0,0,0,0.3);
+      backdrop-filter: blur(15px);
+    }
+    
+    .floating-card.active {
+      display: block;
+      animation: popIn 0.3s ease;
+    }
+    
+    @keyframes popIn {
+      from { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+      to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+    }
+    
+    .floating-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.7);
+      z-index: 99;
+      display: none;
+      backdrop-filter: blur(5px);
+    }
+    
+    .floating-overlay.active {
+      display: block;
+    }
+    
+    /* Quiz styles */
+    .quiz-container {
+      background: var(--panel);
+      border: 1px solid var(--primary);
+      border-radius: 16px;
+      padding: 20px;
+      margin: 16px 0;
+      box-shadow: var(--shadow);
+    }
+    
+    .quiz-question {
+      color: var(--primary);
+      font-weight: 600;
+      margin-bottom: 12px;
+      font-size: 1.05em;
+    }
+    
+    .quiz-option {
+      display: block;
+      padding: 10px 14px;
+      margin: 8px 0;
+      background: rgba(255, 107, 53, 0.05);
+      border: 1px solid rgba(255, 107, 53, 0.2);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: 0.2s all;
+      color: var(--ink);
+    }
+    
+    .quiz-option:hover {
+      background: rgba(255, 107, 53, 0.15);
+      border-color: var(--primary);
+      transform: translateX(4px);
+    }
+    
+    .quiz-option.selected {
+      background: var(--grad-primary);
+      border-color: var(--primary);
+      color: white;
+    }
+    
+    .quiz-option.correct {
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(16, 185, 129, 0.1));
+      border-color: var(--success);
+    }
+    
+    .quiz-option.incorrect {
+      background: linear-gradient(135deg, rgba(220, 38, 38, 0.2), rgba(220, 38, 38, 0.1));
+      border-color: var(--danger);
+    }
+    
+    .quiz-result {
+      margin-top: 12px;
+      padding: 12px;
+      border-radius: 8px;
+      text-align: center;
+      font-weight: 600;
+    }
+    
+    .quiz-score {
+      background: var(--grad-primary);
+      color: white;
+      padding: 8px 16px;
+      border-radius: 20px;
+      display: inline-block;
+      margin: 12px 0;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.1em;
+    }
+    
+    /* Referencias bibliográficas */
+    .references {
+      background: var(--panel);
+      border: 1px solid rgba(108, 117, 125, 0.3);
+      border-radius: 16px;
+      padding: 20px;
+      margin: 16px 0;
+      font-size: 0.9em;
+      line-height: 1.5;
+      box-shadow: var(--shadow);
+    }
+    
+    .reference-item {
+      margin: 8px 0;
+      padding-left: 16px;
+      text-indent: -16px;
+      color: var(--muted);
+    }
+    
+    .reference-item a {
+      color: var(--primary);
+      text-decoration: none;
+    }
+    
+    .reference-item a:hover {
+      text-decoration: underline;
+    }
+    
+    /* Botones interactivos */
+    .interactive-btn {
+      background: var(--grad-primary);
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      transition: 0.2s all;
+      margin: 6px 4px;
+      box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
+    }
+    
+    .interactive-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(255, 107, 53, 0.4);
+    }
+
+    /* Lista rápida mejorada */
+    .quicklist{
+      position:fixed; 
+      inset:0; 
+      background:rgba(15, 23, 42, 0.85); 
+      backdrop-filter:blur(15px); 
+      display:none; 
+      z-index:80;
+    }
+    
+    .ql-panel{
+      position:absolute; 
+      inset:70px 50px 50px 50px; 
+      border-radius:24px; 
+      background: var(--grad-panel); 
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(255, 107, 53, 0.2);
+    }
+    
+    .ql-header{
+      display:flex; 
+      align-items:center; 
+      justify-content:space-between; 
+      padding:20px 24px; 
+      border-bottom:1px solid rgba(255, 107, 53, 0.2);
+      background: linear-gradient(90deg, rgba(255, 107, 53, 0.05), transparent);
+    }
+    
+    .ql-header h3 {
+      font-family: 'Inter', sans-serif;
+      font-weight: 700;
+      color: var(--primary);
+    }
+    
+    .ql-body{
+      display:grid; 
+      grid-template-columns:260px 1fr; 
+      height:calc(100% - 68px);
+    }
+    
+    .ql-weeks{
+      border-right:1px solid rgba(255, 107, 53, 0.2); 
+      overflow:auto;
+      background: rgba(0, 0, 0, 0.05);
+    }
+    
+    .ql-weeks button{
+      display:block; 
+      width:100%; 
+      text-align:left; 
+      padding:16px 20px; 
+      background:none; 
+      border:none; 
+      color:var(--ink); 
+      cursor:pointer; 
+      border-bottom:1px solid rgba(255, 107, 53, 0.1);
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      transition: 0.2s all;
+    }
+    
+    .ql-weeks button:hover, .ql-weeks button.active{
+      background: linear-gradient(90deg, rgba(255, 107, 53, 0.1), transparent);
+      border-left: 3px solid var(--primary);
+      color: var(--primary);
+    }
+    
+    .ql-slides{
+      padding:20px; 
+      overflow:auto;
+    }
+    
+    .ql-slide{
+      padding:14px 16px; 
+      border-radius:12px; 
+      border:1px solid rgba(255, 107, 53, 0.2); 
+      margin:10px 0; 
+      cursor:pointer;
+      background: rgba(255, 107, 53, 0.05);
+      transition: 0.2s all;
+    }
+    
+    .ql-slide:hover{
+      background: rgba(255, 107, 53, 0.1);
+      border-color: var(--primary);
+      transform: translateX(5px);
+    }
+
+    /* Modal ayuda mejorado */
+    .modal{
+      position:fixed; 
+      inset:0; 
+      background:rgba(0,0,0,0.7); 
+      display:none; 
+      z-index:90;
+      backdrop-filter: blur(8px);
+    }
+    
+    .modal .box{
+      background: var(--grad-panel); 
+      border:1px solid rgba(255, 107, 53, 0.3); 
+      border-radius:24px; 
+      width:min(750px, 94vw); 
+      margin:12vh auto; 
+      padding:24px 28px;
+      box-shadow: 0 25px 70px rgba(0,0,0,0.6);
+    }
+    
+    .modal h2 {
+      color: var(--primary);
+      font-family: 'Inter', sans-serif;
+      margin-bottom: 20px;
+    }
+
+    /* Indicadores de semana mejorados */
+    .week-tag{
+      position:absolute; 
+      top:24px; 
+      right:24px; 
+      color:var(--steel); 
+      font:12px/1 'JetBrains Mono', monospace;
+      font-weight:700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      background: rgba(71, 85, 105, 0.1);
+      padding: 6px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(71, 85, 105, 0.3);
+    }
+    
+    /* Efectos HUD industriales */
+    .hud-element {
+      position: relative;
+    }
+    
+    .hud-element::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      border: 1px solid rgba(255, 107, 53, 0.3);
+      border-radius: inherit;
+      pointer-events: none;
+      opacity: 0;
+      transition: 0.3s;
+    }
+    
+    .hud-element:hover::before {
+      opacity: 1;
+    }
+    
+    /* Animaciones adicionales */
+    @keyframes dataFlow {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+    
+    .data-stream {
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .data-stream::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--primary), transparent);
+      animation: dataFlow 3s ease-in-out infinite;
+    }
+    
+    /* Responsive mejorado */
+    @media (max-width: 768px) {
+      .ribbon {
+        inset: 8px 8px auto 8px;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      
+      .ribbon .block {
+        padding: 8px 12px;
+        border-radius: 12px;
+      }
+      
+      .btn {
+        padding: 8px 12px;
+        font-size: 12px;
+      }
+      
+      .slide {
+        width: min(1160px, 96vw);
+        height: min(660px, 85vh);
+        padding: 24px 28px;
+        border-radius: 16px;
+      }
+      
+      .ql-body {
+        grid-template-columns: 1fr;
+      }
+      
+      .ql-weeks {
+        border-right: none;
+        border-bottom: 1px solid rgba(255, 107, 53, 0.2);
+        max-height: 200px;
+      }
+      
+      .floating-card {
+        width: 95vw;
+        padding: 16px;
+      }
+      
+      .quiz-option {
+        padding: 12px;
+        font-size: 0.9rem;
+      }
+    }
+
+    /* Brand bar */
+    .brand-bar{
+      margin: 8px clamp(8px,2vw,24px);
+      padding: 8px 12px;
+      background: var(--panel);
+      border: 1px solid rgba(255, 107, 53, 0.2);
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      z-index: 10;
+      position: relative;
+    }
+    .brand-logo{ 
+      height: 36px; 
+      width: 36px; 
+      border-radius: 8px; 
+      background: var(--grad-primary); 
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 700;
+      font-size: 0.9rem;
+    }
+    .brand-meta{ 
+      display: flex; 
+      flex-direction: column; 
+      line-height: 1.1; 
+    }
+    .brand-title{ 
+      font-size: 0.9rem; 
+      font-weight: 700;
+      color: var(--ink);
+    }
+    .brand-course{ 
+      font-size: 0.85rem; 
+      color: var(--primary);
+      font-weight: 600;
+    }
+    .brand-teacher{ 
+      font-size: 0.8rem; 
+      color: var(--muted);
+    }
+    @media (max-width: 640px){
+      .brand-meta{ display:none; }
+    }
+
+    /* Scroll fixes */
+    .deck{
+      position: relative !important;
+      inset: auto !important;
+      display: block !important;
+      padding-top: clamp(88px, 10vh, 120px) !important;
+      padding-left: clamp(8px, 2vw, 24px) !important;
+      padding-right: clamp(8px, 2vw, 24px) !important;
+      padding-bottom: 48px !important;
+    }
+    .slide{
+      height: auto !important;
+      min-height: 520px !important;
+      overflow: visible !important;
+      display: grid !important;
+      grid-template-rows: auto 1fr auto !important;
+      scroll-margin-top: 120px !important;
+    }
+    .slide .card, .slide .quiz, .slide .pane, .slide .content{
+      max-height: none !important;
+      overflow: visible !important;
+    }
+    .slide{ display: none !important; }
+    .slide.active{ display: grid !important; }
+
+    /* Media dock */
+    .media-dock{
+      display:none;
+      position:sticky;
+      top:88px;
+      max-width:420px;
+      margin-left:auto;
+      margin-right:clamp(8px,4vw,24px);
+      z-index:30;
+    }
+    @media (min-width: 1280px){ .media-dock{ display:block; } }
+    .media-dock .pane{
+      background: var(--panel);
+      border: 1px solid rgba(255, 107, 53, 0.2);
+      border-radius: 16px;
+      padding: 10px 12px 12px;
+      box-shadow: var(--shadow);
+      max-height: calc(100dvh - 120px);
+      overflow: auto;
+      resize: vertical;
+    }
+    .media-dock .dock-header{
+      display:flex; align-items:center; justify-content:space-between;
+      gap:.5rem; margin-bottom:8px;
+    }
+    .media-dock .dock-title{ font-size:1.05rem; margin:0; color: var(--primary); font-weight: 600; }
+    .media-dock .dock-actions{ display:flex; gap:.4rem; }
+    .media-dock .dock-actions .btn{ padding:5px 8px; font-size:.9rem; }
+    .media-dock figure{ margin:0; border-radius:12px; overflow:hidden; }
+    .media-dock figure .ph{
+      width:100%; aspect-ratio:16/9; display:grid; place-items:center;
+      background: linear-gradient(135deg, rgba(255, 107, 53, 0.1), rgba(37, 99, 235, 0.1));
+      color:var(--muted);
+      font-size:0.95rem;
+    }
+    .media-dock .note{ margin-top:10px; font-size:0.95rem; color:var(--muted)}
+    .media-dock .controls{ display:flex; gap:.5rem; margin-top:8px; flex-wrap:wrap;}
+    .media-dock .controls .btn{ padding:6px 10px; font-size:0.95rem; }
+  </style>
+</meta></head>
+<body>
+<div aria-label="Identidad del curso" class="brand brand-bar" role="group">
+<div class="brand-logo">EDT</div>
+<div class="brand-meta">
+<strong class="brand-title">Universidad SABES</strong>
+<span class="brand-course">Estudio y Diseño del Trabajo</span>
+<span class="brand-teacher">Docente: Fausto Noé Jiménez</span>
+</div>
+</div>
+<a class="skip-link" href="#main">Saltar al contenido</a>
+<!-- RIBBON superior -->
+<nav aria-label="Barra de controles" class="ribbon">
+<div aria-label="Navegación" class="block" role="group">
+<h4>Navegación</h4>
+<button class="btn" id="prevBtn" title="Anterior (←)">◀ Anterior <span class="kbd">←</span></button>
+<a class="btn" href="index_estudio_trabajo_2025.html" title="Ir al índice (H)">🏠 Índice <span class="kbd">H</span></a>
+<button class="btn" id="nextBtn" title="Siguiente (→)">Siguiente ▶ <span class="kbd">→</span></button>
+</div>
+<div aria-label="Reproducción" class="block" role="group">
+<h4>Repro</h4>
+<button aria-pressed="false" class="btn" id="playBtn" title="Auto-avance (P)">▶ Play <span class="kbd">P</span></button>
+<button class="btn" id="pauseBtn" title="Pausar (O)">⏸ Pausa <span class="kbd">O</span></button>
+<button class="btn" id="resetBtn" title="Reiniciar (R)">⟲ Reset <span class="kbd">R</span></button>
+</div>
+<div aria-label="Vista" class="block" role="group">
+<h4>Vista</h4>
+<button class="btn" id="quickBtn" title="Lista rápida (L)">☰ Lista rápida <span class="kbd">L</span></button>
+<button class="btn" id="fullBtn" title="Pantalla completa (F)">⤢ Pantalla completa <span class="kbd">F</span></button>
+<button class="btn" id="helpBtn" title="Ayuda (?)">❓ Ayuda <span class="kbd">?</span></button>
+<button class="btn" id="fontDec" title="Reducir texto (A-)">A-</button>
+<button class="btn" id="fontReset" title="Tamaño por defecto (A)">A</button>
+<button class="btn" id="fontInc" title="Aumentar texto (A+)">A+</button>
+<button class="btn" id="mediaBtn" title="Mostrar/ocultar panel multimedia">🎞️ Media</button>
+<button class="btn" id="themeToggle" title="Cambiar tema (claro/oscuro)">🌓 Tema</button>
+</div>
+</nav>
+<!-- Contenedor de diapositivas -->
+<main class="deck" id="deck" tabindex="-1">
+<!-- Semana 1: Fundamentos del Estudio del Trabajo -->
+<section class="slide active" data-slide="1" data-week="1">
+<span class="badge">Semana 1 · 09-16 Sept 2025</span>
+<h1>Fundamentos del Estudio y Diseño del Trabajo</h1><iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="allowfullscreen" frameborder="0" height="315" loading="lazy" src="https://www.youtube.com/embed/XBfqe7E1gOw" width="100%"></iframe>
+<div class="two-col">
+<div class="card hud-element data-stream">
+<h3>🎯 Aprendizajes esperados</h3>
+<p><strong>Competencia específica:</strong> Analizar los fundamentos históricos y metodológicos del estudio del trabajo para comprender los principios de la mejora de métodos y la medición del trabajo en contextos industriales.</p>
+<div class="info-box">
+            💡 <strong>Modalidad híbrida:</strong> Sesiones virtuales + laboratorio práctico presencial
+          </div>
+</div>
+<div class="card hud-element">
+<h3>📋 Actividades de la semana</h3>
+<p><strong>Actividad 1:</strong> Foro de Introducción - Casos de estudio</p>
+<p><strong>Ponderación:</strong> 5 puntos</p>
+<p><strong>Fecha límite:</strong> 16 de septiembre 2025</p>
+<p><strong>Entrega:</strong> Plataforma educativa</p>
+<div class="tip-box">
+            ⚠️ <strong>Requisito:</strong> Revisar material introductorio antes de participar
+          </div>
+</div>
+</div>
+<div class="footer"><span>1/12</span><div class="progress"><i></i></div><span class="week-tag">Semana 1</span></div>
+<img alt="Slide 1" src="https://udocz-cdn-hop.b-cdn.net/documents_html/507817-9b35f32b7a7a133e952e1c4809da584b/bg1.jpg" style="max-width:100%;height:auto;display:block;margin-top:0.5rem;"/></section>
+<section class="slide" data-slide="2" data-week="1">
+<span class="badge">Historia EDT</span>
+<h2>1.1. Historia del Estudio del Trabajo</h2><iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="allowfullscreen" frameborder="0" height="315" loading="lazy" src="https://www.youtube.com/embed/NxPpTo-dBMQ" width="100%"></iframe>
+<div class="card hud-element">
+<h3>📚 Evolución histórica</h3>
+<p><strong>Estudio del Trabajo</strong> se define como "el examen sistemático de los métodos para realizar actividades con el fin de mejorar la utilización eficaz de los recursos y de establecer normas de rendimiento" (OIT, 1996). Según Niebel &amp; Freivalds (2014), el estudio del trabajo "combina la medición del trabajo con el estudio de métodos para establecer el tiempo requerido por un trabajador calificado para llevar a cabo una tarea específica".</p>
+</div>
+<div class="two-col">
+<div class="card hud-element">
+<h3>🕰️ Hitos históricos fundamentales</h3>
+<ul>
+<li><strong>1760-1840:</strong> Revolución Industrial - División del trabajo (Smith, 1776)</li>
+<li><strong>1881:</strong> Frederick W. Taylor - "The Principles of Scientific Management"</li>
+<li><strong>1907:</strong> Frank &amp; Lillian Gilbreth - Estudio de movimientos y micromovimientos</li>
+<li><strong>1920s:</strong> Henri Fayol - Principios de administración científica</li>
+<li><strong>1930s:</strong> Estudios Hawthorne - Factores humanos en el trabajo</li>
+<li><strong>1948:</strong> Fundación OIT - Estandarización internacional</li>
+<li><strong>1950s:</strong> Desarrollo de MTM (Methods-Time Measurement)</li>
+<li><strong>1960s:</strong> Ergonomía moderna - Fitts &amp; Jones (1961)</li>
+</ul>
+</div>
+<div class="card hud-element data-stream">
+<h3>📈 Evolución contemporánea</h3>
+<p><strong>Industria 4.0 y Trabajo:</strong> "La integración de tecnologías digitales está transformando los métodos tradicionales de estudio del trabajo hacia sistemas ciber-físicos" (Kagermann et al., 2013).</p>
+<p>Según McKinsey (2024), el 85% de las empresas manufactureras están implementando sistemas de análisis digital para optimización de métodos de trabajo.</p>
+<button class="interactive-btn" onclick="showTimeline()">📊 Ver línea de tiempo interactiva</button>
+</div>
+</div>
+<div class="footer"><span>2/12</span><div class="progress"><i></i></div><span class="week-tag">Semana 1</span></div>
+<img alt="Slide 2" src="https://thumbnails.genial.ly/5eefb7216f30f072616446f7/screenshots/6ee2e54f-9055-4ced-8245-affae0f432fd.jpg" style="max-width:100%;height:auto;display:block;margin-top:0.5rem;"/></section>
+<section class="slide" data-slide="3" data-week="1">
+<span class="badge">Principios Taylor</span>
+<h2>1.2. Principios de la Administración Científica</h2><iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="allowfullscreen" frameborder="0" height="315" loading="lazy" src="https://www.youtube.com/embed/zhYbk4ryECY" width="100%"></iframe>
+<div class="card hud-element">
+<h3>📚 Los cuatro principios de Taylor (1911)</h3>
+<p><strong>Frederick Winslow Taylor</strong> estableció los fundamentos de la administración científica con cuatro principios revolucionarios que transformaron la industria manufacturera y sentaron las bases del estudio moderno del trabajo.</p>
+</div>
+<div class="two-col">
+<div class="card hud-element">
+<h3>🔬 Los Cuatro Principios Fundamentales</h3>
+<ul>
+<li><strong>1. Ciencia vs. Tradición:</strong> "Desarrollo de una ciencia para cada elemento del trabajo del hombre, reemplazando el método empírico" (Taylor, 1911)</li>
+<li><strong>2. Selección Científica:</strong> "Selección científica del trabajador y luego entrenarlo, enseñarle y desarrollarlo"</li>
+<li><strong>3. Cooperación:</strong> "Cooperación cordial con los trabajadores para asegurar que todo el trabajo se realice de acuerdo con los principios científicos"</li>
+<li><strong>4. División de Responsabilidades:</strong> "División casi por igual del trabajo y la responsabilidad entre la administración y los trabajadores"</li>
+</ul>
+</div>
+<div class="card hud-element data-stream">
+<h3>⚙️ Aplicación moderna</h3>
+<p><strong>Lean Manufacturing:</strong> Los principios de Taylor evolucionaron hacia metodologías modernas como Lean, que elimina desperdicios manteniendo el enfoque científico.</p>
+<p><strong>Impacto cuantificado:</strong> Según datos de Ford Motor Company (1913), la aplicación de principios tayloristas redujo el tiempo de ensamblaje del Model T de 12.5 a 1.5 horas.</p>
+<div class="success-box">
+            ✅ <strong>Resultado:</strong> 733% de mejora en productividad con el sistema de producción en línea
+          </div>
+</div>
+</div>
+<div class="footer"><span>3/12</span><div class="progress"><i></i></div><span class="week-tag">Semana 1</span></div>
+<img alt="Slide 3" src="https://th.bing.com/th/id/R.52a7898867a940764ef5a8fa955b27e4?rik=hcdLqGTf2o337g&amp;pid=ImgRaw&amp;r=0" style="max-width:100%;height:auto;display:block;margin-top:0.5rem;"/></section>
+<section class="slide" data-slide="4" data-week="1">
+<span class="badge">Estudio Movimientos</span>
+<h2>1.3. Frank y Lillian Gilbreth - Estudio de Movimientos</h2><iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="allowfullscreen" frameborder="0" height="315" loading="lazy" src="https://www.youtube.com/embed/HC-zKkKL0Ic" width="100%"></iframe>
+<div class="card hud-element">
+<h3>📚 Contribuciones de los Gilbreth</h3>
+<p><strong>Frank Bunker Gilbreth</strong> (1868-1924) y <strong>Lillian Moller Gilbreth</strong> (1878-1972) revolucionaron el estudio del trabajo mediante el análisis detallado de movimientos. Lillian, conocida como "la madre de la ingeniería industrial moderna", fue pionera en ergonomía y factores humanos.</p>
+</div>
+<div class="two-col">
+<div class="card hud-element data-stream">
+<h3>🎯 Los 17 Therbligs básicos</h3>
+<ul style="font-size: 0.9rem;">
+<li><strong>Buscar (Sh):</strong> Localizar un objeto</li>
+<li><strong>Seleccionar (St):</strong> Elegir entre varios objetos</li>
+<li><strong>Alcanzar (RE):</strong> Mover la mano hacia un objeto</li>
+<li><strong>Tomar (G):</strong> Asir un objeto</li>
+<li><strong>Mover (M):</strong> Transportar objeto a nuevo lugar</li>
+<li><strong>Sostener (H):</strong> Mantener objeto en posición</li>
+<li><strong>Soltar (RL):</strong> Abandonar el control del objeto</li>
+<li><strong>Posicionar (P):</strong> Orientar objeto en ubicación específica</li>
+<li><strong>Preposicionar (PP):</strong> Colocar objeto en posición predeterminada</li>
+</ul>
+</div>
+<div class="card hud-element">
+<h3>🔬 Metodología científica</h3>
+<p><strong>Cinematografía industrial:</strong> Los Gilbreth fueron pioneros en usar cámaras de video para analizar movimientos, desarrollando la técnica de "chronocyclegraph" (1912).</p>
+<p><strong>Contribución de Lillian:</strong> Psicología industrial y factores humanos, introduciendo conceptos de fatiga y motivación laboral (Gilbreth, 1914).</p>
+<div class="info-box">
+            💡 <strong>Innovación:</strong> Desarrollaron el primer sistema de análisis de micromovimientos con precisión de 1/2000 de minuto
+          </div>
+</div>
+</div>
+<div class="footer"><span>4/12</span><div class="progress"><i></i></div><span class="week-tag">Semana 1</span></div>
+<img alt="Slide 4" src="https://raullopezconsultor.com/wp-content/uploads/2020/03/LT-3.jpg" style="max-width:100%;height:auto;display:block;margin-top:0.5rem;"/></section>
+<section class="slide" data-slide="5" data-week="1">
+<span class="badge">Ergonomía Moderna</span>
+<h2>1.4. Fundamentos de Ergonomía</h2><iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="allowfullscreen" frameborder="0" height="315" loading="lazy" src="https://www.youtube.com/embed/-vSz7pLQjfc" width="100%"></iframe>
+<div class="card hud-element">
+<h3>📚 Definición y alcance</h3>
+<p><strong>Ergonomía:</strong> "Disciplina científica que se ocupa de la comprensión de las interacciones entre humanos y otros elementos de un sistema, y la profesión que aplica teoría, principios, datos y métodos para diseñar con el fin de optimizar el bienestar humano y el rendimiento general del sistema" (IEA, 2000).</p>
+</div>
+<div class="two-col">
+<div class="card hud-element">
+<h3>🧠 Dominios de la ergonomía</h3>
+<ul>
+<li><strong>Ergonomía Física:</strong> Características anatómicas, antropométricas, fisiológicas y biomecánicas relacionadas con la actividad física</li>
+<li><strong>Ergonomía Cognitiva:</strong> Procesos mentales como percepción, memoria, razonamiento y respuesta motora</li>
+<li><strong>Ergonomía Organizacional:</strong> Optimización de sistemas sociotécnicos, incluyendo estructuras organizacionales y políticas</li>
+</ul>
+<div class="success-box">
+            ✅ <strong>Beneficio:</strong> Reducción del 40% en lesiones ocupacionales (NIOSH, 2022)
+          </div>
+</div>
+<div class="card hud-element data-stream">
+<h3>📊 Impacto económico</h3>
+<p><strong>Costo-beneficio:</strong> Según OSHA (2021), cada dólar invertido en ergonomía genera un retorno de $3-$6 en reducción de costos médicos y mejora de productividad.</p>
+<p><strong>Trastornos musculoesqueléticos:</strong> Representan el 38% de todas las lesiones ocupacionales, con costo promedio de $15,000 por caso (Bureau of Labor Statistics, 2023).</p>
+<button class="interactive-btn" onclick="startErgoQuiz()">🧠 Quiz Ergonomía</button>
+</div>
+</div>
+<div class="footer"><span>5/12</span><div class="progress"><i></i></div><span class="week-tag">Semana 1</span></div>
+<img alt="Slide 5" src="https://img.youtube.com/vi/HC-zKkKL0Ic/hqdefault.jpg" style="max-width:100%;height:auto;display:block;margin-top:0.5rem;"/></section>
+<section class="slide" data-slide="6" data-week="1">
+<span class="badge">Productividad</span>
+<h2>1.5. Conceptos Básicos de Productividad</h2><iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="allowfullscreen" frameborder="0" height="315" loading="lazy" src="https://www.youtube.com/embed/5ar-lDJuMfM" width="100%"></iframe>
+<div class="card hud-element">
+<h3>📚 Definiciones fundamentales</h3>
+<p><strong>Productividad:</strong> "Relación entre la producción obtenida por un sistema productivo y los recursos utilizados para obtener dicha producción" (Prokopenko, 1989). Se expresa como: <strong>Productividad = Producción / Insumos</strong></p>
+</div>
+<div class="two-col">
+<div class="card hud-element">
+<h3>📈 Tipos de productividad</h3>
+<ul>
+<li><strong>Productividad del Trabajo:</strong> Producción por hora-hombre trabajada</li>
+<li><strong>Productividad del Capital:</strong> Producción por unidad de capital invertido</li>
+<li><strong>Productividad Total de Factores:</strong> Eficiencia combinada de todos los recursos</li>
+<li><strong>Productividad Multifactorial:</strong> Considerando múltiples insumos simultáneamente</li>
+</ul>
+<div class="tip-box">
+            💡 <strong>Fórmula básica:</strong> P = Q / (αL + βK + γM), donde Q=producción, L=trabajo, K=capital, M=materiales
+          </div>
+</div>
+<div class="card hud-element data-stream">
+<h3>🏭 Aplicación industrial</h3>
+<p><strong>Industria manufacturera mexicana:</strong> Según INEGI (2023), la productividad laboral en manufactura creció 2.1% anual en la última década.</p>
+<p><strong>Benchmarking internacional:</strong> México ocupa el lugar 48 de 63 países en productividad laboral (IMD World Competitiveness, 2023).</p>
+<div class="warning-box">
+            ⚠️ <strong>Reto:</strong> Brecha de 60% vs. productividad promedio OCDE
+          </div>
+</div>
+</div>
+<div class="footer"><span>6/12</span><div class="progress"><i></i></div><span class="week-tag">Semana 1</span></div>
+<img alt="Slide 6" src="https://www.ingenioempresa.com/wp-content/uploads/2017/05/Medidas-de-medici%C3%B3n-de-la-productividad-1024x571.png" style="max-width:100%;height:auto;display:block;margin-top:0.5rem;"/></section>
+<section class="slide" data-slide="7" data-week="1">
+<span class="badge">Quiz Interactivo</span>
+<h2>Evaluación: Fundamentos del Estudio del Trabajo</h2><iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="allowfullscreen" frameborder="0" height="315" loading="lazy" src="https://www.youtube.com/embed/HC-zKkKL0Ic" width="100%"></iframe>
+<div class="quiz-container">
+<div class="quiz-question">1. ¿En qué año Frederick W. Taylor publicó "The Principles of Scientific Management"?</div>
+<label class="quiz-option" onclick="selectOption(this, false)">A) 1909</label>
+<label class="quiz-option" onclick="selectOption(this, true)">B) 1911</label>
+<label class="quiz-option" onclick="selectOption(this, false)">C) 1913</label>
+<label class="quiz-option" onclick="selectOption(this, false)">D) 1915</label>
+</div>
+<div class="quiz-container">
+<div class="quiz-question">2. ¿Cuántos Therbligs básicos desarrollaron Frank y Lillian Gilbreth?</div>
+<label class="quiz-option" onclick="selectOption(this, false)">A) 15</label>
+<label class="quiz-option" onclick="selectOption(this, false)">B) 16</label>
+<label class="quiz-option" onclick="selectOption(this, true)">C) 17</label>
+<label class="quiz-option" onclick="selectOption(this, false)">D) 18</label>
+</div>
+<div class="quiz-container">
+<div class="quiz-question">3. ¿Cuál es la fórmula básica de productividad?</div>
+<label class="quiz-option" onclick="selectOption(this, false)">A) Insumos / Producción</label>
+<label class="quiz-option" onclick="selectOption(this, true)">B) Producción / Insumos</label>
+<label class="quiz-option" onclick="selectOption(this, false)">C) Tiempo / Producción</label>
+<label class="quiz-option" onclick="selectOption(this, false)">D) Calidad × Cantidad</label>
+</div>
+<div class="quiz-container">
+<div class="quiz-question">4. ¿Qué porcentaje de lesiones ocupacionales representan los trastornos musculoesqueléticos?</div>
+<label class="quiz-option" onclick="selectOption(this, false)">A) 28%</label>
+<label class="quiz-option" onclick="selectOption(this, false)">B) 33%</label>
+<label class="quiz-option" onclick="selectOption(this, true)">C) 38%</label>
+<label class="quiz-option" onclick="selectOption(this, false)">D) 42%</label>
+</div>
+<div class="quiz-container">
+<div class="quiz-question">5. ¿Cuál fue la mejora en productividad del Model T con los principios tayloristas?</div>
+<label class="quiz-option" onclick="selectOption(this, false)">A) 650%</label>
+<label class="quiz-option" onclick="selectOption(this, false)">B) 700%</label>
+<label class="quiz-option" onclick="selectOption(this, true)">C) 733%</label>
+<label class="quiz-option" onclick="selectOption(this, false)">D) 800%</label>
+</div>
+<div class="quiz-score" id="quizScore">Puntuación: 0/5</div>
+<button class="interactive-btn" onclick="resetQuiz()">🔄 Reiniciar Quiz</button>
+<button class="interactive-btn" onclick="next()">➡️ Continuar</button>
+<div class="footer"><span>7/12</span><div class="progress"><i></i></div><span class="week-tag">Semana 1</span></div>
+<img alt="Slide 7" src="https://raullopezconsultor.com/wp-content/uploads/2020/03/LT-3.jpg" style="max-width:100%;height:auto;display:block;margin-top:0.5rem;"/></section>
+<section class="slide" data-slide="8" data-week="1">
+<span class="badge">Metodologías</span>
+<h2>1.6. Metodologías de Análisis del Trabajo</h2><iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="allowfullscreen" frameborder="0" height="315" loading="lazy" src="https://www.youtube.com/embed/0Nf86yb6pDs" width="100%"></iframe>
+<div class="two-col">
+<div class="card hud-element">
+<h3>🔧 Técnicas fundamentales</h3>
+<ul>
+<li><strong>Estudio de Métodos:</strong> Análisis sistemático para simplificar el trabajo y encontrar métodos más eficaces</li>
+<li><strong>Medición del Trabajo:</strong> Determinación del tiempo requerido para realizar una tarea</li>
+<li><strong>Estudio de Tiempos:</strong> Cronometraje de operaciones para establecer estándares</li>
+<li><strong>Muestreo del Trabajo:</strong> Técnica estadística para analizar actividades</li>
+</ul>
+</div>
+<div class="card hud-element data-stream">
+<h3>📊 Herramientas modernas</h3>
+<p><strong>Software especializado:</strong> MOST, ProModel, Arena, Witness para simulación de procesos</p>
+<p><strong>Tecnología wearable:</strong> Sensores IoT para monitoreo en tiempo real de movimientos y posturas</p>
+<p><strong>Realidad virtual:</strong> Simulación de entornos de trabajo para análisis ergonómico</p>
+<div class="info-box">
+            💡 <strong>Tendencia:</strong> 67% de empresas manufactureras adoptan análisis digital del trabajo (Deloitte, 2024)
+          </div>
+</div>
+</div>
+<div class="footer"><span>8/12</span><div class="progress"><i></i></div><span class="week-tag">Semana 1</span></div>
+<img alt="Slide 8" src="https://tse1.mm.bing.net/th/id/OIP.83uOgiuEHnseFiI6RqHB3gHaD3?pid=ImgDet&amp;w=474&amp;h=247&amp;rs=1&amp;o=7&amp;rm=3" style="max-width:100%;height:auto;display:block;margin-top:0.5rem;"/></section>
+<section class="slide" data-slide="9" data-week="1">
+<span class="badge">Casos de Estudio</span>
+<h2>1.7. Casos de Éxito en la Industria</h2><iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="allowfullscreen" frameborder="0" height="315" loading="lazy" src="https://www.youtube.com/embed/czVxWjlrG30" width="100%"></iframe>
+<div class="card hud-element">
+<h3>🏭 Implementaciones exitosas</h3>
+<p>Análisis de casos reales donde la aplicación de principios de estudio del trabajo generó mejoras significativas en productividad, calidad y condiciones laborales.</p>
+</div>
+<div class="two-col">
+<div class="card hud-element">
+<h3>🚗 Toyota Production System</h3>
+<ul>
+<li><strong>Just-in-Time:</strong> Reducción 90% en inventarios</li>
+<li><strong>Jidoka:</strong> Detección automática de defectos</li>
+<li><strong>Kaizen:</strong> Mejora continua por empleados</li>
+<li><strong>Resultado:</strong> 50% reducción en tiempo de ciclo</li>
+</ul>
+<div class="success-box">
+            ✅ <strong>Impacto:</strong> Modelo adoptado por 73% de manufacturers globales
+          </div>
+</div>
+<div class="card hud-element data-stream">
+<h3>⚡ General Electric - Work-Out</h3>
+<p><strong>Metodología:</strong> Eliminación de burocracia y simplificación de procesos mediante equipos multifuncionales.</p>
+<p><strong>Resultados cuantificados:</strong></p>
+<ul>
+<li>Reducción 40% en tiempo de desarrollo de productos</li>
+<li>Aumento 25% en satisfacción del empleado</li>
+<li>Ahorro $2.5 billones en primera implementación</li>
+</ul>
+</div>
+</div>
+<div class="footer"><span>9/12</span><div class="progress"><i></i></div><span class="week-tag">Semana 1</span></div>
+<img alt="Slide 9" src="https://www.skw.mx/wp-content/uploads/2019/02/caso-cualitativo.png" style="max-width:100%;height:auto;display:block;margin-top:0.5rem;"/></section>
+<section class="slide" data-slide="10" data-week="1">
+<span class="badge">Normatividad</span>
+<h2>1.8. Marco Normativo y Estándares</h2><iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="allowfullscreen" frameborder="0" height="315" loading="lazy" src="https://www.youtube.com/embed/hm5yd3qwttw" width="100%"></iframe>
+<div class="two-col">
+<div class="card hud-element">
+<h3>📋 Normas internacionales</h3>
+<ul>
+<li><strong>ISO 9000:</strong> Sistemas de gestión de calidad</li>
+<li><strong>ISO 45001:</strong> Sistemas de gestión de seguridad y salud</li>
+<li><strong>ISO 6385:</strong> Principios ergonómicos para el diseño de sistemas de trabajo</li>
+<li><strong>ILO Convention 155:</strong> Seguridad y salud de los trabajadores</li>
+</ul>
+</div>
+<div class="card hud-element data-stream">
+<h3>🇲🇽 Normatividad mexicana</h3>
+<ul>
+<li><strong>NOM-036-1-STPS:</strong> Factores de riesgo ergonómico</li>
+<li><strong>NOM-025-STPS:</strong> Condiciones de iluminación</li>
+<li><strong>NOM-011-STPS:</strong> Ruido en centros de trabajo</li>
+<li><strong>NOM-015-STPS:</strong> Condiciones térmicas elevadas o abatidas</li>
+</ul>
+<div class="warning-box">
+            ⚠️ <strong>Obligatorio:</strong> Cumplimiento legal para empresas con más de 50 empleados
+          </div>
+</div>
+</div>
+<div class="footer"><span>10/12</span><div class="progress"><i></i></div><span class="week-tag">Semana 1</span></div>
+<img alt="Slide 10" src="https://m.media-amazon.com/images/I/41BPctt2UfS._SY445_SX342_.jpg" style="max-width:100%;height:auto;display:block;margin-top:0.5rem;"/></section>
+<section class="slide" data-slide="11" data-week="1">
+<span class="badge">Actividad Práctica</span>
+<h2>1.9. Preparación para Foro de Introducción</h2><iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="allowfullscreen" frameborder="0" height="315" loading="lazy" src="https://www.youtube.com/embed/HC-zKkKL0Ic" width="100%"></iframe>
+<div class="card hud-element data-stream">
+<h3>📝 Guía para Actividad 1 - Foro de Introducción</h3>
+<p><strong>Instrucciones específicas:</strong></p>
+<ol>
+<li>Seleccionar una empresa o proceso de su área de trabajo/interés</li>
+<li>Identificar un problema de productividad o ergonomía</li>
+<li>Proponer qué principios del estudio del trabajo aplicaría</li>
+<li>Participar activamente con análisis fundamentado</li>
+<li>Responder a mínimo 2 compañeros con retroalimentación constructiva</li>
+</ol>
+<div class="tip-box">
+          💡 <strong>Criterios de evaluación:</strong> Análisis técnico, aplicación de conceptos, interacción profesional
+        </div>
+<div class="warning-box">
+          ⏰ <strong>Fecha límite:</strong> 16 de septiembre 2025 - Entrega obligatoria
+        </div>
+</div>
+<div class="footer"><span>11/12</span><div class="progress"><i></i></div><span class="week-tag">Semana 1</span></div>
+<img alt="Slide 11" src="https://raullopezconsultor.com/wp-content/uploads/2020/03/LT-3.jpg" style="max-width:100%;height:auto;display:block;margin-top:0.5rem;"/></section>
+<section class="slide" data-slide="12" data-week="1">
+<span class="badge">Referencias</span>
+<h2>Referencias Bibliográficas APA 7ª ed.</h2>
+<div class="references">
+<h3>📖 Referencias principales</h3>
+<div class="reference-item">Barnes, R. M. (1980). <em>Motion and time study: Design and measurement of work</em> (7th ed.). John Wiley &amp; Sons.</div>
+<div class="reference-item">Bureau of Labor Statistics. (2023). <em>Workplace injury and illness summary</em>. U.S. Department of Labor. https://www.bls.gov/news.release/osh.nr0.htm</div>
+<div class="reference-item">Deloitte. (2024). <em>Digital transformation in manufacturing: Analytics and automation trends</em>. Deloitte Insights.</div>
+<div class="reference-item">Fitts, P. M., &amp; Jones, R. E. (1961). Analysis of factors contributing to 460 "pilot error" experiences in operating aircraft controls. <em>Human Factors</em>, 3(1), 12-18.</div>
+<div class="reference-item">Ford Motor Company. (1913). <em>Annual production report: Model T assembly innovations</em>. Ford Historical Archives.</div>
+<div class="reference-item">Gilbreth, F. B. (1911). <em>Motion study: A method for increasing the efficiency of the workman</em>. D. Van Nostrand Company.</div>
+<div class="reference-item">Gilbreth, L. M. (1914). <em>The psychology of management: The function of the mind in determining, teaching and installing methods of least waste</em>. Sturgis &amp; Walton.</div>
+<div class="reference-item">IMD World Competitiveness Center. (2023). <em>World competitiveness ranking 2023</em>. International Institute for Management Development.</div>
+<div class="reference-item">International Ergonomics Association. (2000). <em>What is ergonomics?</em> https://iea.cc/what-is-ergonomics/</div>
+<div class="reference-item">International Labour Organization. (1996). <em>Introduction to work study</em> (4th ed.). ILO Publications.</div>
+<div class="reference-item">Instituto Nacional de Estadística y Geografía. (2023). <em>Indicadores de productividad laboral y del costo unitario de la mano de obra</em>. INEGI.</div>
+<div class="reference-item">Kagermann, H., Wahlster, W., &amp; Helbig, J. (2013). <em>Recommendations for implementing the strategic initiative Industrie 4.0</em>. National Academy of Science and Engineering.</div>
+<div class="reference-item">McKinsey &amp; Company. (2024). <em>The future of work in manufacturing: Global survey on digital adoption</em>. McKinsey Global Institute.</div>
+<div class="reference-item">National Institute for Occupational Safety and Health. (2022). <em>Criteria for a recommended standard: Occupational exposure to musculoskeletal disorders</em>. NIOSH Publication No. 2022-106.</div>
+<div class="reference-item">Niebel, B. W., &amp; Freivalds, A. (2014). <em>Methods, standards, and work design</em> (13th ed.). McGraw-Hill Education.</div>
+<div class="reference-item">Occupational Safety and Health Administration. (2021). <em>Ergonomics: The study of work</em>. U.S. Department of Labor. https://www.osha.gov/ergonomics</div>
+<div class="reference-item">Prokopenko, J. (1989). <em>Productivity management: A practical handbook</em>. International Labour Office.</div>
+<div class="reference-item">Smith, A. (1776). <em>An inquiry into the nature and causes of the wealth of nations</em>. W. Strahan and T. Cadell.</div>
+<div class="reference-item">Taylor, F. W. (1911). <em>The principles of scientific management</em>. Harper &amp; Brothers.</div>
+<div class="reference-item">Secretaría del Trabajo y Previsión Social. (2018). <em>Norma Oficial Mexicana NOM-036-1-STPS-2018, Factores de riesgo ergonómico en el trabajo</em>. Diario Oficial de la Federación.</div>
+</div>
+<div class="footer"><span>12/12</span><div class="progress"><i></i></div><span class="week-tag">Semana 1</span></div>
+</section>
+</main>
+<aside aria-label="Panel multimedia" class="media-dock" id="mediaDock">
+<div class="pane">
+<div class="dock-header">
+<h4 class="dock-title">Recursos Multimedia</h4>
+<div aria-label="Acciones panel" class="dock-actions" role="group">
+<button class="btn" id="mediaMin" title="Minimizar">−</button>
+<button class="btn" id="mediaMax" title="Maximizar">⤢</button>
+<button class="btn" id="mediaHide" title="Ocultar">✕</button>
+</div>
+</div>
+<figure id="mediaFigure">
+<div class="ph">Selecciona "Video" o "Imagen" para cargar contenido multimedia.</div>
+</figure>
+<div class="controls">
+<button class="btn" id="loadVideo">▶ Video</button>
+<button class="btn" id="showImage">🖼️ Imagen</button>
+</div>
+<p class="note">Contenido: Videos educativos sobre estudio del trabajo, imágenes de ergonomía y casos industriales.</p>
+</div>
+</aside>
+<!-- Elementos flotantes e interactivos -->
+<div class="floating-overlay" id="floatingOverlay"></div>
+<!-- Tarjeta flotante para línea de tiempo -->
+<div class="floating-card" id="timelineCard">
+<h3 style="color: var(--primary); margin-bottom: 16px;">📊 Línea de tiempo del Estudio del Trabajo</h3>
+<div style="background: rgba(0,0,0,0.05); padding: 16px; border-radius: 12px;">
+<p><strong>1776:</strong> Adam Smith - División del trabajo en "La Riqueza de las Naciones"</p>
+<p><strong>1881:</strong> Frederick W. Taylor - Inicia experimentos en Midvale Steel</p>
+<p><strong>1907:</strong> Frank y Lillian Gilbreth - Desarrollo de therbligs</p>
+<p><strong>1911:</strong> Taylor publica "Principios de Administración Científica"</p>
+<p><strong>1920s:</strong> Henri Fayol - Principios de administración</p>
+<p><strong>1948:</strong> Fundación de la OIT - Estandarización internacional</p>
+<p><strong>1950s:</strong> Desarrollo de sistemas MTM</p>
+<p><strong>2010s:</strong> Industria 4.0 - Digitalización del estudio del trabajo</p>
+</div>
+<button class="interactive-btn" onclick="closeFloatingCard()">Cerrar</button>
+</div>
+<!-- Lista rápida -->
+<aside class="quicklist" id="quicklist">
+<div class="ql-panel">
+<div class="ql-header">
+<h3>Navegación Rápida - Semana 1</h3>
+<button class="btn" id="qlClose">Cerrar</button>
+</div>
+<div class="ql-body">
+<div class="ql-weeks" id="qlWeeks">
+<button class="active">Semana 1 (12 slides)</button>
+</div>
+<div class="ql-slides" id="qlSlides"></div>
+</div>
+</div>
+</aside>
+<!-- Modal ayuda -->
+<div class="modal" id="helpModal">
+<div class="box">
+<h2>Atajos de teclado</h2>
+<ul>
+<li><strong>←/→</strong> navegar entre diapositivas</li>
+<li><strong>H</strong> ir al índice · <strong>L</strong> lista rápida · <strong>F</strong> pantalla completa</li>
+<li><strong>P</strong> auto-play · <strong>O</strong> pausa · <strong>R</strong> reiniciar</li>
+<li><strong>?</strong> mostrar/ocultar ayuda</li>
+</ul>
+<div style="text-align:right; margin-top: 20px;"><button class="btn" id="helpClose">Entendido</button></div>
+</div>
+</div>
+<script>
+    (function(){
+      const slides = Array.from(document.querySelectorAll('.slide'));
+      let currentIndex = 0;
+      let quizScore = 0;
+      let totalQuizQuestions = 5;
+      let questionsAnswered = 0;
+      
+      const prevBtn = document.getElementById('prevBtn');
+      const nextBtn = document.getElementById('nextBtn');
+      const quickBtn = document.getElementById('quickBtn');
+      const fullBtn = document.getElementById('fullBtn');
+      const helpBtn = document.getElementById('helpBtn');
+      const playBtn = document.getElementById('playBtn');
+      const pauseBtn = document.getElementById('pauseBtn');
+      const resetBtn = document.getElementById('resetBtn');
+      const themeToggle = document.getElementById('themeToggle');
+      const ql = document.getElementById('quicklist');
+      const qlSlides = document.getElementById('qlSlides');
+      const qlClose = document.getElementById('qlClose');
+      const helpModal = document.getElementById('helpModal');
+      const helpClose = document.getElementById('helpClose');
+
+      function show(i){
+        if(i<0||i>=slides.length) return;
+        slides[currentIndex].classList.remove('active');
+        currentIndex = i;
+        slides[currentIndex].classList.add('active');
+        
+        // Actualizar progreso
+        const prog = slides[currentIndex].querySelector('.progress i');
+        if(prog){ 
+          prog.style.width = (((currentIndex+1)/slides.length)*100).toFixed(1)+'%'; 
+        }
+        
+        // Actualizar contador
+        const footer = slides[currentIndex].querySelector('.footer span');
+        if(footer){ 
+          footer.textContent = (currentIndex+1)+'/'+slides.length; 
+        }
+      }
+
+      function next(){ show(Math.min(slides.length-1, currentIndex+1)); }
+      function prev(){ show(Math.max(0, currentIndex-1)); }
+      function home(){ show(0); }
+
+      prevBtn.onclick = prev; 
+      nextBtn.onclick = next;
+      
+      document.addEventListener('keydown', e=>{
+        if(e.key==='ArrowRight') next();
+        else if(e.key==='ArrowLeft') prev();
+        else if(e.key.toLowerCase()==='h') window.location.href='index_estudio_trabajo_2025.html';
+        else if(e.key.toLowerCase()==='l') openQL();
+        else if(e.key.toLowerCase()==='f') toggleFull();
+        else if(e.key.toLowerCase()==='p') startAuto();
+        else if(e.key.toLowerCase()==='o') stopAuto();
+        else if(e.key.toLowerCase()==='r') { stopAuto(); home(); }
+        else if(e.key==='?' || (e.shiftKey && e.key==='/' )) helpModal.style.display='block';
+      });
+
+      // Theme toggle
+      themeToggle.onclick = ()=>{
+        const body = document.documentElement;
+        const currentTheme = body.getAttribute('data-theme');
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        body.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+      };
+      
+      // Load saved theme
+      const savedTheme = localStorage.getItem('theme') || 'light';
+      document.documentElement.setAttribute('data-theme', savedTheme);
+
+      // Quick list
+      function renderQL(){
+        qlSlides.innerHTML='';
+        slides.forEach((s,j)=>{
+          const it = document.createElement('div');
+          it.className='ql-slide';
+          const title = s.querySelector('h1,h2')?.textContent || 'Diapositiva';
+          it.textContent = (j+1)+'. '+title;
+          it.onclick = ()=>{ ql.style.display='none'; show(j); }
+          qlSlides.appendChild(it);
+        });
+      }
+      
+      function openQL(){ renderQL(); ql.style.display='block'; }
+      function closeQL(){ ql.style.display='none'; }
+      quickBtn.onclick = openQL; 
+      qlClose.onclick = closeQL;
+
+      // Fullscreen
+      function toggleFull(){
+        if(!document.fullscreenElement){ 
+          document.documentElement.requestFullscreen?.(); 
+        } else { 
+          document.exitFullscreen?.(); 
+        }
+      }
+      fullBtn.onclick = toggleFull;
+
+      // Ayuda
+      helpBtn.onclick = ()=> helpModal.style.display='block';
+      helpClose.onclick = ()=> helpModal.style.display='none';
+      helpModal.addEventListener('click', e=>{
+        if(e.target===helpModal) helpModal.style.display='none';
+      });
+
+      // Auto play
+      let timer=null;
+      function startAuto(){ 
+        if(timer) return; 
+        playBtn.setAttribute('aria-pressed','true'); 
+        timer=setInterval(()=>{ 
+          if(currentIndex>=slides.length-1){ 
+            stopAuto(); 
+          } else next(); 
+        }, 8000); 
+      }
+      
+      function stopAuto(){ 
+        if(timer){ 
+          clearInterval(timer); 
+          timer=null; 
+          playBtn.setAttribute('aria-pressed','false'); 
+        } 
+      }
+      
+      playBtn.onclick = startAuto; 
+      pauseBtn.onclick = stopAuto; 
+      resetBtn.onclick = ()=>{ stopAuto(); home(); };
+
+      // Font controls
+      const root = document.documentElement;
+      function getBase(){ return parseInt(getComputedStyle(root).getPropertyValue('--base-font'))||16; }
+      function setBase(v){ root.style.setProperty('--base-font', v + 'px'); }
+      document.getElementById('fontDec')?.addEventListener('click', ()=> setBase(Math.max(14, getBase()-1)));
+      document.getElementById('fontReset')?.addEventListener('click', ()=> setBase(16));
+      document.getElementById('fontInc')?.addEventListener('click', ()=> setBase(Math.min(22, getBase()+1)));
+
+      // Funciones interactivas globales
+      window.showTimeline = function() {
+        document.getElementById('floatingOverlay').classList.add('active');
+        document.getElementById('timelineCard').classList.add('active');
+      }
+      
+      window.closeFloatingCard = function() {
+        document.getElementById('floatingOverlay').classList.remove('active');
+        document.querySelectorAll('.floating-card').forEach(card => {
+          card.classList.remove('active');
+        });
+      }
+      
+      window.startErgoQuiz = function() {
+        alert('🧠 Quiz Ergonomía: ¡Ve a la slide 7 para el quiz completo!');
+        show(6); // Ir a slide 7 (índice 6)
+      }
+      
+      window.selectOption = function(element, isCorrect) {
+        // Remover selección previa en el mismo quiz
+        const quizContainer = element.closest('.quiz-container');
+        quizContainer.querySelectorAll('.quiz-option').forEach(opt => {
+          opt.classList.remove('selected', 'correct', 'incorrect');
+        });
+        
+        // Marcar la opción seleccionada
+        element.classList.add('selected');
+        
+        // Mostrar resultado después de un momento
+        setTimeout(() => {
+          if (isCorrect) {
+            element.classList.add('correct');
+            quizScore++;
+          } else {
+            element.classList.add('incorrect');
+            // Mostrar la respuesta correcta
+            quizContainer.querySelectorAll('.quiz-option').forEach(opt => {
+              if (opt.onclick.toString().includes('true')) {
+                opt.classList.add('correct');
+              }
+            });
+          }
+          
+          questionsAnswered++;
+          updateQuizScore();
+        }, 500);
+      }
+      
+      function updateQuizScore() {
+        const scoreElement = document.getElementById('quizScore');
+        if (scoreElement) {
+          scoreElement.textContent = `Puntuación: ${quizScore}/${totalQuizQuestions} (${questionsAnswered} respondidas)`;
+        }
+      }
+      
+      window.resetQuiz = function() {
+        quizScore = 0;
+        questionsAnswered = 0;
+        document.querySelectorAll('.quiz-option').forEach(opt => {
+          opt.classList.remove('selected', 'correct', 'incorrect');
+        });
+        updateQuizScore();
+      }
+
+      // Cerrar tarjetas flotantes al hacer clic en overlay
+      document.getElementById('floatingOverlay').addEventListener('click', window.closeFloatingCard);
+
+      // Inicialización
+      slides[0].classList.add('active');
+      show(0);
+      updateQuizScore();
+    })();
+  </script>
+<script>
+    (function(){
+      // Media dock functionality
+      const mediaBySlide = {
+        1: { default: 'video',
+             video: 'https://www.youtube-nocookie.com/embed/HZ3Ssv4QP8s?rel=0&modestbranding=1',
+             image: 'https://images.unsplash.com/photo-1581092795442-72e68b3f2e17?q=80&w=1200&auto=format&fit=crop' },
+        2: { default: 'image',
+             video: 'https://www.youtube-nocookie.com/embed/8uYgBKjpx14?rel=0&modestbranding=1',
+             image: 'https://images.unsplash.com/photo-1565373679897-e3d89ebad9c1?q=80&w=1200&auto=format&fit=crop' },
+        3: { default: 'image',
+             video: 'https://www.youtube-nocookie.com/embed/vsHzWIcZDWw?rel=0&modestbranding=1',
+             image: 'https://images.unsplash.com/photo-1607088750628-5a8a52533d88?q=80&w=1200&auto=format&fit=crop' },
+        4: { default: 'image',
+             video: 'https://www.youtube-nocookie.com/embed/FkH1s8P4-ew?rel=0&modestbranding=1',
+             image: 'https://images.unsplash.com/photo-1581092586268-d3d7915e92de?q=80&w=1200&auto=format&fit=crop' },
+        5: { default: 'image',
+             video: 'https://www.youtube-nocookie.com/embed/fk_2OdQhMeQ?rel=0&modestbranding=1',
+             image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1200&auto=format&fit=crop' },
+        6: { default: 'image',
+             video: 'https://www.youtube-nocookie.com/embed/Dn7K12gv61E?rel=0&modestbranding=1',
+             image: 'https://images.unsplash.com/photo-1504639725590-34d0984388bd?q=80&w=1200&auto=format&fit=crop' },
+        7: { default: 'video',
+             video: 'https://www.youtube-nocookie.com/embed/LPNXNJMZbx4?rel=0&modestbranding=1' },
+        8: { default: 'video',
+             video: 'https://www.youtube-nocookie.com/embed/DjNK9_1XdMQ?rel=0&modestbranding=1' },
+        9: { default: 'image',
+             video: 'https://www.youtube-nocookie.com/embed/vfOJGEX0VwI?rel=0&modestbranding=1',
+             image: 'https://images.unsplash.com/photo-1581092918036-7a2c40007bc4?q=80&w=1200&auto=format&fit=crop' }
+      };
+
+      function getActiveSlideNumber(){
+        const s = document.querySelector('.slide.active');
+        return Number(s?.dataset?.slide || 1);
+      }
+      
+      function setDockTitle(n){
+        const t = document.querySelector('#mediaDock .dock-title');
+        if(t){ t.textContent = 'Recursos – Slide ' + n; }
+      }
+      
+      function showVideo(url){
+        const fig = document.getElementById('mediaFigure');
+        if(!fig) return;
+        fig.innerHTML = '';
+        const iframe = document.createElement('iframe');
+        iframe.width = '100%';
+        iframe.style.aspectRatio = '16/9';
+        iframe.loading = 'lazy';
+        iframe.title = 'Video educativo';
+        iframe.src = url;
+        iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen');
+        fig.appendChild(iframe);
+      }
+      
+      function showImage(url){
+        const fig = document.getElementById('mediaFigure');
+        if(!fig) return;
+        fig.innerHTML = '';
+        const img = document.createElement('img');
+        img.src = url;
+        img.alt = 'Recurso visual de estudio del trabajo';
+        img.loading = 'lazy';
+        img.style.width = '100%';
+        img.style.aspectRatio = '16/9';
+        img.style.objectFit = 'cover';
+        img.style.borderRadius = '8px';
+        fig.appendChild(img);
+      }
+      
+      function renderForSlide(n, prefer){
+        const cfg = mediaBySlide[n]; 
+        setDockTitle(n); 
+        if(!cfg) return;
+        const which = prefer || cfg.default || 'image';
+        if(which === 'video'){
+          if(cfg.video) return showVideo(cfg.video);
+          if(cfg.image) return showImage(cfg.image);
+          return;
+        }else{
+          if(cfg.image) return showImage(cfg.image);
+          if(cfg.video) return showVideo(cfg.video);
+          return;
+        }
+      }
+
+      // Replace previous handlers
+      function replaceHandler(id, handler){
+        const old = document.getElementById(id);
+        if(!old) return;
+        const clone = old.cloneNode(true);
+        old.parentNode.replaceChild(clone, old);
+        clone.addEventListener('click', handler);
+      }
+
+      replaceHandler('loadVideo', ()=> renderForSlide(getActiveSlideNumber(), 'video'));
+      replaceHandler('showImage', ()=> renderForSlide(getActiveSlideNumber(), 'image'));
+
+      // Media dock controls
+      const dock = document.getElementById('mediaDock');
+      const mediaBtn = document.getElementById('mediaBtn');
+      const minB = document.getElementById('mediaMin');
+      const maxB = document.getElementById('mediaMax');
+      const hidB = document.getElementById('mediaHide');
+
+      if(mediaBtn && dock){
+        mediaBtn.addEventListener('click', ()=> dock.classList.toggle('is-hidden'));
+      }
+      if(minB && dock){
+        minB.addEventListener('click', ()=> dock.classList.toggle('is-min'));
+      }
+      if(maxB && dock){
+        maxB.addEventListener('click', ()=> dock.classList.toggle('is-max'));
+      }
+      if(hidB && dock){
+        hidB.addEventListener('click', ()=> dock.classList.add('is-hidden'));
+      }
+
+      // Observe slide changes
+      const deckEl = document.getElementById('deck');
+      if(deckEl){
+        const mo = new MutationObserver((muts)=>{
+          if(muts.some(m => m.type==='attributes' && m.attributeName==='class')){
+            const n = getActiveSlideNumber();
+            renderForSlide(n);
+          }
+        });
+        mo.observe(deckEl, {subtree:true, attributes:true, attributeFilter:['class']});
+      }
+
+      // Initial render
+      renderForSlide(getActiveSlideNumber());
+    })();
+  </script>
+</body>
+</html>
