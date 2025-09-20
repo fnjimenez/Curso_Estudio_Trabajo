@@ -1,0 +1,1371 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>🔧 Quiz EDT 2025 - Estudio y Diseño del Trabajo</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=JetBrains+Mono:wght@400;600&display=swap');
+    
+    :root {
+      --bg: #f8f9fa;
+      --panel: #ffffff;
+      --ink: #1a1a1a;
+      --muted: #6c757d;
+      --primary: #ff6b35;
+      --secondary: #2563eb;
+      --accent: #059669;
+      --success: #10b981;
+      --warn: #f59e0b;
+      --danger: #dc2626;
+      --steel: #475569;
+      --grad-primary: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+      --grad-panel: linear-gradient(180deg, #ffffff, #f8fafc);
+      --shadow: 0 10px 25px rgba(0,0,0,0.1);
+    }
+    
+    [data-theme="dark"] {
+      --bg: #0f172a;
+      --panel: #1e293b;
+      --ink: #f1f5f9;
+      --muted: #94a3b8;
+      --grad-panel: linear-gradient(180deg, #1e293b, #0f172a);
+      --shadow: 0 10px 25px rgba(0,0,0,0.3);
+    }
+    
+    * { box-sizing: border-box; }
+    
+    body {
+      margin: 0;
+      font: 16px/1.6 'Inter', system-ui, sans-serif;
+      color: var(--ink);
+      background: var(--bg);
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+    }
+    
+    /* Patrón de fondo industrial */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: 
+        linear-gradient(90deg, rgba(255, 107, 53, 0.02) 1px, transparent 1px),
+        linear-gradient(rgba(37, 99, 235, 0.02) 1px, transparent 1px),
+        radial-gradient(circle at 25% 75%, rgba(255, 107, 53, 0.05) 0%, transparent 50%),
+        radial-gradient(circle at 75% 25%, rgba(5, 150, 105, 0.05) 0%, transparent 50%);
+      background-size: 40px 40px, 40px 40px, 200px 200px, 200px 200px;
+      opacity: 0.4;
+      animation: industrialFlow 30s linear infinite;
+      z-index: 0;
+    }
+    
+    @keyframes industrialFlow {
+      from { transform: translate(0, 0); }
+      to { transform: translate(-40px, -40px); }
+    }
+    
+    /* Contenedor principal */
+    .quiz-container {
+      position: relative;
+      z-index: 1;
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 20px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    
+    /* Header del quiz */
+    .quiz-header {
+      text-align: center;
+      margin-bottom: 30px;
+      padding: 30px;
+      background: var(--grad-panel);
+      border: 1px solid rgba(255, 107, 53, 0.2);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .quiz-header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: var(--grad-primary);
+      border-radius: 24px 24px 0 0;
+    }
+    
+    .quiz-title {
+      font: 900 clamp(2rem, 6vw, 3.5rem)/1.1 'Inter', sans-serif;
+      background: var(--grad-primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 15px;
+      animation: titleGlow 3s ease-in-out infinite alternate;
+    }
+    
+    @keyframes titleGlow {
+      from { filter: drop-shadow(0 0 20px rgba(255, 107, 53, 0.3)); }
+      to { filter: drop-shadow(0 0 30px rgba(37, 99, 235, 0.4)); }
+    }
+    
+    .quiz-subtitle {
+      font: 600 1.3rem 'Inter', sans-serif;
+      color: var(--muted);
+      margin-bottom: 20px;
+    }
+    
+    /* Stats del quiz */
+    .quiz-stats {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      margin: 20px 0;
+      flex-wrap: wrap;
+    }
+    
+    .stat-box {
+      background: var(--panel);
+      border: 1px solid rgba(255, 107, 53, 0.2);
+      border-radius: 16px;
+      padding: 15px 20px;
+      text-align: center;
+      min-width: 120px;
+      box-shadow: var(--shadow);
+    }
+    
+    .stat-number {
+      font: 700 1.8rem 'JetBrains Mono', monospace;
+      color: var(--primary);
+      display: block;
+      text-shadow: 0 0 15px rgba(255, 107, 53, 0.5);
+    }
+    
+    .stat-label {
+      font-size: 0.9rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-weight: 600;
+    }
+    
+    /* Pantalla de pregunta */
+    .question-screen {
+      display: none;
+      background: var(--grad-panel);
+      border: 1px solid rgba(255, 107, 53, 0.2);
+      border-radius: 24px;
+      padding: 40px;
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+      animation: slideIn 0.5s ease;
+    }
+    
+    .question-screen.active {
+      display: block;
+    }
+    
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(30px) scale(0.95); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    
+    .question-screen::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: var(--grad-primary);
+      border-radius: 24px 24px 0 0;
+    }
+    
+    /* Barra de progreso */
+    .progress-bar {
+      background: rgba(0,0,0,0.1);
+      border-radius: 999px;
+      height: 12px;
+      margin-bottom: 30px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 107, 53, 0.2);
+    }
+    
+    .progress-fill {
+      height: 100%;
+      background: var(--grad-primary);
+      width: 0;
+      transition: width 0.5s ease;
+      border-radius: inherit;
+      position: relative;
+    }
+    
+    .progress-fill::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: -20px;
+      width: 20px;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3));
+      animation: progressGlow 2s ease-in-out infinite;
+    }
+    
+    @keyframes progressGlow {
+      0%, 100% { opacity: 0; }
+      50% { opacity: 1; }
+    }
+    
+    /* Información de la pregunta */
+    .question-info {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 25px;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+    
+    .question-number {
+      font: 700 1.1rem 'JetBrains Mono', monospace;
+      color: var(--primary);
+      background: rgba(255, 107, 53, 0.1);
+      padding: 8px 16px;
+      border-radius: 20px;
+      border: 1px solid rgba(255, 107, 53, 0.3);
+    }
+    
+    .topic-badge {
+      font: 600 0.9rem 'JetBrains Mono', monospace;
+      color: var(--secondary);
+      background: rgba(37, 99, 235, 0.1);
+      padding: 6px 12px;
+      border-radius: 15px;
+      border: 1px solid rgba(37, 99, 235, 0.3);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    
+    .timer {
+      font: 700 1.2rem 'JetBrains Mono', monospace;
+      color: var(--warn);
+      background: rgba(245, 158, 11, 0.1);
+      padding: 8px 16px;
+      border-radius: 20px;
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      animation: timerPulse 1s ease-in-out infinite;
+    }
+    
+    @keyframes timerPulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+    
+    /* Pregunta */
+    .question-text {
+      font: 600 clamp(1.3rem, 3vw, 1.8rem)/1.4 'Inter', sans-serif;
+      color: var(--ink);
+      text-align: center;
+      margin-bottom: 35px;
+      padding: 20px;
+      background: rgba(255, 107, 53, 0.05);
+      border-radius: 16px;
+      border-left: 4px solid var(--primary);
+    }
+    
+    /* Opciones de respuesta */
+    .options-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+    
+    .option {
+      background: var(--panel);
+      border: 2px solid rgba(255, 107, 53, 0.2);
+      border-radius: 16px;
+      padding: 20px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      text-align: center;
+      font: 600 1.1rem 'Inter', sans-serif;
+      min-height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: var(--shadow);
+    }
+    
+    .option::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 107, 53, 0.1), transparent);
+      transition: 0.5s;
+    }
+    
+    .option:hover {
+      transform: translateY(-5px) scale(1.02);
+      border-color: var(--primary);
+      box-shadow: 0 15px 40px rgba(255, 107, 53, 0.3);
+      background: rgba(255, 107, 53, 0.05);
+    }
+    
+    .option:hover::before {
+      left: 100%;
+    }
+    
+    .option.selected {
+      border-color: var(--warn);
+      background: rgba(245, 158, 11, 0.1);
+      animation: optionSelected 0.5s ease;
+    }
+    
+    .option.correct {
+      border-color: var(--success);
+      background: rgba(16, 185, 129, 0.1);
+      animation: correctAnswer 0.6s ease;
+    }
+    
+    .option.incorrect {
+      border-color: var(--danger);
+      background: rgba(220, 38, 38, 0.1);
+      animation: incorrectAnswer 0.6s ease;
+    }
+    
+    @keyframes optionSelected {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+    
+    @keyframes correctAnswer {
+      0% { transform: scale(1); }
+      25% { transform: scale(1.1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+    
+    @keyframes incorrectAnswer {
+      0% { transform: translateX(0); }
+      25% { transform: translateX(-10px); }
+      50% { transform: translateX(10px); }
+      75% { transform: translateX(-5px); }
+      100% { transform: translateX(0); }
+    }
+    
+    /* Colores específicos para opciones */
+    .option.option-a { background: linear-gradient(145deg, #fee2e2, #fef2f2); border-color: #ef4444; }
+    .option.option-b { background: linear-gradient(145deg, #dbeafe, #eff6ff); border-color: #3b82f6; }
+    .option.option-c { background: linear-gradient(145deg, #fed7aa, #fff7ed); border-color: #f97316; }
+    .option.option-d { background: linear-gradient(145deg, #dcfce7, #f0fdf4); border-color: #22c55e; }
+    
+    .option.option-a:hover { background: linear-gradient(145deg, #fecaca, #fee2e2); }
+    .option.option-b:hover { background: linear-gradient(145deg, #bfdbfe, #dbeafe); }
+    .option.option-c:hover { background: linear-gradient(145deg, #fdba74, #fed7aa); }
+    .option.option-d:hover { background: linear-gradient(145deg, #bbf7d0, #dcfce7); }
+    
+    /* Feedback */
+    .feedback {
+      background: var(--panel);
+      border: 1px solid rgba(255, 107, 53, 0.3);
+      border-radius: 16px;
+      padding: 20px;
+      margin: 20px 0;
+      text-align: center;
+      display: none;
+      animation: feedbackSlide 0.5s ease;
+      box-shadow: var(--shadow);
+    }
+    
+    .feedback.show {
+      display: block;
+    }
+    
+    @keyframes feedbackSlide {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .feedback.correct {
+      border-color: var(--success);
+      background: rgba(16, 185, 129, 0.05);
+    }
+    
+    .feedback.incorrect {
+      border-color: var(--danger);
+      background: rgba(220, 38, 38, 0.05);
+    }
+    
+    .feedback-emoji {
+      font-size: 3rem;
+      margin-bottom: 10px;
+      display: block;
+      animation: bounce 0.6s ease;
+    }
+    
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    
+    .feedback-text {
+      font: 600 1.2rem 'Inter', sans-serif;
+      margin-bottom: 10px;
+    }
+    
+    .feedback-explanation {
+      font-size: 1rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+    
+    /* Botones */
+    .btn {
+      background: var(--grad-primary);
+      color: white;
+      border: none;
+      padding: 15px 30px;
+      border-radius: 25px;
+      font: 600 1.1rem 'Inter', sans-serif;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      box-shadow: 0 10px 30px rgba(255, 107, 53, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: 0.5s;
+    }
+    
+    .btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 15px 40px rgba(255, 107, 53, 0.4);
+    }
+    
+    .btn:hover::before {
+      left: 100%;
+    }
+    
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+    
+    .btn-secondary {
+      background: linear-gradient(145deg, #6c7b95, #5a6b85);
+      box-shadow: 0 10px 30px rgba(108, 123, 149, 0.3);
+    }
+    
+    .btn-secondary:hover {
+      box-shadow: 0 15px 40px rgba(108, 123, 149, 0.4);
+    }
+    
+    /* Pantalla de resultados */
+    .results-screen {
+      display: none;
+      text-align: center;
+      background: var(--grad-panel);
+      border: 1px solid rgba(255, 107, 53, 0.2);
+      border-radius: 24px;
+      padding: 40px;
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .results-screen.active {
+      display: block;
+      animation: slideIn 0.5s ease;
+    }
+    
+    .results-screen::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: var(--grad-primary);
+      border-radius: 24px 24px 0 0;
+    }
+    
+    .final-score {
+      font: 900 4rem 'JetBrains Mono', monospace;
+      background: var(--grad-primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin: 20px 0;
+      animation: scoreGlow 2s ease-in-out infinite alternate;
+    }
+    
+    @keyframes scoreGlow {
+      from { filter: drop-shadow(0 0 20px rgba(255, 107, 53, 0.5)); }
+      to { filter: drop-shadow(0 0 40px rgba(37, 99, 235, 0.7)); }
+    }
+    
+    .results-message {
+      font: 600 1.5rem 'Inter', sans-serif;
+      color: var(--ink);
+      margin: 20px 0;
+    }
+    
+    .results-details {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      margin: 30px 0;
+    }
+    
+    /* Botones de acción */
+    .action-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 30px;
+      flex-wrap: wrap;
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+      .quiz-container {
+        padding: 10px;
+      }
+      
+      .quiz-header, .question-screen, .results-screen {
+        padding: 20px;
+        border-radius: 16px;
+      }
+      
+      .options-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+      }
+      
+      .option {
+        padding: 15px;
+        min-height: 60px;
+        font-size: 1rem;
+      }
+      
+      .quiz-stats {
+        gap: 15px;
+      }
+      
+      .stat-box {
+        min-width: 100px;
+        padding: 10px 15px;
+      }
+      
+      .question-info {
+        justify-content: center;
+        text-align: center;
+      }
+      
+      .action-buttons {
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      .btn {
+        width: 100%;
+        max-width: 300px;
+      }
+    }
+    
+    /* Theme toggle */
+    .theme-toggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: var(--panel);
+      border: 1px solid rgba(255, 107, 53, 0.2);
+      border-radius: 50px;
+      padding: 10px 16px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--ink);
+      z-index: 100;
+      transition: all 0.3s ease;
+      box-shadow: var(--shadow);
+    }
+    
+    .theme-toggle:hover {
+      background: var(--primary);
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <div class="theme-toggle" onclick="toggleTheme()">🌓 Tema</div>
+  
+  <div class="quiz-container">
+    <!-- Pantalla de inicio -->
+    <div class="quiz-header" id="startScreen">
+      <h1 class="quiz-title">🔧 Quiz EDT 2025</h1>
+      <p class="quiz-subtitle">Estudio y Diseño del Trabajo - Semanas 1 & 2</p>
+      
+      <div class="quiz-stats">
+        <div class="stat-box">
+          <span class="stat-number">15</span>
+          <div class="stat-label">Preguntas</div>
+        </div>
+        <div class="stat-box">
+          <span class="stat-number">5</span>
+          <div class="stat-label">Temas</div>
+        </div>
+        <div class="stat-box">
+          <span class="stat-number">30s</span>
+          <div class="stat-label">Por pregunta</div>
+        </div>
+        <div class="stat-box">
+          <span class="stat-number">∞</span>
+          <div class="stat-label">Diversión</div>
+        </div>
+      </div>
+      
+      <div style="margin: 30px 0;">
+        <p style="color: var(--muted); font-size: 1.1rem; margin-bottom: 20px;">
+          ¿Estás listo para demostrar que sabes más sobre productividad que un consultor de eficiencia? 📊
+        </p>
+        <p style="color: var(--steel); font-size: 0.95rem;">
+          <strong>Temas:</strong> Historia EDT • Principios Taylor • Gilbreth • Ergonomía • Productividad • PDCA
+        </p>
+      </div>
+      
+      <div class="action-buttons">
+        <button class="btn" onclick="startQuiz()">🚀 Iniciar Quiz</button>
+        <button class="btn btn-secondary" onclick="showInstructions()">📋 Instrucciones</button>
+      </div>
+    </div>
+    
+    <!-- Pantalla de pregunta -->
+    <div class="question-screen" id="questionScreen">
+      <div class="progress-bar">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+      
+      <div class="question-info">
+        <div class="question-number" id="questionNumber">Pregunta 1/15</div>
+        <div class="topic-badge" id="topicBadge">Historia EDT</div>
+        <div class="timer" id="timer">30s</div>
+      </div>
+      
+      <div class="question-text" id="questionText">
+        ¿En qué año publicó Frederick W. Taylor "The Principles of Scientific Management"?
+      </div>
+      
+      <div class="options-grid" id="optionsGrid">
+        <div class="option option-a" onclick="selectOption(0)">
+          1909 (Casi, pero no cierto) 📅
+        </div>
+        <div class="option option-b" onclick="selectOption(1)">
+          1911 (¡El año dorado de la eficiencia!) ⭐
+        </div>
+        <div class="option option-c" onclick="selectOption(2)">
+          1913 (Ford ya había leído el libro) 🚗
+        </div>
+        <div class="option option-d" onclick="selectOption(3)">
+          1915 (Muy tarde para ser pionero) ⏰
+        </div>
+      </div>
+      
+      <div class="feedback" id="feedback">
+        <span class="feedback-emoji">🎉</span>
+        <div class="feedback-text">¡Correcto!</div>
+        <div class="feedback-explanation">Exacto, 1911 fue el año que cambió la industria para siempre.</div>
+      </div>
+      
+      <div class="action-buttons">
+        <button class="btn" id="nextBtn" onclick="nextQuestion()" disabled>Siguiente Pregunta</button>
+      </div>
+    </div>
+    
+    <!-- Pantalla de resultados -->
+    <div class="results-screen" id="resultsScreen">
+      <h2 style="color: var(--primary); font-family: 'Inter', sans-serif; margin-bottom: 20px;">
+        🏆 ¡Quiz Completado!
+      </h2>
+      
+      <div class="final-score" id="finalScore">12/15</div>
+      
+      <div class="results-message" id="resultsMessage">
+        ¡Excelente! Podrías ser consultor de eficiencia 📈
+      </div>
+      
+      <div class="results-details">
+        <div class="stat-box">
+          <span class="stat-number" id="correctAnswers">12</span>
+          <div class="stat-label">Correctas</div>
+        </div>
+        <div class="stat-box">
+          <span class="stat-number" id="incorrectAnswers">3</span>
+          <div class="stat-label">Incorrectas</div>
+        </div>
+        <div class="stat-box">
+          <span class="stat-number" id="accuracy">80%</span>
+          <div class="stat-label">Precisión</div>
+        </div>
+        <div class="stat-box">
+          <span class="stat-number" id="ranking">Experto</span>
+          <div class="stat-label">Nivel</div>
+        </div>
+      </div>
+      
+      <div style="margin: 30px 0; padding: 20px; background: rgba(255, 107, 53, 0.1); border-radius: 16px; border: 1px solid rgba(255, 107, 53, 0.3);">
+        <div id="personalizedMessage"></div>
+      </div>
+      
+      <div class="action-buttons">
+        <button class="btn" onclick="restartQuiz()">🔄 Reintentar</button>
+        <button class="btn btn-secondary" onclick="reviewAnswers()">📊 Revisar Respuestas</button>
+        <button class="btn btn-secondary" onclick="shareResults()">📤 Compartir</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Base de datos de preguntas
+    const questions = [
+      // Historia del Estudio del Trabajo (3 preguntas)
+      {
+        topic: "Historia EDT",
+        question: "¿En qué año publicó Frederick W. Taylor 'The Principles of Scientific Management'?",
+        options: [
+          "1909 (Casi, pero no cierto) 📅",
+          "1911 (¡El año dorado de la eficiencia!) ⭐", 
+          "1913 (Ford ya había leído el libro) 🚗",
+          "1915 (Muy tarde para ser pionero) ⏰"
+        ],
+        correct: 1,
+        explanation: "¡Exacto! 1911 fue el año que cambió la industria para siempre con los principios de administración científica.",
+        funnyWrong: ["Casi aciertas, pero 2 años antes", "Ford se inspiró en este libro", "Para entonces ya era mainstream"]
+      },
+      {
+        topic: "Historia EDT", 
+        question: "¿Cuántos Therbligs básicos desarrollaron Frank y Lillian Gilbreth?",
+        options: [
+          "15 (Te quedaste corto) 📊",
+          "16 (Muy cerca, pero no) 📈",
+          "17 (¡Los elementos fundamentales!) 🎯",
+          "18 (Te pasaste de optimista) 📉"
+        ],
+        correct: 2,
+        explanation: "¡Correcto! Los 17 Therbligs son los movimientos básicos que aún usamos hoy en día para analizar trabajo.",
+        funnyWrong: ["Los Gilbreth fueron más detallistas", "Casi, pero faltaron algunos", "Los Gilbreth no eran tan obsesivos"]
+      },
+      {
+        topic: "Historia EDT",
+        question: "¿Quién fue conocida como 'la madre de la ingeniería industrial moderna'?",
+        options: [
+          "Marie Curie (Científica, pero de otra área) ⚗️",
+          "Lillian Gilbreth (¡La pionera de factores humanos!) 👩‍🔬",
+          "Ada Lovelace (Programadora, no ingeniera industrial) 💻",
+          "Henry Ford (Era hombre, no madre) 🏭"
+        ],
+        correct: 1,
+        explanation: "¡Exacto! Lillian Gilbreth fue pionera en ergonomía y factores humanos, madre de 12 hijos Y doctora en psicología.",
+        funnyWrong: ["Radioactividad ≠ eficiencia laboral", "Algoritmos ≠ therbligs", "Aunque revolucionó la industria, era hombre"]
+      },
+      
+      // Principios de Taylor (3 preguntas)
+      {
+        topic: "Principios Taylor",
+        question: "¿Cuál NO es uno de los 4 principios fundamentales de Taylor?",
+        options: [
+          "Ciencia vs. Tradición 🔬",
+          "Selección científica del trabajador 👥", 
+          "Máximo beneficio, mínimo salario 💰",
+          "División de responsabilidades 📋"
+        ],
+        correct: 2,
+        explanation: "¡Correcto! Taylor promovía cooperación y beneficio mutuo, no explotación. Ese es un mito sobre él.",
+        funnyWrong: ["Ese sí es de Taylor", "También es fundamental", "Ese sí aparece en sus principios"]
+      },
+      {
+        topic: "Principios Taylor",
+        question: "¿Qué mejora logró Ford aplicando principios tayloristas en el Model T?",
+        options: [
+          "De 12.5 a 1.5 horas (¡733% de mejora!) 🚗",
+          "De 10 a 5 horas (Solo 100% de mejora) 📊",
+          "De 8 a 4 horas (Respetable pero no histórico) ⏱️",
+          "De 6 a 3 horas (Bien, pero no revolucionario) 📈"
+        ],
+        correct: 0,
+        explanation: "¡Exacto! Redujo el tiempo de ensamblaje de 12.5 a 1.5 horas, una mejora del 733% que cambió la industria.",
+        funnyWrong: ["Fue una mejora más dramática", "Ford fue más revolucionario", "La mejora fue mucho mayor"]
+      },
+      {
+        topic: "Principios Taylor",
+        question: "Según Taylor, ¿qué debe reemplazar el método empírico?",
+        options: [
+          "La intuición del jefe 🤔",
+          "El método científico 🔬",
+          "La experiencia del trabajador más viejo 👴",
+          "Las tradiciones familiares 👨‍👩‍👧‍👦"
+        ],
+        correct: 1,
+        explanation: "¡Correcto! Taylor insistía en desarrollar una ciencia para cada elemento del trabajo del hombre.",
+        funnyWrong: ["Eso es lo que Taylor quería eliminar", "La experiencia es valiosa pero no científica", "Las tradiciones eran parte del problema"]
+      },
+      
+      // Ergonomía (3 preguntas)
+      {
+        topic: "Ergonomía",
+        question: "¿Qué porcentaje de lesiones ocupacionales representan los trastornos musculoesqueléticos?",
+        options: [
+          "28% (Te quedaste corto) 📊",
+          "33% (Cerca, pero más) 📈",
+          "38% (¡La realidad dolorosa!) 🏥",
+          "42% (Te pasaste un poco) 📉"
+        ],
+        correct: 2,
+        explanation: "¡Correcto! El 38% de lesiones ocupacionales son musculoesqueléticas, costando $15,000 por caso en promedio.",
+        funnyWrong: ["Los músculos sufren más de lo que piensas", "La realidad es más dura", "Aunque alto, no tanto"]
+      },
+      {
+        topic: "Ergonomía",
+        question: "¿Cuál es el retorno de inversión típico por cada dólar invertido en ergonomía?",
+        options: [
+          "$1-$2 (Muy conservador) 💰",
+          "$2-$4 (Aceptable pero bajo) 💵",
+          "$3-$6 (¡El rango real!) 💸",
+          "$8-$10 (Demasiado optimista) 🤑"
+        ],
+        correct: 2,
+        explanation: "¡Exacto! Según OSHA, cada dólar en ergonomía retorna $3-$6 en reducción de costos médicos y mejora de productividad.",
+        funnyWrong: ["La ergonomía es más rentable", "Sigue siendo conservador", "Sería genial, pero irreal"]
+      },
+      {
+        topic: "Ergonomía",
+        question: "¿Cuál NO es un dominio oficial de la ergonomía según IEA?",
+        options: [
+          "Ergonomía Física 💪",
+          "Ergonomía Cognitiva 🧠",
+          "Ergonomía Emocional 😊",
+          "Ergonomía Organizacional 🏢"
+        ],
+        correct: 2,
+        explanation: "¡Correcto! La 'Ergonomía Emocional' no es un dominio oficial, aunque el bienestar emocional sí importa.",
+        funnyWrong: ["Ese sí es un dominio oficial", "También es reconocido oficialmente", "Ese también existe oficialmente"]
+      },
+      
+      // Productividad (3 preguntas)  
+      {
+        topic: "Productividad",
+        question: "¿Cuál es la fórmula básica de productividad?",
+        options: [
+          "Insumos ÷ Producción (¡Al revés!) 🔄",
+          "Producción ÷ Insumos (¡La correcta!) ✅",
+          "Tiempo ÷ Producción (Esa es velocidad) ⏱️",
+          "Calidad × Cantidad (Esa es otra cosa) 📊"
+        ],
+        correct: 1,
+        explanation: "¡Exacto! Productividad = Output/Input. Queremos más salida con menos entrada.",
+        funnyWrong: ["Así obtienes eficiencia de recursos", "Eso te da tiempo por unidad", "Eso es un índice de desempeño"]
+      },
+      {
+        topic: "Productividad",
+        question: "Si produces 900 unidades en 450 horas-hombre, ¿cuál es tu productividad?",
+        options: [
+          "2.0 u/h-h (¡Matemáticas correctas!) 🧮",
+          "0.5 u/h-h (¿Dividiste al revés?) 🔄",
+          "1.5 u/h-h (¿De dónde salió eso?) 🤔",
+          "450 u/h-h (¡Eso sería mágico!) ✨"
+        ],
+        correct: 0,
+        explanation: "¡Correcto! 900 ÷ 450 = 2.0 unidades por hora-hombre. Matemáticas básicas de productividad.",
+        funnyWrong: ["Revisa tu división", "No inventes números", "Eso sería productividad sobrehumana"]
+      },
+      {
+        topic: "Productividad",
+        question: "¿Cuál es la diferencia principal entre eficiencia y productividad?",
+        options: [
+          "No hay diferencia real 🤷",
+          "Eficiencia es hacer las cosas bien, productividad es output/input 🎯",
+          "Productividad es solo para máquinas 🤖",
+          "Eficiencia es más importante 👑"
+        ],
+        correct: 1,
+        explanation: "¡Correcto! Eficiencia es hacer las cosas bien (uso óptimo de recursos), productividad es la relación output/input.",
+        funnyWrong: ["Sí hay diferencias importantes", "La productividad aplica a todo", "Ambas son importantes"]
+      },
+      
+      // PDCA y Mejora Continua (3 preguntas)
+      {
+        topic: "PDCA",
+        question: "¿Qué significa la 'A' en el ciclo PDCA?",
+        options: [
+          "Analyze (Analizar los datos) 📊",
+          "Act (Actuar/Estandarizar) ✅",
+          "Approve (Aprobar los cambios) 👍",
+          "Assess (Evaluar resultados) 📝"
+        ],
+        correct: 1,
+        explanation: "¡Correcto! Act significa actuar sobre los resultados: estandarizar si funcionó o corregir si no.",
+        funnyWrong: ["Eso se hace en Check", "Eso no es parte del ciclo original", "Eso también es parte de Check"]
+      },
+      {
+        topic: "PDCA",
+        question: "¿En qué etapa del PDCA haces el piloto de mejora?",
+        options: [
+          "Plan (Ahí solo planeas) 📋",
+          "Do (¡Aquí ejecutas el piloto!) 🔨",
+          "Check (Ahí solo mides) 📏",
+          "Act (Ahí estandarizas) 📐"
+        ],
+        correct: 1,
+        explanation: "¡Exacto! En Do ejecutas el piloto de la mejora planificada, a pequeña escala para probar.",
+        funnyWrong: ["Plan es solo diseñar", "Check es medir resultados", "Act es estandarizar o corregir"]
+      },
+      {
+        topic: "PDCA",
+        question: "¿Cuál es la filosofía central de Kaizen?",
+        options: [
+          "Cambios revolucionarios grandes 🚀",
+          "Mejora continua en pequeños pasos 🐾",
+          "Solo los jefes pueden mejorar 👔",
+          "Si no está roto, no lo toques 🤷"
+        ],
+        correct: 1,
+        explanation: "¡Correcto! Kaizen es mejora continua con pequeños pasos, involucrando a todos los empleados.",
+        funnyWrong: ["Eso es reingeniería, no Kaizen", "Kaizen involucra a todos", "Kaizen siempre busca mejorar"]
+      }
+    ];
+
+    // Variables del quiz
+    let currentQuestionIndex = 0;
+    let score = 0;
+    let selectedAnswer = -1;
+    let timeLeft = 30;
+    let timer = null;
+    let userAnswers = [];
+    
+    // Elementos del DOM
+    const startScreen = document.getElementById('startScreen');
+    const questionScreen = document.getElementById('questionScreen');
+    const resultsScreen = document.getElementById('resultsScreen');
+    const progressFill = document.getElementById('progressFill');
+    const questionNumber = document.getElementById('questionNumber');
+    const topicBadge = document.getElementById('topicBadge');
+    const timerDisplay = document.getElementById('timer');
+    const questionText = document.getElementById('questionText');
+    const optionsGrid = document.getElementById('optionsGrid');
+    const feedback = document.getElementById('feedback');
+    const nextBtn = document.getElementById('nextBtn');
+
+    // Iniciar quiz
+    function startQuiz() {
+      startScreen.style.display = 'none';
+      questionScreen.classList.add('active');
+      loadQuestion();
+      startTimer();
+    }
+
+    // Cargar pregunta actual
+    function loadQuestion() {
+      const question = questions[currentQuestionIndex];
+      
+      // Actualizar información
+      questionNumber.textContent = `Pregunta ${currentQuestionIndex + 1}/${questions.length}`;
+      topicBadge.textContent = question.topic;
+      questionText.textContent = question.question;
+      
+      // Actualizar progreso
+      const progress = ((currentQuestionIndex + 1) / questions.length) * 100;
+      progressFill.style.width = `${progress}%`;
+      
+      // Cargar opciones
+      optionsGrid.innerHTML = '';
+      question.options.forEach((option, index) => {
+        const optionElement = document.createElement('div');
+        optionElement.className = `option option-${String.fromCharCode(97 + index)}`;
+        optionElement.textContent = option;
+        optionElement.onclick = () => selectOption(index);
+        optionsGrid.appendChild(optionElement);
+      });
+      
+      // Reset estado
+      selectedAnswer = -1;
+      feedback.classList.remove('show', 'correct', 'incorrect');
+      nextBtn.disabled = true;
+      timeLeft = 30;
+    }
+
+    // Seleccionar opción
+    function selectOption(index) {
+      if (selectedAnswer !== -1) return; // Ya seleccionó
+      
+      selectedAnswer = index;
+      const question = questions[currentQuestionIndex];
+      const options = optionsGrid.children;
+      
+      // Detener timer
+      clearInterval(timer);
+      
+      // Marcar opción seleccionada
+      options[index].classList.add('selected');
+      
+      setTimeout(() => {
+        // Mostrar respuesta correcta/incorrecta
+        const isCorrect = index === question.correct;
+        
+        if (isCorrect) {
+          options[index].classList.add('correct');
+          score++;
+          showFeedback(true, question.explanation);
+        } else {
+          options[index].classList.add('incorrect');
+          options[question.correct].classList.add('correct');
+          const funnyMsg = question.funnyWrong[index] || "¡Ups! Esa no era 😅";
+          showFeedback(false, funnyMsg + " " + question.explanation);
+        }
+        
+        userAnswers.push({
+          question: question.question,
+          selectedIndex: index,
+          correctIndex: question.correct,
+          isCorrect: isCorrect
+        });
+        
+        nextBtn.disabled = false;
+      }, 1000);
+    }
+
+    // Mostrar feedback
+    function showFeedback(isCorrect, message) {
+      const feedbackEmoji = feedback.querySelector('.feedback-emoji');
+      const feedbackText = feedback.querySelector('.feedback-text');
+      const feedbackExplanation = feedback.querySelector('.feedback-explanation');
+      
+      if (isCorrect) {
+        feedback.className = 'feedback show correct';
+        feedbackEmoji.textContent = ['🎉', '🚀', '🔧', '⭐', '🔥'][Math.floor(Math.random() * 5)];
+        feedbackText.textContent = ['¡Correcto!', '¡Excelente!', '¡Genial!', '¡Perfecto!'][Math.floor(Math.random() * 4)];
+      } else {
+        feedback.className = 'feedback show incorrect';
+        feedbackEmoji.textContent = ['😅', '🤔', '😬', '💭', '🎯'][Math.floor(Math.random() * 5)];
+        feedbackText.textContent = ['¡Ups!', '¡Casi!', '¡Interesante elección!', '¡Buen intento!'][Math.floor(Math.random() * 4)];
+      }
+      
+      feedbackExplanation.textContent = message;
+    }
+
+    // Siguiente pregunta
+    function nextQuestion() {
+      currentQuestionIndex++;
+      
+      if (currentQuestionIndex >= questions.length) {
+        showResults();
+      } else {
+        loadQuestion();
+        startTimer();
+      }
+    }
+
+    // Timer
+    function startTimer() {
+      timerDisplay.textContent = `${timeLeft}s`;
+      
+      timer = setInterval(() => {
+        timeLeft--;
+        timerDisplay.textContent = `${timeLeft}s`;
+        
+        if (timeLeft <= 5) {
+          timerDisplay.style.color = 'var(--danger)';
+          timerDisplay.style.animation = 'timerPulse 0.5s ease-in-out infinite';
+        }
+        
+        if (timeLeft <= 0) {
+          clearInterval(timer);
+          if (selectedAnswer === -1) {
+            // Tiempo agotado, seleccionar automáticamente respuesta incorrecta
+            selectOption(-1);
+          }
+        }
+      }, 1000);
+    }
+
+    // Mostrar resultados
+    function showResults() {
+      questionScreen.classList.remove('active');
+      resultsScreen.classList.add('active');
+      
+      const accuracy = Math.round((score / questions.length) * 100);
+      const incorrect = questions.length - score;
+      
+      document.getElementById('finalScore').textContent = `${score}/${questions.length}`;
+      document.getElementById('correctAnswers').textContent = score;
+      document.getElementById('incorrectAnswers').textContent = incorrect;
+      document.getElementById('accuracy').textContent = `${accuracy}%`;
+      
+      // Determinar nivel y mensaje
+      let level, message;
+      if (accuracy >= 90) {
+        level = "🔧 Maestro EDT";
+        message = "¡Increíble! Podrías dirigir una consultoría de eficiencia. Taylor estaría orgulloso 📈";
+      } else if (accuracy >= 80) {
+        level = "📊 Analista Senior";
+        message = "¡Excelente! Entiendes los fundamentos mejor que muchos ingenieros. Tu futuro es productivo 🚀";
+      } else if (accuracy >= 70) {
+        level = "⚙️ Técnico Avanzado";
+        message = "¡Muy bien! Solo necesitas un poco más de práctica con los therbligs 🔄";
+      } else if (accuracy >= 60) {
+        level = "📋 Supervisor Junior";
+        message = "¡Buen trabajo! Estás en el camino correcto. Sigue estudiando y conquistarás la eficiencia ⏱️";
+      } else {
+        level = "📚 Aprendiz";
+        message = "¡No te preocupes! Todos empezamos así. Incluso Taylor tuvo que aprender en Midvale Steel 🏭";
+      }
+      
+      document.getElementById('ranking').textContent = level;
+      document.getElementById('resultsMessage').textContent = message;
+      
+      // Mensaje personalizado
+      const personalizedMsg = generatePersonalizedMessage(accuracy);
+      document.getElementById('personalizedMessage').innerHTML = personalizedMsg;
+    }
+
+    // Generar mensaje personalizado
+    function generatePersonalizedMessage(accuracy) {
+      const topicStats = {};
+      questions.forEach((q, i) => {
+        if (!topicStats[q.topic]) {
+          topicStats[q.topic] = { correct: 0, total: 0 };
+        }
+        topicStats[q.topic].total++;
+        if (userAnswers[i] && userAnswers[i].isCorrect) {
+          topicStats[q.topic].correct++;
+        }
+      });
+      
+      let message = '<h4 style="color: var(--primary); margin-bottom: 15px;">📊 Análisis Personalizado EDT</h4>';
+      
+      // Mejor tema
+      let bestTopic = '', bestScore = 0;
+      let worstTopic = '', worstScore = 100;
+      
+      for (const [topic, stats] of Object.entries(topicStats)) {
+        const percentage = (stats.correct / stats.total) * 100;
+        if (percentage > bestScore) {
+          bestScore = percentage;
+          bestTopic = topic;
+        }
+        if (percentage < worstScore) {
+          worstScore = percentage;
+          worstTopic = topic;
+        }
+      }
+      
+      if (bestScore === 100) {
+        message += `<p>🏆 <strong>Dominas completamente:</strong> ${bestTopic}. ¡Podrías enseñar este tema!</p>`;
+      } else if (bestScore >= 75) {
+        message += `<p>⭐ <strong>Tu fuerte es:</strong> ${bestTopic} (${bestScore.toFixed(0)}%). ¡Sigue así!</p>`;
+      }
+      
+      if (worstScore < 50 && worstTopic !== bestTopic) {
+        message += `<p>📚 <strong>Área de mejora:</strong> ${worstTopic}. ¡Un poco más de estudio y lo tendrás!</p>`;
+      }
+      
+      // Comentarios específicos por temas
+      Object.entries(topicStats).forEach(([topic, stats]) => {
+        const percentage = (stats.correct / stats.total) * 100;
+        const topicComments = {
+          'Historia EDT': {
+            high: 'Conoces la historia como un bibliotecario especialista 📚',
+            low: 'Los pioneros necesitan más reconocimiento de tu parte 🕰️'
+          },
+          'Principios Taylor': {
+            high: 'Taylor aprobaría tu comprensión de la administración científica ✅',
+            low: 'Necesitas volver a Midvale Steel para estudiar 🏭'
+          },
+          'Ergonomía': {
+            high: 'Tu comprensión ergonómica previene lesiones 💪',
+            low: 'Los músculos necesitan más atención de tu parte 🏥'
+          },
+          'Productividad': {
+            high: 'Tus cálculos de productividad son más precisos que un cronómetro ⏱️',
+            low: 'Las matemáticas de productividad necesitan repaso 📊'
+          },
+          'PDCA': {
+            high: 'Tu ciclo de mejora continua es imparable 🔄',
+            low: 'El ciclo PDCA necesita más vueltas en tu cabeza 🌀'
+          }
+        };
+        
+        if (topicComments[topic]) {
+          const comment = percentage >= 66 ? topicComments[topic].high : topicComments[topic].low;
+          message += `<p style="font-size: 0.9rem; opacity: 0.8;">• ${comment}</p>`;
+        }
+      });
+      
+      return message;
+    }
+
+    // Funciones adicionales
+    function restartQuiz() {
+      currentQuestionIndex = 0;
+      score = 0;
+      userAnswers = [];
+      resultsScreen.classList.remove('active');
+      startScreen.style.display = 'block';
+    }
+
+    function showInstructions() {
+      alert(`🎯 INSTRUCCIONES DEL QUIZ EDT:
+
+📋 15 preguntas sobre fundamentos del estudio del trabajo
+⏰ 30 segundos por pregunta
+🎨 Interfaz industrial profesional
+🎉 Feedback educativo y divertido
+📊 Análisis personalizado al final
+
+🔧 TEMAS:
+• Historia del Estudio del Trabajo
+• Principios de Taylor y administración científica
+• Contribuciones de Frank y Lillian Gilbreth
+• Fundamentos de ergonomía
+• Conceptos de productividad y PDCA
+
+¡Demuestra que sabes más de eficiencia que un consultor! 📈`);
+    }
+
+    function reviewAnswers() {
+      let review = "📊 REVISIÓN DE RESPUESTAS EDT:\n\n";
+      userAnswers.forEach((answer, index) => {
+        const question = questions[index];
+        const status = answer.isCorrect ? "✅" : "❌";
+        review += `${status} P${index + 1}: ${question.topic}\n`;
+        review += `Tu respuesta: ${question.options[answer.selectedIndex]}\n`;
+        if (!answer.isCorrect) {
+          review += `Correcta: ${question.options[answer.correctIndex]}\n`;
+        }
+        review += "\n";
+      });
+      
+      // Crear modal personalizado
+      const modal = document.createElement('div');
+      modal.style.cssText = `
+        position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+        background: rgba(0,0,0,0.8); display: flex; align-items: center;
+        justify-content: center; z-index: 1000; padding: 20px;
+      `;
+      
+      modal.innerHTML = `
+        <div style="background: var(--grad-panel); border: 1px solid var(--primary);
+                    border-radius: 20px; padding: 30px; max-width: 600px;
+                    max-height: 80vh; overflow-y: auto; color: var(--ink);">
+          <h3 style="color: var(--primary); margin-bottom: 20px;">📊 Revisión Detallada EDT</h3>
+          <pre style="white-space: pre-wrap; font-family: 'Inter', sans-serif;
+                      line-height: 1.6;">${review}</pre>
+          <button onclick="this.parentNode.parentNode.remove()" 
+                  style="background: var(--grad-primary); color: white; border: none;
+                         padding: 10px 20px; border-radius: 15px; cursor: pointer;
+                         margin-top: 20px;">Cerrar</button>
+        </div>
+      `;
+      
+      document.body.appendChild(modal);
+    }
+
+    function shareResults() {
+      const accuracy = Math.round((score / questions.length) * 100);
+      const text = `🔧 ¡Completé el Quiz EDT 2025!
+      
+📊 Resultado: ${score}/${questions.length} (${accuracy}%)
+🎯 Temas: Historia EDT, Principios Taylor, Gilbreth, Ergonomía, Productividad, PDCA
+
+${accuracy >= 80 ? '🚀 ¡Soy un experto en eficiencia!' : '📚 ¡Aprendiendo EDT como un campeón!'}
+
+#EstudioDelTrabajo #IngenieriIndustrial #Productividad #EDT2025`;
+
+      if (navigator.share) {
+        navigator.share({
+          title: 'Quiz EDT 2025 - Resultados',
+          text: text
+        });
+      } else {
+        navigator.clipboard.writeText(text).then(() => {
+          alert('📋 ¡Resultados copiados al portapapeles! Compártelos en tus redes sociales 🚀');
+        });
+      }
+    }
+
+    // Theme toggle
+    function toggleTheme() {
+      const body = document.documentElement;
+      const currentTheme = body.getAttribute('data-theme');
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      body.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme-edt', newTheme);
+    }
+
+    // Keyboard shortcuts
+    document.addEventListener('keydown', (e) => {
+      if (questionScreen.classList.contains('active')) {
+        if (e.key >= '1' && e.key <= '4') {
+          const index = parseInt(e.key) - 1;
+          if (index < optionsGrid.children.length) {
+            selectOption(index);
+          }
+        } else if (e.key === 'Enter' && !nextBtn.disabled) {
+          nextQuestion();
+        }
+      }
+    });
+
+    // Initialization
+    document.addEventListener('DOMContentLoaded', () => {
+      // Load saved theme
+      const savedTheme = localStorage.getItem('theme-edt') || 'light';
+      document.documentElement.setAttribute('data-theme', savedTheme);
+      
+      // Easter egg: Konami code for EDT
+      let konamiCode = [];
+      const konami = [38, 38, 40, 40, 37, 39, 37, 39, 66, 65];
+      
+      document.addEventListener('keydown', (e) => {
+        konamiCode.push(e.keyCode);
+        if (konamiCode.length > konami.length) {
+          konamiCode.shift();
+        }
+        
+        if (konamiCode.toString() === konami.toString()) {
+          alert('🎉 ¡Código Konami activado! Eres oficialmente un hacker de la eficiencia 🔧💻');
+          score += 3; // Bonus points
+        }
+      });
+    });
+  </script>
+</body>
+</html>
