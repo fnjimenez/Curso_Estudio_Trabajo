@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hoja de Cronometraje - Therbligs</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        
+        .page {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 3px solid #2c3e50;
+            padding-bottom: 20px;
+        }
+        
+        .header h1 {
+            color: #2c3e50;
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+        
+        .header .subtitle {
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+        
+        .info-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 25px;
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+        }
+        
+        .info-field {
+            display: flex;
+            align-items: center;
+        }
+        
+        .info-field label {
+            font-weight: bold;
+            min-width: 120px;
+            color: #34495e;
+        }
+        
+        .info-field .fill {
+            flex: 1;
+            border-bottom: 1px solid #333;
+            min-height: 20px;
+        }
+        
+        .legend-section {
+            background: #e8f4f8;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid #3498db;
+        }
+        
+        .legend-section h3 {
+            color: #2980b9;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+        
+        .therbligs-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            font-size: 11px;
+        }
+        
+        .therblig-item {
+            display: flex;
+            align-items: center;
+            padding: 5px;
+            background: white;
+            border-radius: 4px;
+        }
+        
+        .therblig-symbol {
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 8px;
+            font-weight: bold;
+            color: white;
+            font-size: 10px;
+        }
+        
+        .cronometraje-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            font-size: 12px;
+        }
+        
+        .cronometraje-table th {
+            background: #34495e;
+            color: white;
+            padding: 10px 5px;
+            text-align: center;
+            border: 1px solid #2c3e50;
+            font-size: 11px;
+        }
+        
+        .cronometraje-table td {
+            border: 1px solid #bdc3c7;
+            padding: 8px 5px;
+            text-align: center;
+            min-height: 35px;
+        }
+        
+        .cronometraje-table .narrow {
+            width: 40px;
+        }
+        
+        .cronometraje-table .medium {
+            width: 60px;
+        }
+        
+        .cronometraje-table .wide {
+            width: 150px;
+        }
+        
+        .hand-header {
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+        }
+        
+        .hand-header-right {
+            background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%);
+        }
+        
+        .row-number {
+            background: #ecf0f1;
+            font-weight: bold;
+        }
+        
+        .summary-section {
+            background: #d4edda;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            border-left: 4px solid #28a745;
+        }
+        
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .summary-card {
+            background: white;
+            padding: 15px;
+            border-radius: 5px;
+            text-align: center;
+        }
+        
+        .summary-card h4 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 13px;
+        }
+        
+        .summary-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #27ae60;
+        }
+        
+        .instructions {
+            background: #fff3cd;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            border-left: 4px solid #ffc107;
+        }
+        
+        .instructions h3 {
+            color: #856404;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+        
+        .instructions ol {
+            margin-left: 20px;
+            font-size: 12px;
+            line-height: 1.8;
+        }
+        
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            
+            .page {
+                box-shadow: none;
+                padding: 15px;
+            }
+            
+            .instructions {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <div class="header">
+            <h1>📋 HOJA DE CRONOMETRAJE - ANÁLISIS BIMANUAL</h1>
+            <p class="subtitle">Registro de Movimientos y Therbligs | Actividad 4</p>
+        </div>
+        
+        <div class="info-section">
+            <div class="info-field">
+                <label>Estudiante:</label>
+                <div class="fill"></div>
+            </div>
+            <div class="info-field">
+                <label>Matrícula:</label>
+                <div class="fill"></div>
+            </div>
+            <div class="info-field">
+                <label>Proceso:</label>
+                <div class="fill"></div>
+            </div>
+            <div class="info-field">
+                <label>Fecha:</label>
+                <div class="fill"></div>
+            </div>
+            <div class="info-field">
+                <label>Observación #:</label>
+                <div class="fill"></div>
+            </div>
+            <div class="info-field">
+                <label>Hora inicio:</label>
+                <div class="fill"></div>
+            </div>
+        </div>
+        
+        <div class="legend-section">
+            <h3>🔤 SIMBOLOGÍA DE THERBLIGS</h3>
+            <div class="therbligs-grid">
+                <div class="therblig-item">
+                    <div class="therblig-symbol" style="background: #3498db;">AL</div>
+                    <span><strong>AL:</strong> Alcanzar</span>
+                </div>
+                <div class="therblig-item">
+                    <div class="therblig-symbol" style="background: #e74c3c;">T</div>
+                    <span><strong>T:</strong> Tomar</span>
+                </div>
+                <div class="therblig-item">
+                    <div class="therblig-symbol" style="background: #2ecc71;">M</div>
+                    <span><strong>M:</strong> Mover</span>
+                </div>
+                <div class="therblig-item">
+                    <div class="therblig-symbol" style="background: #f39c12;">P</div>
+                    <span><strong>P:</strong> Posicionar</span>
+                </div>
+                <div class="therblig-item">
+                    <div class="therblig-symbol" style="background: #9b59b6;">S</div>
+                    <span><strong>S:</strong> Sostener</span>
+                </div>
+                <div class="therblig-item">
+                    <div class="therblig-symbol" style="background: #1abc9c;">U</div>
+                    <span><strong>U:</strong> Usar</span>
+                </div>
+                <div class="therblig-item">
+                    <div class="therblig-symbol" style="background: #95a5a6;">SO</div>
+                    <span><strong>SO:</strong> Soltar</span>
+                </div>
+                <div class="therblig-item">
+                    <div class="therblig-symbol" style="background: #34495e;">I</div>
+                    <span><strong>I:</strong> Inspeccionar</span>
+                </div>
+                <div class="therblig-item">
+                    <div class="therblig-symbol" style="background: #e67e22;">EN</div>
+                    <span><strong>EN:</strong> Ensamblar</span>
+                </div>
+                <div class="therblig-item">
+                    <div class="therblig-symbol" style="background: #c0392b;">DE</div>
+                    <span><strong>DE:</strong> Desensamblar</span>
+                </div>
+                <div class="therblig-item">
+                    <div class="therblig-symbol" style="background: #d35400;">B</div>
+                    <span><strong>B:</strong> Buscar</span>
+                </div>
+                <div class="therblig-item">
+                    <div class="therblig-symbol" style="background: #8e44ad;">SE</div>
+                    <span><strong>SE:</strong> Seleccionar</span>
+                </div>
+                <div class="therblig-item">
+                    <div class="therblig-symbol" style="background: #27ae60;">PL</div>
+                    <span><strong>PL:</strong> Planear</span>
+                </div>
+                <div class="therblig-item">
+                    <div class="therblig-symbol" style="background: #16a085;">PP</div>
+                    <span><strong>PP:</strong> Pre-posicionar</span>
+                </div>
+                <div class="therblig-item">
+                    <div class="therblig-symbol" style="background: #f1c40f;">DI</div>
+                    <span><strong>DI:</strong> Demora Inevitable</span>
+                </div>
+                <div class="therblig-item">
+                    <div class="therblig-symbol" style="background: #ecf0f1; color: #333;">DE</div>
+                    <span><strong>DE:</strong> Demora Evitable</span>
+                </div>
+                <div class="therblig-item">
+                    <div class="therblig-symbol" style="background: #bdc3c7; color: #333;">D</div>
+                    <span><strong>D:</strong> Descansar</span>
+                </div>
+            </div>
+        </div>
+        
+        <table class="cronometraje-table">
+            <thead>
+                <tr>
+                    <th rowspan="2" class="narrow">#</th>
+                    <th colspan="3" class="hand-header">👈 MANO IZQUIERDA</th>
+                    <th colspan="3" class="hand-header-right">👉 MANO DERECHA</th>
+                </tr>
+                <tr>
+                    <th class="wide hand-header">Descripción</th>
+                    <th class="narrow hand-header">Símbolo</th>
+                    <th class="medium hand-header">Tiempo (seg)</th>
+                    <th class="wide hand-header-right">Descripción</th>
+                    <th class="narrow hand-header-right">Símbolo</th>
+                    <th class="medium hand-header-right">Tiempo (seg)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="row-number">1</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="row-number">2</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="row-number">3</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="row-number">4</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="row-number">5</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="row-number">6</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="row-number">7</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="row-number">8</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="row-number">9</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="row-number">10</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="row-number">11</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="row-number">12</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="row-number">13</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="row-number">14</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="row-number">15</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="row-number">16</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="row-number">17</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="row-number">18</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="row-number">19</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="row-number">20</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr style="background: #ecf0f1; font-weight: bold;">
+                    <td colspan="2" style="text-align: right; padding-right: 10px;">TOTALES:</td>
+                    <td></td>
+                    <td></td>
+                    <td style="text-align: right; padding-right: 10px;">TOTALES:</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <div class="summary-section">
+            <h3 style="color: #155724; margin-bottom: 15px;">📊 RESUMEN DE LA OBSERVACIÓN</h3>
+            <div class="summary-grid">
+                <div class="summary-card">
+                    <h4>Tiempo Total Ciclo</h4>
+                    <div class="summary-value">____ seg</div>
+                </div>
+                <div class="summary-card">
+                    <h4>Total Therbligs MI</h4>
+                    <div class="summary-value">____</div>
+                </div>
+                <div class="summary-card">
+                    <h4>Total Therbligs MD</h4>
+                    <div class="summary-value">____</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="instructions">
+            <h3>📝 INSTRUCCIONES DE USO:</h3>
+            <ol>
+                <li><strong>Imprimir 10 copias</strong> de esta hoja (una por cada observación)</li>
+                <li><strong>Llenar datos generales</strong> en la parte superior antes de cada observación</li>
+                <li><strong>Cronometrar cada movimiento:</strong> Registra el tiempo exacto en segundos con 1 decimal (ej: 3.5 seg)</li>
+                <li><strong>Describir claramente:</strong> Sé específico en la descripción de cada movimiento</li>
+                <li><strong>Usar símbolos correctos:</strong> Consulta la tabla de therbligs para asignar el símbolo apropiado</li>
+                <li><strong>Registrar ambas manos:</strong> Documenta simultáneamente lo que hace cada mano</li>
+                <li><strong>Calcular totales:</strong> Al terminar, suma los tiempos de cada mano</li>
+                <li><strong>Repetir 10 veces:</strong> Completa 10 hojas para tener datos consistentes</li>
+                <li><strong>Calcular promedios:</strong> Usa las 10 observaciones para obtener tiempos promedio</li>
+                <li><strong>Incluir en reporte:</strong> Adjunta todas las hojas completadas en tu entrega final</li>
+            </ol>
+        </div>
+        
+        <div style="margin-top: 30px; padding: 15px; background: #e8f4f8; border-radius: 8px; text-align: center;">
+            <p style="margin-bottom: 10px;"><strong>💡 CONSEJO:</strong> Video graba el proceso completo para poder revisarlo varias veces y asegurar precisión en los tiempos</p>
+            <p style="font-size: 12px; color: #7f8c8d;">Actividad 4 - Diagrama Bimanual | Estudio y Diseño del Trabajo | Prof. Fausto Noe Jiménez</p>
+        </div>
+    </div>
+</body>
+</html>

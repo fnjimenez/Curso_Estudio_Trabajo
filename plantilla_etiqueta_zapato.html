@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plantilla Etiqueta Zapato Oxford - Actividad 4</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 24px;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #7f8c8d;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+        
+        .instructions {
+            background: #e8f4f8;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            border-left: 4px solid #3498db;
+        }
+        
+        .instructions h2 {
+            color: #2980b9;
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+        
+        .instructions ol {
+            margin-left: 20px;
+        }
+        
+        .instructions li {
+            margin-bottom: 8px;
+            color: #34495e;
+        }
+        
+        .materials {
+            background: #fff3cd;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            border-left: 4px solid #ffc107;
+        }
+        
+        .materials h3 {
+            color: #856404;
+            margin-bottom: 10px;
+        }
+        
+        .materials ul {
+            list-style-type: none;
+            margin-left: 0;
+        }
+        
+        .materials li:before {
+            content: "✓ ";
+            color: #28a745;
+            font-weight: bold;
+            margin-right: 5px;
+        }
+        
+        .template-area {
+            background: white;
+            border: 3px dashed #3498db;
+            padding: 20px;
+            margin: 30px 0;
+            position: relative;
+        }
+        
+        .print-notice {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            text-align: center;
+            color: #155724;
+        }
+        
+        .print-notice strong {
+            display: block;
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+        
+        /* SVG Template Styles */
+        .etiqueta-template {
+            width: 100%;
+            max-width: 700px;
+            margin: 0 auto;
+            display: block;
+        }
+        
+        .cut-line {
+            stroke: #e74c3c;
+            stroke-width: 2;
+            stroke-dasharray: 5, 5;
+            fill: none;
+        }
+        
+        .fold-line {
+            stroke: #3498db;
+            stroke-width: 2;
+            stroke-dasharray: 10, 5;
+            fill: none;
+        }
+        
+        .glue-area {
+            fill: #ecf0f1;
+            stroke: #95a5a6;
+            stroke-width: 1;
+            stroke-dasharray: 3, 3;
+        }
+        
+        .text-area {
+            fill: white;
+            stroke: #34495e;
+            stroke-width: 2;
+        }
+        
+        text {
+            font-family: Arial, sans-serif;
+            fill: #2c3e50;
+        }
+        
+        .title-text {
+            font-size: 20px;
+            font-weight: bold;
+        }
+        
+        .info-text {
+            font-size: 14px;
+        }
+        
+        .small-text {
+            font-size: 10px;
+            fill: #7f8c8d;
+        }
+        
+        .circle {
+            fill: none;
+            stroke: #e74c3c;
+            stroke-width: 2;
+        }
+        
+        .legend {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin: 5px 10px;
+        }
+        
+        .legend-line {
+            width: 40px;
+            height: 2px;
+            margin-right: 10px;
+        }
+        
+        .legend-line.cut {
+            background: repeating-linear-gradient(
+                to right,
+                #e74c3c 0px,
+                #e74c3c 5px,
+                transparent 5px,
+                transparent 10px
+            );
+        }
+        
+        .legend-line.fold {
+            background: repeating-linear-gradient(
+                to right,
+                #3498db 0px,
+                #3498db 10px,
+                transparent 10px,
+                transparent 15px
+            );
+        }
+        
+        .legend-line.glue {
+            background: repeating-linear-gradient(
+                to right,
+                #95a5a6 0px,
+                #95a5a6 3px,
+                transparent 3px,
+                transparent 6px
+            );
+        }
+        
+        .btn-download {
+            display: block;
+            width: 200px;
+            margin: 20px auto;
+            padding: 12px 24px;
+            background: #27ae60;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+        
+        .btn-download:hover {
+            background: #229954;
+        }
+        
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            
+            .container {
+                box-shadow: none;
+                padding: 10px;
+            }
+            
+            .instructions, .materials, .print-notice, .legend, .btn-download {
+                display: none;
+            }
+            
+            .template-area {
+                border: none;
+                padding: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🏷️ PLANTILLA: ETIQUETA PLEGABLE PARA ZAPATO OXFORD</h1>
+        <p class="subtitle">Actividad 4 - Diagrama Bimanual | Estudio y Diseño del Trabajo</p>
+        
+        <div class="print-notice">
+            <strong>📄 INSTRUCCIONES DE IMPRESIÓN</strong>
+            Imprimir esta página en tamaño CARTA (21.5 x 28 cm) en orientación horizontal
+        </div>
+        
+        <div class="materials">
+            <h3>📦 Materiales Necesarios:</h3>
+            <ul>
+                <li>Hoja tamaño carta (blanca o color)</li>
+                <li>Tijeras</li>
+                <li>Pegamento en barra</li>
+                <li>Perforadora de un orificio</li>
+                <li>Regla (opcional)</li>
+            </ul>
+        </div>
+        
+        <div class="instructions">
+            <h2>📋 Instrucciones de Armado:</h2>
+            <ol>
+                <li><strong>Imprimir:</strong> Imprimir esta plantilla en hoja tamaño carta</li>
+                <li><strong>Recortar:</strong> Cortar siguiendo las líneas punteadas rojas (- - -)</li>
+                <li><strong>Perforar:</strong> Hacer un orificio en el círculo marcado ⭕</li>
+                <li><strong>Aplicar pegamento:</strong> Poner pegamento en las áreas grises con líneas punteadas</li>
+                <li><strong>Doblar Sección 1:</strong> Doblar por la línea azul inferior (- · - · -)</li>
+                <li><strong>Doblar Sección 2:</strong> Doblar por la línea azul superior</li>
+                <li><strong>Presionar:</strong> Presionar firmemente para pegar</li>
+                <li><strong>Inspeccionar:</strong> Verificar que todos los pliegues estén bien hechos</li>
+            </ol>
+        </div>
+        
+        <div class="template-area">
+            <svg class="etiqueta-template" viewBox="0 0 700 450" xmlns="http://www.w3.org/2000/svg">
+                <!-- Outer cut line -->
+                <rect class="cut-line" x="50" y="50" width="600" height="350" rx="10"/>
+                
+                <!-- Glue areas -->
+                <rect class="glue-area" x="60" y="310" width="580" height="30"/>
+                <rect class="glue-area" x="60" y="60" width="100" height="240"/>
+                
+                <!-- Fold lines -->
+                <line class="fold-line" x1="50" y1="300" x2="650" y2="300"/>
+                <line class="fold-line" x1="50" y1="130" x2="650" y2="130"/>
+                
+                <!-- Main text area -->
+                <rect class="text-area" x="180" y="140" width="460" height="150"/>
+                
+                <!-- Title -->
+                <text class="title-text" x="350" y="180" text-anchor="middle">ZAPATO OXFORD</text>
+                <text class="info-text" x="350" y="205" text-anchor="middle">Modelo: ZOX-2024</text>
+                
+                <!-- Product info -->
+                <text class="info-text" x="200" y="235" font-weight="bold">Talla:</text>
+                <text class="info-text" x="280" y="235">_______</text>
+                
+                <text class="info-text" x="380" y="235" font-weight="bold">Color:</text>
+                <text class="info-text" x="460" y="235">_______</text>
+                
+                <text class="info-text" x="200" y="260" font-weight="bold">Precio:</text>
+                <text class="info-text" x="280" y="260">$ _______</text>
+                
+                <!-- Hole marker -->
+                <circle class="circle" cx="120" cy="90" r="8"/>
+                <text class="small-text" x="120" y="115" text-anchor="middle">Perforar aquí</text>
+                
+                <!-- Section labels -->
+                <text class="small-text" x="80" y="180" text-anchor="middle" transform="rotate(-90, 80, 180)">ÁREA DE PEGAMENTO</text>
+                <text class="small-text" x="350" y="325" text-anchor="middle">ÁREA DE PEGAMENTO - DOBLEZ INFERIOR</text>
+                
+                <text class="info-text" x="350" y="90" text-anchor="middle" fill="#3498db" font-weight="bold">← DOBLAR POR LÍNEA AZUL →</text>
+                
+                <!-- Cut instructions -->
+                <text class="small-text" x="25" y="225" text-anchor="middle" transform="rotate(-90, 25, 225)" fill="#e74c3c">CORTAR</text>
+                <text class="small-text" x="675" y="225" text-anchor="middle" transform="rotate(90, 675, 225)" fill="#e74c3c">CORTAR</text>
+                <text class="small-text" x="350" y="35" text-anchor="middle" fill="#e74c3c">CORTAR</text>
+                <text class="small-text" x="350" y="420" text-anchor="middle" fill="#e74c3c">CORTAR</text>
+                
+                <!-- Company info -->
+                <text class="small-text" x="350" y="375" text-anchor="middle">Zapatería Industrial XYZ, S.A. de C.V.</text>
+                <text class="small-text" x="350" y="388" text-anchor="middle">León, Guanajuato | ISO 9001:2015</text>
+            </svg>
+        </div>
+        
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-line cut"></div>
+                <span><strong>Línea roja punteada:</strong> Cortar</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-line fold"></div>
+                <span><strong>Línea azul punto-raya:</strong> Doblar</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-line glue"></div>
+                <span><strong>Área gris punteada:</strong> Aplicar pegamento</span>
+            </div>
+        </div>
+        
+        <button class="btn-download" onclick="window.print()">🖨️ Imprimir Plantilla</button>
+    </div>
+    
+    <script>
+        // Automatic print dialog on load (optional)
+        // window.onload = function() {
+        //     setTimeout(() => window.print(), 1000);
+        // }
+    </script>
+</body>
+</html>

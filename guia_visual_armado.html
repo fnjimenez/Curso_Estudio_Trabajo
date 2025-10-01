@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guía Visual - Proceso de Armado</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #7f8c8d;
+            margin-bottom: 30px;
+            font-size: 16px;
+        }
+        
+        .warning-box {
+            background: #fff3cd;
+            border-left: 5px solid #ffc107;
+            padding: 15px;
+            margin-bottom: 30px;
+            border-radius: 5px;
+        }
+        
+        .warning-box h3 {
+            color: #856404;
+            margin-bottom: 10px;
+        }
+        
+        .warning-box p {
+            color: #856404;
+            line-height: 1.6;
+        }
+        
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+        
+        .step-card {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .step-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+        }
+        
+        .step-number {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        
+        .step-card h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+        
+        .step-illustration {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px 0;
+            min-height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .hand-section {
+            margin-top: 15px;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            border: 2px solid #e8e8e8;
+        }
+        
+        .hand-label {
+            font-weight: bold;
+            margin-bottom: 10px;
+            padding: 5px 10px;
+            border-radius: 5px;
+            display: inline-block;
+        }
+        
+        .left-hand {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+        
+        .right-hand {
+            background: #f3e5f5;
+            color: #7b1fa2;
+        }
+        
+        .therblig-list {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .therblig-list li {
+            padding: 8px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .therblig-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .therblig-symbol {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 30px;
+            margin-right: 10px;
+            font-weight: bold;
+            color: white;
+        }
+        
+        .symbol-al { background: #3498db; } /* Alcanzar */
+        .symbol-t { background: #e74c3c; } /* Tomar */
+        .symbol-m { background: #2ecc71; } /* Mover */
+        .symbol-p { background: #f39c12; } /* Posicionar */
+        .symbol-s { background: #9b59b6; } /* Sostener */
+        .symbol-u { background: #1abc9c; } /* Usar */
+        .symbol-so { background: #95a5a6; } /* Soltar */
+        .symbol-i { background: #34495e; } /* Inspeccionar */
+        
+        .time-estimate {
+            background: #d4edda;
+            color: #155724;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+            font-weight: bold;
+            text-align: center;
+        }
+        
+        .tips-section {
+            background: #e8f4f8;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 30px;
+            border-left: 5px solid #3498db;
+        }
+        
+        .tips-section h3 {
+            color: #2980b9;
+            margin-bottom: 15px;
+        }
+        
+        .tips-section ul {
+            margin-left: 20px;
+            line-height: 1.8;
+        }
+        
+        .summary-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .summary-table th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            text-align: left;
+        }
+        
+        .summary-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .summary-table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .summary-table tr:hover {
+            background: #f8f9fa;
+        }
+        
+        @media print {
+            body {
+                background: white;
+                padding: 10px;
+            }
+            
+            .container {
+                box-shadow: none;
+                padding: 20px;
+            }
+            
+            .step-card {
+                break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📖 GUÍA VISUAL PASO A PASO</h1>
+        <p class="subtitle">Proceso de Armado: Etiqueta Plegable para Zapato Oxford</p>
+        
+        <div class="warning-box">
+            <h3>⚠️ IMPORTANTE PARA ANÁLISIS BIMANUAL</h3>
+            <p>Esta guía muestra los movimientos de AMBAS MANOS simultáneamente. Presta especial atención a qué hace cada mano en cada paso. El objetivo del diagrama bimanual es identificar tiempos muertos, movimientos innecesarios y oportunidades de simultaneidad.</p>
+        </div>
+        
+        <div class="steps-grid">
+            <!-- PASO 1 -->
+            <div class="step-card">
+                <div class="step-number">1</div>
+                <h3>Preparación de Materiales</h3>
+                <div class="step-illustration">
+                    <svg width="300" height="180" viewBox="0 0 300 180">
+                        <!-- Mesa -->
+                        <rect x="20" y="140" width="260" height="30" fill="#8b4513" stroke="#654321" stroke-width="2"/>
+                        <!-- Plantilla -->
+                        <rect x="40" y="90" width="80" height="40" fill="#e8e8e8" stroke="#333" stroke-width="2"/>
+                        <text x="80" y="115" font-size="12" text-anchor="middle" fill="#666">Plantilla</text>
+                        <!-- Cartulina -->
+                        <rect x="140" y="80" width="100" height="50" fill="#ffffcc" stroke="#333" stroke-width="2"/>
+                        <text x="190" y="110" font-size="12" text-anchor="middle" fill="#666">Cartulina</text>
+                        <!-- Herramientas -->
+                        <ellipse cx="70" y="45" rx="15" ry="8" fill="#c0c0c0" stroke="#333" stroke-width="1"/>
+                        <text x="70" y="30" font-size="10" text-anchor="middle">Tijeras</text>
+                        <rect x="110" y="40" width="15" height="15" fill="#ff6b6b" stroke="#333" stroke-width="1"/>
+                        <text x="118" y="30" font-size="10" text-anchor="middle">Pega</text>
+                        <circle cx="155" cy="47" r="8" fill="#4a90e2" stroke="#333" stroke-width="1"/>
+                        <text x="155" y="30" font-size="10" text-anchor="middle">Perfor.</text>
+                    </svg>
+                </div>
+                <div class="hand-section">
+                    <div class="hand-label left-hand">👈 MANO IZQUIERDA</div>
+                    <ul class="therblig-list">
+                        <li><span class="therblig-symbol symbol-al">AL</span> Alcanzar cartulina</li>
+                        <li><span class="therblig-symbol symbol-s">S</span> Sostener en posición</li>
+                    </ul>
+                </div>
+                <div class="hand-section">
+                    <div class="hand-label right-hand">👉 MANO DERECHA</div>
+                    <ul class="therblig-list">
+                        <li><span class="therblig-symbol symbol-al">AL</span> Alcanzar plantilla</li>
+                        <li><span class="therblig-symbol symbol-t">T</span> Tomar plantilla</li>
+                    </ul>
+                </div>
+                <div class="time-estimate">⏱️ Tiempo estimado: 5-8 segundos</div>
+            </div>
+            
+            <!-- PASO 2 -->
+            <div class="step-card">
+                <div class="step-number">2</div>
+                <h3>Posicionamiento y Trazado</h3>
+                <div class="step-illustration">
+                    <svg width="300" height="180" viewBox="0 0 300 180">
+                        <!-- Mesa -->
+                        <rect x="20" y="140" width="260" height="30" fill="#8b4513" stroke="#654321" stroke-width="2"/>
+                        <!-- Cartulina con plantilla encima -->
+                        <rect x="100" y="70" width="120" height="60" fill="#ffffcc" stroke="#333" stroke-width="2"/>
+                        <rect x="110" y="75" width="100" height="50" fill="#e8e8e8" stroke="#e74c3c" stroke-width="3" stroke-dasharray="5,5"/>
+                        <!-- Manos -->
+                        <ellipse cx="85" cy="100" rx="20" ry="12" fill="#ffd1a3" stroke="#333" stroke-width="1"/>
+                        <text x="85" y="105" font-size="10" text-anchor="middle">MI</text>
+                        <ellipse cx="240" cy="100" rx="20" ry="12" fill="#ffd1a3" stroke="#333" stroke-width="1"/>
+                        <text x="240" y="105" font-size="10" text-anchor="middle">MD</text>
+                    </svg>
+                </div>
+                <div class="hand-section">
+                    <div class="hand-label left-hand">👈 MANO IZQUIERDA</div>
+                    <ul class="therblig-list">
+                        <li><span class="therblig-symbol symbol-s">S</span> Sostener cartulina fija</li>
+                        <li><span class="therblig-symbol symbol-s">S</span> Mantener posición</li>
+                    </ul>
+                </div>
+                <div class="hand-section">
+                    <div class="hand-label right-hand">👉 MANO DERECHA</div>
+                    <ul class="therblig-list">
+                        <li><span class="therblig-symbol symbol-p">P</span> Posicionar plantilla</li>
+                        <li><span class="therblig-symbol symbol-al">AL</span> Alcanzar lápiz/marcador</li>
+                        <li><span class="therblig-symbol symbol-t">T</span> Tomar lápiz</li>
+                        <li><span class="therblig-symbol symbol-u">U</span> Trazar contorno</li>
+                    </ul>
+                </div>
+                <div class="time-estimate">⏱️ Tiempo estimado: 12-18 segundos</div>
+            </div>
+            
+            <!-- PASO 3 -->
+            <div class="step-card">
+                <div class="step-number">3</div>
+                <h3>Recorte de Contorno</h3>
+                <div class="step-illustration">
+                    <svg width="300" height="180" viewBox="0 0 300 180">
+                        <!-- Mesa -->
+                        <rect x="20" y="140" width="260" height="30" fill="#8b4513" stroke="#654321" stroke-width="2"/>
+                        <!-- Cartulina siendo cortada -->
+                        <path d="M 100 80 L 180 80 L 180 120 L 100 120 Z" fill="#ffffcc" stroke="#e74c3c" stroke-width="2"/>
+                        <!-- Tijeras -->
+                        <ellipse cx="210" cy="90" rx="25" ry="10" fill="#c0c0c0" stroke="#333" stroke-width="2"/>
+                        <line x1="210" y1="85" x2="210" y2="95" stroke="#333" stroke-width="3"/>
+                        <!-- Líneas de corte -->
+                        <path d="M 180 80 L 185 85" stroke="#e74c3c" stroke-width="2" stroke-dasharray="2,2"/>
+                        <path d="M 180 90 L 185 95" stroke="#e74c3c" stroke-width="2" stroke-dasharray="2,2"/>
+                        <!-- Mano izquierda -->
+                        <ellipse cx="85" cy="100" rx="20" ry="12" fill="#ffd1a3" stroke="#333" stroke-width="1"/>
+                        <text x="85" y="105" font-size="10" text-anchor="middle">MI</text>
+                    </svg>
+                </div>
+                <div class="hand-section">
+                    <div class="hand-label left-hand">👈 MANO IZQUIERDA</div>
+                    <ul class="therblig-list">
+                        <li><span class="therblig-symbol symbol-s">S</span> Sostener cartulina</li>
+                        <li><span class="therblig-symbol symbol-m">M</span> Rotar para facilitar corte</li>
+                        <li><span class="therblig-symbol symbol-p">P</span> Posicionar para siguiente corte</li>
+                    </ul>
+                </div>
+                <div class="hand-section">
+                    <div class="hand-label right-hand">👉 MANO DERECHA</div>
+                    <ul class="therblig-list">
+                        <li><span class="therblig-symbol symbol-al">AL</span> Alcanzar tijeras</li>
+                        <li><span class="therblig-symbol symbol-t">T</span> Tomar tijeras</li>
+                        <li><span class="therblig-symbol symbol-u">U</span> Cortar contorno (15-20 cortes)</li>
+                        <li><span class="therblig-symbol symbol-so">SO</span> Soltar tijeras</li>
+                    </ul>
+                </div>
+                <div class="time-estimate">⏱️ Tiempo estimado: 45-60 segundos</div>
+            </div>
+            
+            <!-- PASO 4 -->
+            <div class="step-card">
+                <div class="step-number">4</div>
+                <h3>Perforación</h3>
+                <div class="step-illustration">
+                    <svg width="300" height="180" viewBox="0 0 300 180">
+                        <!-- Mesa -->
+                        <rect x="20" y="140" width="260" height="30" fill="#8b4513" stroke="#654321" stroke-width="2"/>
+                        <!-- Cartulina -->
+                        <rect x="100" y="70" width="100" height="60" fill="#ffffcc" stroke="#333" stroke-width="2"/>
+                        <!-- Marca de perforación -->
+                        <circle cx="120" cy="85" r="5" fill="none" stroke="#e74c3c" stroke-width="2" stroke-dasharray="2,2"/>
+                        <!-- Perforadora -->
+                        <rect x="220" y="75" width="30" height="35" rx="3" fill="#4a90e2" stroke="#333" stroke-width="2"/>
+                        <rect x="228" y="80" width="14" height="8" fill="#333"/>
+                        <text x="235" y="125" font-size="10" text-anchor="middle">Perfor.</text>
+                    </svg>
+                </div>
+                <div class="hand-section">
+                    <div class="hand-label left-hand">👈 MANO IZQUIERDA</div>
+                    <ul class="therblig-list">
+                        <li><span class="therblig-symbol symbol-s">S</span> Sostener etiqueta</li>
+                        <li><span class="therblig-symbol symbol-p">P</span> Posicionar bajo perforadora</li>
+                    </ul>
+                </div>
+                <div class="hand-section">
+                    <div class="hand-label right-hand">👉 MANO DERECHA</div>
+                    <ul class="therblig-list">
+                        <li><span class="therblig-symbol symbol-al">AL</span> Alcanzar perforadora</li>
+                        <li><span class="therblig-symbol symbol-t">T</span> Tomar perforadora</li>
+                        <li><span class="therblig-symbol symbol-u">U</span> Perforar orificio</li>
+                        <li><span class="therblig-symbol symbol-so">SO</span> Soltar perforadora</li>
+                    </ul>
+                </div>
+                <div class="time-estimate">⏱️ Tiempo estimado: 8-12 segundos</div>
+            </div>
+            
+            <!-- PASO 5 -->
+            <div class="step-card">
+                <div class="step-number">5</div>
+                <h3>Aplicación de Pegamento</h3>
+                <div class="step-illustration">
+                    <svg width="300" height="180" viewBox="0 0 300 180">
+                        <!-- Mesa -->
+                        <rect x="20" y="140" width="260" height="30" fill="#8b4513" stroke="#654321" stroke-width="2"/>
+                        <!-- Etiqueta extendida -->
+                        <rect x="80" y="60" width="140" height="70" fill="#ffffcc" stroke="#333" stroke-width="2"/>
+                        <!-- Áreas de pegamento -->
+                        <rect x="85" y="115" width="130" height="10" fill="#e8e8e8" stroke="#95a5a6" stroke-width="1" stroke-dasharray="3,3"/>
+                        <rect x="85" y="65" width="20" height="40" fill="#e8e8e8" stroke="#95a5a6" stroke-width="1" stroke-dasharray="3,3"/>
+                        <!-- Pegamento -->
+                        <rect x="230" y="80" width="15" height="30" rx="3" fill="#ff6b6b" stroke="#333" stroke-width="1"/>
+                        <text x="238" y="120" font-size="10" text-anchor="middle">Pega</text>
+                    </svg>
+                </div>
+                <div class="hand-section">
+                    <div class="hand-label left-hand">👈 MANO IZQUIERDA</div>
+                    <ul class="therblig-list">
+                        <li><span class="therblig-symbol symbol-s">S</span> Sostener etiqueta plana</li>
+                        <li><span class="therblig-symbol symbol-p">P</span> Mantener posición horizontal</li>
+                    </ul>
+                </div>
+                <div class="hand-section">
+                    <div class="hand-label right-hand">👉 MANO DERECHA</div>
+                    <ul class="therblig-list">
+                        <li><span class="therblig-symbol symbol-al">AL</span> Alcanzar pegamento</li>
+                        <li><span class="therblig-symbol symbol-t">T</span> Tomar barra de pegamento</li>
+                        <li><span class="therblig-symbol symbol-u">U</span> Aplicar en áreas marcadas</li>
+                        <li><span class="therblig-symbol symbol-so">SO</span> Depositar pegamento</li>
+                    </ul>
+                </div>
+                <div class="time-estimate">⏱️ Tiempo estimado: 15-20 segundos</div>
+            </div>
+            
+            <!-- PASO 6 -->
+            <div class="step-card">
+                <div class="step-number">6</div>
+                <h3>Dobleces y Pegado</h3>
+                <div class="step-illustration">
+                    <svg width="300" height="180" viewBox="0 0 300 180">
+                        <!-- Mesa -->
+                        <rect x="20" y="140" width="260" height="30" fill="#8b4513" stroke="#654321" stroke-width="2"/>
+                        <!-- Etiqueta siendo doblada -->
+                        <path d="M 100 70 L 180 70 L 180 110 L 160 120 L 100 120 Z" fill="#ffffcc" stroke="#333" stroke-width="2"/>
+                        <line x1="100" y1="95" x2="180" y2="95" stroke="#3498db" stroke-width="2" stroke-dasharray="5,2"/>
+                        <!-- Ambas manos trabajando -->
+                        <ellipse cx="85" cy="95" rx="18" ry="10" fill="#ffd1a3" stroke="#333" stroke-width="1"/>
+                        <text x="85" y="99" font-size="9" text-anchor="middle">MI</text>
+                        <ellipse cx="195" cy="95" rx="18" ry="10" fill="#ffd1a3" stroke="#333" stroke-width="1"/>
+                        <text x="195" y="99" font-size="9" text-anchor="middle">MD</text>
+                    </svg>
+                </div>
+                <div class="hand-section">
+                    <div class="hand-label left-hand">👈 MANO IZQUIERDA</div>
+                    <ul class="therblig-list">
+                        <li><span class="therblig-symbol symbol-t">T</span> Tomar lado izquierdo</li>
+                        <li><span class="therblig-symbol symbol-m">M</span> Doblar sección inferior</li>
+                        <li><span class="therblig-symbol symbol-s">S</span> Sostener doblado</li>
+                        <li><span class="therblig-symbol symbol-u">U</span> Presionar para pegar</li>
+                    </ul>
+                </div>
+                <div class="hand-section">
+                    <div class="hand-label right-hand">👉 MANO DERECHA</div>
+                    <ul class="therblig-list">
+                        <li><span class="therblig-symbol symbol-t">T</span> Tomar lado derecho</li>
+                        <li><span class="therblig-symbol symbol-m">M</span> Doblar sección superior</li>
+                        <li><span class="therblig-symbol symbol-s">S</span> Sostener alineado</li>
+                        <li><span class="therblig-symbol symbol-u">U</span> Presionar para fijar</li>
+                    </ul>
+                </div>
+                <div class="time-estimate">⏱️ Tiempo estimado: 20-30 segundos</div>
+            </div>
+            
+            <!-- PASO 7 -->
+            <div class="step-card">
+                <div class="step-number">7</div>
+                <h3>Inspección Final</h3>
+                <div class="step-illustration">
+                    <svg width="300" height="180" viewBox="0 0 300 180">
+                        <!-- Mesa -->
+                        <rect x="20" y="140" width="260" height="30" fill="#8b4513" stroke="#654321" stroke-width="2"/>
+                        <!-- Etiqueta terminada -->
+                        <rect x="120" y="70" width="70" height="50" rx="3" fill="#ffffcc" stroke="#333" stroke-width="2"/>
+                        <circle cx="130" cy="80" r="3" fill="#333"/>
+                        <line x1="140" y1="85" x2="180" y2="85" stroke="#333" stroke-width="1"/>
+                        <line x1="140" y1="95" x2="170" y2="95" stroke="#333" stroke-width="1"/>
+                        <line x1="140" y1="105" x2="175" y2="105" stroke="#333" stroke-width="1"/>
+                        <!-- Símbolo de check -->
+                        <circle cx="220" cy="95" r="25" fill="#27ae60" opacity="0.2"/>
+                        <path d="M 210 95 L 217 102 L 230 85" stroke="#27ae60" stroke-width="4" fill="none"/>
+                    </svg>
+                </div>
+                <div class="hand-section">
+                    <div class="hand-label left-hand">👈 MANO IZQUIERDA</div>
+                    <ul class="therblig-list">
+                        <li><span class="therblig-symbol symbol-t">T</span> Tomar etiqueta</li>
+                        <li><span class="therblig-symbol symbol-s">S</span> Sostener para revisión</li>
+                        <li><span class="therblig-symbol symbol-m">M</span> Rotar para inspeccionar</li>
+                    </ul>
+                </div>
+                <div class="hand-section">
+                    <div class="hand-label right-hand">👉 MANO DERECHA</div>
+                    <ul class="therblig-list">
+                        <li><span class="therblig-symbol symbol-i">I</span> Inspeccionar dobleces</li>
+                        <li><span class="therblig-symbol symbol-i">I</span> Verificar pegado</li>
+                        <li><span class="therblig-symbol symbol-i">I</span> Revisar perforación</li>
+                    </ul>
+                </div>
+                <div class="time-estimate">⏱️ Tiempo estimado: 8-12 segundos</div>
+            </div>
+            
+            <!-- PASO 8 -->
+            <div class="step-card">
+                <div class="step-number">8</div>
+                <h3>Colocación Final</h3>
+                <div class="step-illustration">
+                    <svg width="300" height="180" viewBox="0 0 300 180">
+                        <!-- Mesa -->
+                        <rect x="20" y="140" width="260" height="30" fill="#8b4513" stroke="#654321" stroke-width="2"/>
+                        <!-- Pila de etiquetas terminadas -->
+                        <rect x="210" y="100" width="50" height="35" rx="2" fill="#ffffdd" stroke="#333" stroke-width="1"/>
+                        <rect x="207" y="103" width="50" height="35" rx="2" fill="#ffffee" stroke="#333" stroke-width="1"/>
+                        <rect x="204" y="106" width="50" height="35" rx="2" fill="#ffffcc" stroke="#333" stroke-width="2"/>
+                        <text x="229" y="160" font-size="11" text-anchor="middle" fill="#666">Terminadas</text>
+                        <!-- Etiqueta siendo colocada -->
+                        <rect x="130" y="80" width="50" height="35" rx="2" fill="#ffffcc" stroke="#333" stroke-width="2"/>
+                        <path d="M 155 115 L 229 106" stroke="#3498db" stroke-width="2" stroke-dasharray="5,5" marker-end="url(#arrowblue)"/>
+                        <defs>
+                            <marker id="arrowblue" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+                                <path d="M0,0 L0,6 L9,3 z" fill="#3498db" />
+                            </marker>
+                        </defs>
+                    </svg>
+                </div>
+                <div class="hand-section">
+                    <div class="hand-label left-hand">👈 MANO IZQUIERDA</div>
+                    <ul class="therblig-list">
+                        <li><span class="therblig-symbol symbol-t">T</span> Tomar etiqueta terminada</li>
+                        <li><span class="therblig-symbol symbol-m">M</span> Transportar a pila</li>
+                    </ul>
+                </div>
+                <div class="hand-section">
+                    <div class="hand-label right-hand">👉 MANO DERECHA</div>
+                    <ul class="therblig-list">
+                        <li><span class="therblig-symbol symbol-p">P</span> Posicionar en pila</li>
+                        <li><span class="therblig-symbol symbol-so">SO</span> Soltar etiqueta</li>
+                        <li><span class="therblig-symbol symbol-al">AL</span> Alcanzar nueva cartulina</li>
+                    </ul>
+                </div>
+                <div class="time-estimate">⏱️ Tiempo estimado: 5-8 segundos</div>
+            </div>
+        </div>
+        
+        <!-- Resumen de tiempos -->
+        <h2 style="margin-top: 40px; color: #2c3e50; text-align: center;">📊 RESUMEN DE TIEMPOS DEL PROCESO</h2>
+        <table class="summary-table">
+            <thead>
+                <tr>
+                    <th>Paso</th>
+                    <th>Actividad</th>
+                    <th>Tiempo Estimado</th>
+                    <th>% del Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>Preparación de materiales</td>
+                    <td>5-8 seg</td>
+                    <td>4%</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>Posicionamiento y trazado</td>
+                    <td>12-18 seg</td>
+                    <td>9%</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>Recorte de contorno</td>
+                    <td>45-60 seg</td>
+                    <td>35%</td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td>Perforación</td>
+                    <td>8-12 seg</td>
+                    <td>6%</td>
+                </tr>
+                <tr>
+                    <td>5</td>
+                    <td>Aplicación de pegamento</td>
+                    <td>15-20 seg</td>
+                    <td>11%</td>
+                </tr>
+                <tr>
+                    <td>6</td>
+                    <td>Dobleces y pegado</td>
+                    <td>20-30 seg</td>
+                    <td>16%</td>
+                </tr>
+                <tr>
+                    <td>7</td>
+                    <td>Inspección final</td>
+                    <td>8-12 seg</td>
+                    <td>6%</td>
+                </tr>
+                <tr>
+                    <td>8</td>
+                    <td>Colocación final</td>
+                    <td>5-8 seg</td>
+                    <td>4%</td>
+                </tr>
+                <tr style="background: #f0f0f0; font-weight: bold;">
+                    <td colspan="2">TIEMPO TOTAL ESTIMADO</td>
+                    <td>118-168 seg</td>
+                    <td>100%</td>
+                </tr>
+                <tr style="background: #e8f4f8; font-weight: bold;">
+                    <td colspan="2">EN MINUTOS</td>
+                    <td>2.0 - 2.8 min</td>
+                    <td>—</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <!-- Consejos -->
+        <div class="tips-section">
+            <h3>💡 CONSEJOS PARA EL ANÁLISIS BIMANUAL</h3>
+            <ul>
+                <li><strong>Identifica tiempos muertos:</strong> Nota cuándo una mano está esperando mientras la otra trabaja (especialmente en pasos 2, 3 y 5)</li>
+                <li><strong>Busca simultaneidad:</strong> El paso 6 (dobleces) es el mejor ejemplo de ambas manos trabajando juntas</li>
+                <li><strong>Elimina movimientos:</strong> ¿Se puede reducir la distancia entre herramientas? ¿Hay alcances innecesarios?</li>
+                <li><strong>Equilibra la carga:</strong> La mano derecha hace más trabajo activo (cortar, perforar). ¿Se puede equilibrar?</li>
+                <li><strong>Considera ergonomía:</strong> ¿Las herramientas están en posiciones cómodas? ¿Hay movimientos que causan fatiga?</li>
+                <li><strong>Propón mejoras:</strong> Pre-cortar plantillas, usar pegamento en puntos estratégicos, reorganizar layout de mesa</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
