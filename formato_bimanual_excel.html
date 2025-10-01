@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formato Diagrama Bimanual - Con Fórmulas Automáticas</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Calibri', Arial, sans-serif;
+            padding: 20px;
+            background: #e8e8e8;
+        }
+        
+        .excel-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+        
+        .instructions {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+        }
+        
+        .instructions h3 { margin-bottom: 10px; }
+        .instructions p { margin-bottom: 5px; font-size: 13px; }
+        
+        table { width: 100%; border-collapse: collapse; font-size: 11px; margin-bottom: 20px; }
+        th, td { border: 1px solid #000; padding: 8px 5px; text-align: center; min-height: 25px; }
+        
+        .editable {
+            background: #fffacd !important;
+            cursor: text;
+            min-height: 25px;
+            padding: 5px;
+        }
+        
+        .editable:hover { background: #ffeb3b !important; outline: 2px solid #ffc107; }
+        .editable:focus { background: white !important; outline: 2px solid #2196F3; }
+        
+        .auto-calc {
+            background: #e8f5e9 !important;
+            color: #2e7d32;
+            font-weight: bold;
+        }
+        
+        .auto-calc::before {
+            content: "∑ ";
+            font-size: 14px;
+        }
+        
+        select {
+            width: 100%;
+            padding: 4px;
+            border: 1px solid #ccc;
+            background: #fffacd;
+            font-size: 11px;
+            cursor: pointer;
+            font-family: 'Calibri', Arial, sans-serif;
+        }
+        
+        select:hover { background: #ffeb3b; border-color: #ffc107; }
+        select:focus { outline: 2px solid #2196F3; background: white; }
+        
+        .header-title { background: #4472C4; color: white; font-weight: bold; font-size: 16px; padding: 15px; }
+        .header-info { background: #D9E1F2; text-align: left; font-weight: bold; padding: 8px; }
+        .header-data { background: white; text-align: left; padding: 8px; }
+        .section-header { background: #70AD47; color: white; font-weight: bold; font-size: 12px; padding: 10px; }
+        .subsection-header { background: #A9D08E; font-weight: bold; font-size: 11px; }
+        .left-hand-header { background: #4472C4; color: white; font-weight: bold; }
+        .right-hand-header { background: #C55A11; color: white; font-weight: bold; }
+        .symbol-col { background: #F4B084; font-weight: bold; }
+        .data-cell { background: white; text-align: left; padding: 5px; }
+        .number-cell { background: #F2F2F2; font-weight: bold; width: 40px; }
+        .time-cell { background: #FFF2CC; width: 60px; }
+        .summary-header { background: #FF6B6B; color: white; font-weight: bold; }
+        .summary-label { background: #FFE5E5; text-align: right; font-weight: bold; padding-right: 10px; }
+        .summary-value { background: #FFF9E5; font-weight: bold; }
+        .sketch-area { background: #F8F9FA; border: 2px dashed #6c757d; min-height: 200px; text-align: center; padding: 20px; color: #333; }
+        
+        .button-container { text-align: center; margin: 20px 0; }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            margin: 0 10px;
+            background: #28a745;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            border: none;
+            font-size: 14px;
+        }
+        
+        .btn:hover { background: #218838; }
+        .btn-secondary { background: #007bff; }
+        .btn-secondary:hover { background: #0056b3; }
+        .btn-danger { background: #dc3545; }
+        .btn-danger:hover { background: #c82333; }
+        
+        @media print {
+            body { background: white; padding: 0; }
+            .instructions, .button-container { display: none !important; }
+            .excel-container { box-shadow: none; padding: 10px; }
+            .editable, .auto-calc { background: white !important; border: 1px solid #000 !important; outline: none !important; }
+            .auto-calc::before { content: ""; }
+            select { background: white !important; border: none !important; appearance: none; -webkit-appearance: none; -moz-appearance: none; }
+            @page { margin: 1cm; }
+        }
+    </style>
+</head>
+<body>
+    <div class="excel-container">
+        <div class="instructions">
+            <h3>🧮 FORMATO CON CÁLCULOS AUTOMÁTICOS</h3>
+            <p>✓ <strong>Campos amarillos:</strong> Editables | ✓ <strong>Campos verdes (∑):</strong> Calculados automáticamente</p>
+            <p>✓ <strong>Auto-suma:</strong> Los totales se actualizan al escribir tiempos</p>
+            <p>✓ <strong>Conteo therbligs:</strong> Se calcula automáticamente en la sección de resumen</p>
+        </div>
+
+        <table>
+            <tr><td colspan="9" class="header-title">DIAGRAMA DE PROCESO DEL OPERARIO (DIAGRAMA BIMANUAL)</td></tr>
+            <tr>
+                <td colspan="3" class="header-info">Objetivo y nivel de análisis:</td>
+                <td colspan="6" class="header-data">
+                    <label><input type="checkbox" id="obj-operario"> OPERARIO</label>
+                    <label><input type="checkbox" id="obj-material"> MATERIAL</label>
+                    <label><input type="checkbox" id="obj-equipo"> EQUIPO</label>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3" class="header-info">Proceso analizado:</td>
+                <td colspan="6" class="header-data editable" contenteditable="true" data-field="proceso">Armado de etiqueta plegable para zapato Oxford</td>
+            </tr>
+            <tr>
+                <td colspan="3" class="header-info">Método:</td>
+                <td colspan="2" class="header-data">
+                    <label><input type="radio" name="metodo" value="actual" checked> Actual</label>
+                    <label><input type="radio" name="metodo" value="propuesto"> Propuesto</label>
+                </td>
+                <td colspan="2" class="header-info">Localización:</td>
+                <td colspan="2" class="header-data editable" contenteditable="true" data-field="localizacion">Zapatería Industrial XYZ</td>
+            </tr>
+            <tr>
+                <td colspan="3" class="header-info">Operador (es):</td>
+                <td colspan="2" class="header-data editable" contenteditable="true" data-field="operador"></td>
+                <td colspan="2" class="header-info">Elaborado por:</td>
+                <td colspan="2" class="header-data editable" contenteditable="true" data-field="elaborado"></td>
+            </tr>
+            <tr>
+                <td colspan="3" class="header-info">Fecha:</td>
+                <td colspan="2" class="header-data editable" contenteditable="true" data-field="fecha"></td>
+                <td colspan="2" class="header-info">Aprobado:</td>
+                <td colspan="2" class="header-data editable" contenteditable="true" data-field="aprobado"></td>
+            </tr>
+            
+            <tr style="height: 15px;"><td colspan="9" style="border: none; background: white;"></td></tr>
+            
+            <tr><td colspan="9" class="section-header">ANÁLISIS DE MOVIMIENTOS</td></tr>
+            <tr>
+                <td class="number-cell">#</td>
+                <td colspan="3" class="left-hand-header">👈 MANO IZQUIERDA</td>
+                <td class="symbol-col">THERBLIGS</td>
+                <td colspan="3" class="right-hand-header">👉 MANO DERECHA</td>
+                <td class="number-cell">#</td>
+            </tr>
+            <tr>
+                <td class="number-cell"></td>
+                <td class="subsection-header">Descripción</td>
+                <td class="subsection-header">Simbología</td>
+                <td class="time-cell">Tiempo (seg)</td>
+                <td class="symbol-col" style="font-size: 9px;">Símbolo</td>
+                <td class="time-cell">Tiempo (seg)</td>
+                <td class="subsection-header">Simbología</td>
+                <td class="subsection-header">Descripción</td>
+                <td class="number-cell"></td>
+            </tr>
+            
+            <tbody id="data-rows"></tbody>
+            
+            <tr>
+                <td class="number-cell"></td>
+                <td colspan="2" class="summary-label">TIEMPO TOTAL:</td>
+                <td class="auto-calc" id="total-left">0.00</td>
+                <td class="symbol-col"></td>
+                <td class="auto-calc" id="total-right">0.00</td>
+                <td colspan="2" class="summary-label">TIEMPO TOTAL:</td>
+                <td class="number-cell"></td>
+            </tr>
+        </table>
+        
+        <table>
+            <tr><td colspan="9" class="section-header">CROQUIS DE LA ESTACIÓN DE TRABAJO</td></tr>
+            <tr>
+                <td colspan="9" class="sketch-area editable" contenteditable="true" data-field="croquis" style="text-align: left;">
+                    Dibuja aquí el layout de tu estación de trabajo con texto o pega una imagen impresa
+                </td>
+            </tr>
+        </table>
+        
+        <table>
+            <tr><td colspan="9" class="summary-header">RESUMEN DE THERBLIGS Y ANÁLISIS (Calculado Automáticamente)</td></tr>
+            <tr>
+                <td colspan="2" class="header-info">MANO IZQUIERDA</td>
+                <td class="summary-value">Cantidad</td>
+                <td class="summary-value">Tiempo (seg)</td>
+                <td class="symbol-col">TIPO</td>
+                <td class="summary-value">Tiempo (seg)</td>
+                <td class="summary-value">Cantidad</td>
+                <td colspan="2" class="header-info">MANO DERECHA</td>
+            </tr>
+            <tr>
+                <td colspan="2" class="summary-label">Alcanzar (AL)</td>
+                <td class="auto-calc" id="al-left-cant">0</td>
+                <td class="auto-calc" id="al-left-time">0.00</td>
+                <td class="symbol-col" rowspan="8" style="vertical-align: middle; font-size: 10px;">Efectivos<br>vs<br>Inefectivos</td>
+                <td class="auto-calc" id="al-right-time">0.00</td>
+                <td class="auto-calc" id="al-right-cant">0</td>
+                <td colspan="2" class="summary-label">Alcanzar (AL)</td>
+            </tr>
+            <tr>
+                <td colspan="2" class="summary-label">Tomar (T)</td>
+                <td class="auto-calc" id="t-left-cant">0</td>
+                <td class="auto-calc" id="t-left-time">0.00</td>
+                <td class="auto-calc" id="t-right-time">0.00</td>
+                <td class="auto-calc" id="t-right-cant">0</td>
+                <td colspan="2" class="summary-label">Tomar (T)</td>
+            </tr>
+            <tr>
+                <td colspan="2" class="summary-label">Mover (M)</td>
+                <td class="auto-calc" id="m-left-cant">0</td>
+                <td class="auto-calc" id="m-left-time">0.00</td>
+                <td class="auto-calc" id="m-right-time">0.00</td>
+                <td class="auto-calc" id="m-right-cant">0</td>
+                <td colspan="2" class="summary-label">Mover (M)</td>
+            </tr>
+            <tr>
+                <td colspan="2" class="summary-label">Posicionar (P)</td>
+                <td class="auto-calc" id="p-left-cant">0</td>
+                <td class="auto-calc" id="p-left-time">0.00</td>
+                <td class="auto-calc" id="p-right-time">0.00</td>
+                <td class="auto-calc" id="p-right-cant">0</td>
+                <td colspan="2" class="summary-label">Posicionar (P)</td>
+            </tr>
+            <tr>
+                <td colspan="2" class="summary-label">Sostener (S)</td>
+                <td class="auto-calc" id="s-left-cant">0</td>
+                <td class="auto-calc" id="s-left-time">0.00</td>
+                <td class="auto-calc" id="s-right-time">0.00</td>
+                <td class="auto-calc" id="s-right-cant">0</td>
+                <td colspan="2" class="summary-label">Sostener (S)</td>
+            </tr>
+            <tr>
+                <td colspan="2" class="summary-label">Usar (U)</td>
+                <td class="auto-calc" id="u-left-cant">0</td>
+                <td class="auto-calc" id="u-left-time">0.00</td>
+                <td class="auto-calc" id="u-right-time">0.00</td>
+                <td class="auto-calc" id="u-right-cant">0</td>
+                <td colspan="2" class="summary-label">Usar (U)</td>
+            </tr>
+            <tr>
+                <td colspan="2" class="summary-label">Soltar (SO)</td>
+                <td class="auto-calc" id="so-left-cant">0</td>
+                <td class="auto-calc" id="so-left-time">0.00</td>
+                <td class="auto-calc" id="so-right-time">0.00</td>
+                <td class="auto-calc" id="so-right-cant">0</td>
+                <td colspan="2" class="summary-label">Soltar (SO)</td>
+            </tr>
+            <tr>
+                <td colspan="2" class="summary-label">Inspeccionar (I)</td>
+                <td class="auto-calc" id="i-left-cant">0</td>
+                <td class="auto-calc" id="i-left-time">0.00</td>
+                <td class="auto-calc" id="i-right-time">0.00</td>
+                <td class="auto-calc" id="i-right-cant">0</td>
+                <td colspan="2" class="summary-label">Inspeccionar (I)</td>
+            </tr>
+            <tr style="background: #FFE5E5; font-weight: bold;">
+                <td colspan="2" class="summary-label">TOTAL THERBLIGS:</td>
+                <td class="auto-calc" id="total-therb-left">0</td>
+                <td class="auto-calc" id="total-time-sum-left">0.00</td>
+                <td class="symbol-col"></td>
+                <td class="auto-calc" id="total-time-sum-right">0.00</td>
+                <td class="auto-calc" id="total-therb-right">0</td>
+                <td colspan="2" class="summary-label">TOTAL THERBLIGS:</td>
+            </tr>
+        </table>
+        
+        <table style="margin-top: 10px;">
+            <tr><td colspan="9" class="section-header">OBSERVACIONES Y MEJORAS PROPUESTAS</td></tr>
+            <tr>
+                <td colspan="9" class="editable" contenteditable="true" style="text-align: left; padding: 15px; min-height: 100px; vertical-align: top;" data-field="observaciones">
+                    <strong>Análisis:</strong><br><br><strong>Problemas identificados:</strong><br><br><strong>Propuestas de mejora:</strong><br><br>
+                </td>
+            </tr>
+        </table>
+        
+        <table style="margin-top: 10px;">
+            <tr>
+                <td colspan="3" class="header-info">Núm. de plano:</td>
+                <td colspan="3" class="header-data editable" contenteditable="true"></td>
+                <td colspan="3" class="header-info">DIAGRAMA NÚM.:</td>
+            </tr>
+            <tr>
+                <td colspan="3" class="header-info">Diagramas relacionados:</td>
+                <td colspan="3" class="header-data editable" contenteditable="true"></td>
+                <td colspan="3" class="header-info">REVISIÓN:</td>
+            </tr>
+        </table>
+
+        <div class="button-container">
+            <button class="btn" onclick="window.print()">🖨️ Imprimir / Guardar PDF</button>
+            <button class="btn btn-secondary" onclick="saveData()">💾 Guardar Datos</button>
+            <button class="btn btn-danger" onclick="clearData()">🗑️ Borrar Todo</button>
+        </div>
+    </div>
+    
+    <script>
+        const therbligOptions = [
+            { value: '', text: '-' },
+            { value: 'AL', text: 'AL - Alcanzar' },
+            { value: 'T', text: 'T - Tomar' },
+            { value: 'M', text: 'M - Mover' },
+            { value: 'P', text: 'P - Posicionar' },
+            { value: 'S', text: 'S - Sostener' },
+            { value: 'U', text: 'U - Usar' },
+            { value: 'SO', text: 'SO - Soltar' },
+            { value: 'I', text: 'I - Inspeccionar' },
+            { value: 'EN', text: 'EN - Ensamblar' },
+            { value: 'DE', text: 'DE - Desensamblar' },
+            { value: 'B', text: 'B - Buscar' },
+            { value: 'SE', text: 'SE - Seleccionar' },
+            { value: 'PL', text: 'PL - Planear' },
+            { value: 'PP', text: 'PP - Pre-posicionar' },
+            { value: 'DI', text: 'DI - Demora Inevitable' },
+            { value: 'DA', text: 'DA - Demora Evitable' },
+            { value: 'D', text: 'D - Descansar' }
+        ];
+        
+        function createTherbligSelect(rowNum, col) {
+            const select = document.createElement('select');
+            select.dataset.row = rowNum;
+            select.dataset.col = col;
+            
+            therbligOptions.forEach(opt => {
+                const option = document.createElement('option');
+                option.value = opt.value;
+                option.textContent = opt.text;
+                select.appendChild(option);
+            });
+            
+            select.addEventListener('change', () => {
+                saveToLocalStorage();
+                calculateAllTotals();
+            });
+            
+            return select;
+        }
+        
+        const tbody = document.getElementById('data-rows');
+        for (let i = 1; i <= 20; i++) {
+            const row = document.createElement('tr');
+            
+            const cell1 = document.createElement('td');
+            cell1.className = 'number-cell';
+            cell1.textContent = i;
+            
+            const cell2 = document.createElement('td');
+            cell2.className = 'data-cell editable';
+            cell2.contentEditable = 'true';
+            cell2.dataset.row = i;
+            cell2.dataset.col = 'desc-left';
+            
+            const cell3 = document.createElement('td');
+            cell3.className = 'data-cell';
+            cell3.appendChild(createTherbligSelect(i, 'simb-left'));
+            
+            const cell4 = document.createElement('td');
+            cell4.className = 'time-cell editable';
+            cell4.contentEditable = 'true';
+            cell4.dataset.row = i;
+            cell4.dataset.col = 'time-left';
+            
+            const cell5 = document.createElement('td');
+            cell5.className = 'symbol-col';
+            cell5.appendChild(createTherbligSelect(i, 'therb'));
+            
+            const cell6 = document.createElement('td');
+            cell6.className = 'time-cell editable';
+            cell6.contentEditable = 'true';
+            cell6.dataset.row = i;
+            cell6.dataset.col = 'time-right';
+            
+            const cell7 = document.createElement('td');
+            cell7.className = 'data-cell';
+            cell7.appendChild(createTherbligSelect(i, 'simb-right'));
+            
+            const cell8 = document.createElement('td');
+            cell8.className = 'data-cell editable';
+            cell8.contentEditable = 'true';
+            cell8.dataset.row = i;
+            cell8.dataset.col = 'desc-right';
+            
+            const cell9 = document.createElement('td');
+            cell9.className = 'number-cell';
+            cell9.textContent = i;
+            
+            row.appendChild(cell1);
+            row.appendChild(cell2);
+            row.appendChild(cell3);
+            row.appendChild(cell4);
+            row.appendChild(cell5);
+            row.appendChild(cell6);
+            row.appendChild(cell7);
+            row.appendChild(cell8);
+            row.appendChild(cell9);
+            
+            tbody.appendChild(row);
+        }
+        
+        const editableCells = document.querySelectorAll('.editable[contenteditable="true"]');
+        editableCells.forEach(cell => {
+            cell.addEventListener('blur', () => {
+                saveToLocalStorage();
+                calculateAllTotals();
+            });
+            
+            cell.addEventListener('keyup', () => {
+                if (cell.dataset.col && cell.dataset.col.includes('time')) {
+                    calculateAllTotals();
+                }
+            });
+        });
+        
+        document.querySelectorAll('input[type="checkbox"], input[type="radio"]').forEach(input => {
+            input.addEventListener('change', saveToLocalStorage);
+        });
+        
+        function calculateAllTotals() {
+            let totalLeft = 0;
+            let totalRight = 0;
+            
+            const therbligCount = {
+                left: {}, right: {}
+            };
+            const therbligTime = {
+                left: {}, right: {}
+            };
+            
+            therbligOptions.forEach(opt => {
+                if (opt.value) {
+                    therbligCount.left[opt.value] = 0;
+                    therbligCount.right[opt.value] = 0;
+                    therbligTime.left[opt.value] = 0;
+                    therbligTime.right[opt.value] = 0;
+                }
+            });
+            
+            for (let i = 1; i <= 20; i++) {
+                const selectLeft = document.querySelector(`select[data-row="${i}"][data-col="simb-left"]`);
+                const timeLeft = document.querySelector(`[data-row="${i}"][data-col="time-left"]`);
+                const selectRight = document.querySelector(`select[data-row="${i}"][data-col="simb-right"]`);
+                const timeRight = document.querySelector(`[data-row="${i}"][data-col="time-right"]`);
+                
+                if (selectLeft && selectLeft.value && timeLeft) {
+                    const symbol = selectLeft.value;
+                    const time = parseFloat(timeLeft.textContent.trim()) || 0;
+                    totalLeft += time;
+                    if (therbligCount.left[symbol] !== undefined) {
+                        therbligCount.left[symbol]++;
+                        therbligTime.left[symbol] += time;
+                    }
+                }
+                
+                if (selectRight && selectRight.value && timeRight) {
+                    const symbol = selectRight.value;
+                    const time = parseFloat(timeRight.textContent.trim()) || 0;
+                    totalRight += time;
+                    if (therbligCount.right[symbol] !== undefined) {
+                        therbligCount.right[symbol]++;
+                        therbligTime.right[symbol] += time;
+                    }
+                }
+            }
+            
+            document.getElementById('total-left').textContent = totalLeft.toFixed(2);
+            document.getElementById('total-right').textContent = totalRight.toFixed(2);
+            
+            const mainTherbligs = ['AL', 'T', 'M', 'P', 'S', 'U', 'SO', 'I'];
+            let totalTherbLeft = 0, totalTherbRight = 0;
+            let totalTimeSumLeft = 0, totalTimeSumRight = 0;
+            
+            mainTherbligs.forEach(symbol => {
+                const lowerSymbol = symbol.toLowerCase();
+                
+                document.getElementById(`${lowerSymbol}-left-cant`).textContent = therbligCount.left[symbol] || 0;
+                document.getElementById(`${lowerSymbol}-left-time`).textContent = (therbligTime.left[symbol] || 0).toFixed(2);
+                document.getElementById(`${lowerSymbol}-right-cant`).textContent = therbligCount.right[symbol] || 0;
+                document.getElementById(`${lowerSymbol}-right-time`).textContent = (therbligTime.right[symbol] || 0).toFixed(2);
+                
+                totalTherbLeft += therbligCount.left[symbol] || 0;
+                totalTherbRight += therbligCount.right[symbol] || 0;
+                totalTimeSumLeft += therbligTime.left[symbol] || 0;
+                totalTimeSumRight += therbligTime.right[symbol] || 0;
+            });
+            
+            document.getElementById('total-therb-left').textContent = totalTherbLeft;
+            document.getElementById('total-therb-right').textContent = totalTherbRight;
+            document.getElementById('total-time-sum-left').textContent = totalTimeSumLeft.toFixed(2);
+            document.getElementById('total-time-sum-right').textContent = totalTimeSumRight.toFixed(2);
+        }
+        
+        function saveToLocalStorage() {
+            const data = {};
+            
+            editableCells.forEach(cell => {
+                const field = cell.dataset.field || `${cell.dataset.row}_${cell.dataset.col}`;
+                data[field] = cell.innerHTML;
+            });
+            
+            document.querySelectorAll('select').forEach(select => {
+                const field = `${select.dataset.row}_${select.dataset.col}`;
+                data[field] = select.value;
+            });
+            
+            data.objOperario = document.getElementById('obj-operario').checked;
+            data.objMaterial = document.getElementById('obj-material').checked;
+            data.objEquipo = document.getElementById('obj-equipo').checked;
+            
+            const metodo = document.querySelector('input[name="metodo"]:checked');
+            data.metodo = metodo ? metodo.value : 'actual';
+            
+            localStorage.setItem('diagramaBimanual', JSON.stringify(data));
+        }
+        
+        function loadFromLocalStorage() {
+            const saved = localStorage.getItem('diagramaBimanual');
+            if (!saved) return;
+            
+            const data = JSON.parse(saved);
+            
+            editableCells.forEach(cell => {
+                const field = cell.dataset.field || `${cell.dataset.row}_${cell.dataset.col}`;
+                if (data[field]) {
+                    cell.innerHTML = data[field];
+                }
+            });
+            
+            document.querySelectorAll('select').forEach(select => {
+                const field = `${select.dataset.row}_${select.dataset.col}`;
+                if (data[field]) {
+                    select.value = data[field];
+                }
+            });
+            
+            if (data.objOperario !== undefined) document.getElementById('obj-operario').checked = data.objOperario;
+            if (data.objMaterial !== undefined) document.getElementById('obj-material').checked = data.objMaterial;
+            if (data.objEquipo !== undefined) document.getElementById('obj-equipo').checked = data.objEquipo;
+            
+            if (data.metodo) {
+                document.querySelector(`input[name="metodo"][value="${data.metodo}"]`).checked = true;
+            }
+            
+            calculateAllTotals();
+        }
+        
+        function saveData() {
+            saveToLocalStorage();
+            alert('✓ Datos guardados correctamente');
+        }
+        
+        function clearData() {
+            if (confirm('¿Estás seguro de que quieres borrar todos los datos?')) {
+                localStorage.removeItem('diagramaBimanual');
+                location.reload();
+            }
+        }
+        
+        window.addEventListener('load', loadFromLocalStorage);
+    </script>
+</body>
+</html>

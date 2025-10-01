@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hoja de Cronometraje - Con Fórmulas Automáticas</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Calibri', Arial, sans-serif;
+            padding: 20px;
+            background: #f0f0f0;
+        }
+        
+        .excel-page {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.15);
+        }
+        
+        .instructions-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+        }
+        
+        .instructions-box h3 { margin-bottom: 10px; font-size: 18px; }
+        .instructions-box p { margin-bottom: 8px; font-size: 14px; line-height: 1.6; }
+        
+        table { width: 100%; border-collapse: collapse; font-size: 11px; margin-bottom: 15px; }
+        th, td { border: 1px solid #000; padding: 6px 4px; text-align: center; }
+        
+        .editable {
+            background: #fffacd !important;
+            cursor: text;
+            min-height: 20px;
+        }
+        
+        .editable:hover { background: #ffeb3b !important; outline: 2px solid #ffc107; }
+        .editable:focus { background: white !important; outline: 2px solid #2196F3; }
+        
+        .auto-calc {
+            background: #e8f5e9 !important;
+            color: #2e7d32;
+            font-weight: bold;
+        }
+        
+        .auto-calc::before {
+            content: "∑ ";
+            font-size: 13px;
+        }
+        
+        select {
+            width: 100%;
+            padding: 4px 2px;
+            border: 1px solid #ccc;
+            background: #fffacd;
+            font-size: 10px;
+            cursor: pointer;
+            font-family: 'Calibri', Arial, sans-serif;
+        }
+        
+        select:hover { background: #ffeb3b; border-color: #ffc107; }
+        select:focus { outline: 2px solid #2196F3; background: white; }
+        
+        .main-header { background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%); color: white; font-weight: bold; font-size: 16px; padding: 15px; text-align: center; }
+        .info-label { background: #D6EAF8; font-weight: bold; text-align: left; padding-left: 10px; width: 150px; }
+        .info-data { background: white; text-align: left; padding-left: 10px; }
+        .legend-header { background: #5DADE2; color: white; font-weight: bold; padding: 10px; font-size: 13px; }
+        .therblig-legend { background: #EBF5FB; text-align: left; padding: 8px; font-size: 10px; }
+        .section-header { background: #28B463; color: white; font-weight: bold; font-size: 13px; padding: 10px; }
+        .left-col { background: #5DADE2; color: white; font-weight: bold; width: 35%; }
+        .symbol-col { background: #F39C12; color: white; font-weight: bold; width: 10%; }
+        .time-col { background: #F8C471; color: #333; font-weight: bold; width: 10%; }
+        .right-col { background: #AF7AC5; color: white; font-weight: bold; width: 35%; }
+        .row-num { background: #D5D8DC; font-weight: bold; width: 5%; }
+        .data-left { background: #EBF5FB; text-align: left; padding-left: 8px; }
+        .data-symbol { background: white; }
+        .data-time { background: #FEF9E7; }
+        .data-right { background: #F4ECF7; text-align: left; padding-left: 8px; }
+        .summary-header { background: #E74C3C; color: white; font-weight: bold; padding: 10px; font-size: 13px; }
+        .total-label { background: #FADBD8; font-weight: bold; text-align: right; padding-right: 10px; }
+        .total-value { background: #FEF9E7; font-weight: bold; font-size: 14px; }
+        .notes-header { background: #85929E; color: white; font-weight: bold; padding: 8px; }
+        .notes-cell { background: #F8F9F9; text-align: left; padding: 10px; min-height: 80px; vertical-align: top; }
+        
+        .button-area { text-align: center; margin: 25px 0; }
+        
+        .excel-btn {
+            display: inline-block;
+            padding: 12px 35px;
+            margin: 0 10px;
+            background: #27ae60;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            font-size: 15px;
+            transition: all 0.3s;
+        }
+        
+        .excel-btn:hover {
+            background: #229954;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(39, 174, 96, 0.3);
+        }
+        
+        .excel-btn-alt { background: #3498db; }
+        .excel-btn-alt:hover { background: #2980b9; }
+        .excel-btn-danger { background: #e74c3c; }
+        .excel-btn-danger:hover { background: #c0392b; }
+        
+        @media print {
+            body { background: white; padding: 0; }
+            .instructions-box, .button-area { display: none !important; }
+            .excel-page { box-shadow: none; padding: 15px; }
+            .editable, .auto-calc { background: white !important; outline: none !important; }
+            .auto-calc::before { content: ""; }
+            select { background: white !important; border: none !important; appearance: none; -webkit-appearance: none; -moz-appearance: none; }
+            @page { margin: 1cm; }
+        }
+    </style>
+</head>
+<body>
+    <div class="excel-page">
+        <div class="instructions-box">
+            <h3>🧮 HOJA DE CRONOMETRAJE CON CÁLCULOS AUTOMÁTICOS</h3>
+            <p>✓ <strong>Campos amarillos:</strong> Editables | ✓ <strong>Campos verdes (∑):</strong> Se calculan automáticamente</p>
+            <p>✓ <strong>Totales:</strong> Se actualizan al escribir tiempos | ✓ <strong>Porcentajes:</strong> Se calculan automáticamente</p>
+            <p>✓ <strong>Cambiar observación:</strong> Modifica el número para guardar/cargar diferentes observaciones</p>
+        </div>
+
+        <table>
+            <tr><td colspan="7" class="main-header">📋 HOJA DE CRONOMETRAJE - ANÁLISIS DE THERBLIGS</td></tr>
+            
+            <tr>
+                <td colspan="2" class="info-label">Estudiante:</td>
+                <td colspan="5" class="info-data editable" contenteditable="true" data-field="estudiante"></td>
+            </tr>
+            <tr>
+                <td colspan="2" class="info-label">Matrícula:</td>
+                <td colspan="2" class="info-data editable" contenteditable="true" data-field="matricula"></td>
+                <td class="info-label">Observación #:</td>
+                <td colspan="2" class="info-data editable" contenteditable="true" data-field="observacion">1</td>
+            </tr>
+            <tr>
+                <td colspan="2" class="info-label">Proceso analizado:</td>
+                <td colspan="5" class="info-data editable" contenteditable="true" data-field="proceso">Armado de etiqueta plegable para zapato Oxford</td>
+            </tr>
+            <tr>
+                <td colspan="2" class="info-label">Fecha:</td>
+                <td colspan="2" class="info-data editable" contenteditable="true" data-field="fecha"></td>
+                <td class="info-label">Hora inicio:</td>
+                <td colspan="2" class="info-data editable" contenteditable="true" data-field="hora"></td>
+            </tr>
+            
+            <tr style="height: 5px; border: none;">
+                <td colspan="7" style="border: none; background: white;"></td>
+            </tr>
+            
+            <tr><td colspan="7" class="legend-header">SIMBOLOGÍA DE THERBLIGS</td></tr>
+            <tr>
+                <td colspan="7" class="therblig-legend">
+                    <strong>AL</strong>=Alcanzar | <strong>T</strong>=Tomar | <strong>M</strong>=Mover | <strong>P</strong>=Posicionar | <strong>S</strong>=Sostener | <strong>U</strong>=Usar | <strong>SO</strong>=Soltar | <strong>I</strong>=Inspeccionar | <strong>EN</strong>=Ensamblar | <strong>DE</strong>=Desensamblar | <strong>B</strong>=Buscar | <strong>SE</strong>=Seleccionar | <strong>PL</strong>=Planear | <strong>PP</strong>=Pre-posicionar | <strong>DI</strong>=Demora Inevitable | <strong>DA</strong>=Demora Evitable | <strong>D</strong>=Descansar
+                </td>
+            </tr>
+            
+            <tr style="height: 5px; border: none;">
+                <td colspan="7" style="border: none; background: white;"></td>
+            </tr>
+            
+            <tr><td colspan="7" class="section-header">REGISTRO DE MOVIMIENTOS</td></tr>
+            <tr>
+                <td class="row-num">#</td>
+                <td class="left-col">👈 DESCRIPCIÓN MANO IZQUIERDA</td>
+                <td class="symbol-col">SÍMBOLO</td>
+                <td class="time-col">TIEMPO (seg)</td>
+                <td class="time-col">TIEMPO (seg)</td>
+                <td class="symbol-col">SÍMBOLO</td>
+                <td class="right-col">👉 DESCRIPCIÓN MANO DERECHA</td>
+            </tr>
+            
+            <tbody id="data-rows"></tbody>
+            
+            <tr><td colspan="7" class="summary-header">RESUMEN DE LA OBSERVACIÓN (Calculado Automáticamente)</td></tr>
+            <tr>
+                <td class="row-num"></td>
+                <td colspan="2" class="total-label">TOTAL TIEMPO MANO IZQUIERDA:</td>
+                <td class="auto-calc" id="total-left">0.00</td>
+                <td class="auto-calc" id="total-right">0.00</td>
+                <td colspan="2" class="total-label">TOTAL TIEMPO MANO DERECHA:</td>
+            </tr>
+            <tr>
+                <td class="row-num"></td>
+                <td colspan="2" class="total-label">TOTAL THERBLIGS MANO IZQUIERDA:</td>
+                <td class="auto-calc" id="count-left">0</td>
+                <td class="auto-calc" id="count-right">0</td>
+                <td colspan="2" class="total-label">TOTAL THERBLIGS MANO DERECHA:</td>
+            </tr>
+            <tr style="background: #FADBD8; font-weight: bold;">
+                <td colspan="3" class="total-label" style="font-size: 13px;">TIEMPO TOTAL DEL CICLO:</td>
+                <td colspan="4" class="auto-calc" style="font-size: 14px;" id="total-cycle">0.00 seg</td>
+            </tr>
+            
+            <tr style="height: 10px; border: none;">
+                <td colspan="7" style="border: none; background: white;"></td>
+            </tr>
+            <tr><td colspan="7" class="notes-header">OBSERVACIONES Y NOTAS</td></tr>
+            <tr>
+                <td colspan="7" class="notes-cell editable" contenteditable="true" data-field="notas">
+                    <strong>Dificultades encontradas:</strong><br><br>
+                    <strong>Variaciones respecto a otras observaciones:</strong><br><br>
+                    <strong>Comentarios adicionales:</strong>
+                </td>
+            </tr>
+        </table>
+        
+        <table style="margin-top: 15px;">
+            <tr><td colspan="7" class="section-header">ANÁLISIS DE THERBLIGS (Calculado automáticamente)</td></tr>
+            <tr>
+                <td colspan="2" class="info-label">Therbligs efectivos (AL, T, M, P, U, EN, DE):</td>
+                <td class="auto-calc" id="efectivos-cant">0</td>
+                <td class="info-label">%</td>
+                <td class="auto-calc" id="efectivos-pct">0.0</td>
+                <td class="info-label">Tiempo:</td>
+                <td class="auto-calc" id="efectivos-time">0.00</td>
+            </tr>
+            <tr>
+                <td colspan="2" class="info-label">Therbligs inefectivos (S, B, SE, I, PL, PP):</td>
+                <td class="auto-calc" id="inefectivos-cant">0</td>
+                <td class="info-label">%</td>
+                <td class="auto-calc" id="inefectivos-pct">0.0</td>
+                <td class="info-label">Tiempo:</td>
+                <td class="auto-calc" id="inefectivos-time">0.00</td>
+            </tr>
+            <tr>
+                <td colspan="2" class="info-label">Demoras (DI, DA, D):</td>
+                <td class="auto-calc" id="demoras-cant">0</td>
+                <td class="info-label">%</td>
+                <td class="auto-calc" id="demoras-pct">0.0</td>
+                <td class="info-label">Tiempo:</td>
+                <td class="auto-calc" id="demoras-time">0.00</td>
+            </tr>
+        </table>
+
+        <div class="button-area">
+            <button class="excel-btn" onclick="window.print()">🖨️ Imprimir / Guardar PDF</button>
+            <button class="excel-btn excel-btn-alt" onclick="saveData()">💾 Guardar Datos</button>
+            <button class="excel-btn excel-btn-danger" onclick="clearData()">🗑️ Borrar Todo</button>
+        </div>
+    </div>
+    
+    <script>
+        const therbligOptions = [
+            { value: '', text: '-' },
+            { value: 'AL', text: 'AL' },
+            { value: 'T', text: 'T' },
+            { value: 'M', text: 'M' },
+            { value: 'P', text: 'P' },
+            { value: 'S', text: 'S' },
+            { value: 'U', text: 'U' },
+            { value: 'SO', text: 'SO' },
+            { value: 'I', text: 'I' },
+            { value: 'EN', text: 'EN' },
+            { value: 'DE', text: 'DE' },
+            { value: 'B', text: 'B' },
+            { value: 'SE', text: 'SE' },
+            { value: 'PL', text: 'PL' },
+            { value: 'PP', text: 'PP' },
+            { value: 'DI', text: 'DI' },
+            { value: 'DA', text: 'DA' },
+            { value: 'D', text: 'D' }
+        ];
+        
+        function createTherbligSelect(rowNum, col) {
+            const select = document.createElement('select');
+            select.dataset.row = rowNum;
+            select.dataset.col = col;
+            
+            therbligOptions.forEach(opt => {
+                const option = document.createElement('option');
+                option.value = opt.value;
+                option.textContent = opt.text;
+                select.appendChild(option);
+            });
+            
+            select.addEventListener('change', () => {
+                saveToLocalStorage();
+                calculateAllTotals();
+            });
+            
+            return select;
+        }
+        
+        const tbody = document.getElementById('data-rows');
+        for (let i = 1; i <= 25; i++) {
+            const row = document.createElement('tr');
+            
+            const cell1 = document.createElement('td');
+            cell1.className = 'row-num';
+            cell1.textContent = i;
+            
+            const cell2 = document.createElement('td');
+            cell2.className = 'data-left editable';
+            cell2.contentEditable = 'true';
+            cell2.dataset.row = i;
+            cell2.dataset.col = 'desc-left';
+            
+            const cell3 = document.createElement('td');
+            cell3.className = 'data-symbol';
+            cell3.appendChild(createTherbligSelect(i, 'simb-left'));
+            
+            const cell4 = document.createElement('td');
+            cell4.className = 'data-time editable';
+            cell4.contentEditable = 'true';
+            cell4.dataset.row = i;
+            cell4.dataset.col = 'time-left';
+            
+            const cell5 = document.createElement('td');
+            cell5.className = 'data-time editable';
+            cell5.contentEditable = 'true';
+            cell5.dataset.row = i;
+            cell5.dataset.col = 'time-right';
+            
+            const cell6 = document.createElement('td');
+            cell6.className = 'data-symbol';
+            cell6.appendChild(createTherbligSelect(i, 'simb-right'));
+            
+            const cell7 = document.createElement('td');
+            cell7.className = 'data-right editable';
+            cell7.contentEditable = 'true';
+            cell7.dataset.row = i;
+            cell7.dataset.col = 'desc-right';
+            
+            row.appendChild(cell1);
+            row.appendChild(cell2);
+            row.appendChild(cell3);
+            row.appendChild(cell4);
+            row.appendChild(cell5);
+            row.appendChild(cell6);
+            row.appendChild(cell7);
+            
+            tbody.appendChild(row);
+        }
+        
+        const editableCells = document.querySelectorAll('.editable[contenteditable="true"]');
+        editableCells.forEach(cell => {
+            cell.addEventListener('blur', () => {
+                saveToLocalStorage();
+                calculateAllTotals();
+            });
+            
+            cell.addEventListener('keyup', () => {
+                if (cell.dataset.col && cell.dataset.col.includes('time')) {
+                    calculateAllTotals();
+                }
+            });
+        });
+        
+        function calculateAllTotals() {
+            let totalLeft = 0;
+            let totalRight = 0;
+            let countLeft = 0;
+            let countRight = 0;
+            
+            const therbligStats = {
+                efectivos: { count: 0, time: 0 },
+                inefectivos: { count: 0, time: 0 },
+                demoras: { count: 0, time: 0 }
+            };
+            
+            const efectivos = ['AL', 'T', 'M', 'P', 'U', 'EN', 'DE'];
+            const inefectivos = ['S', 'B', 'SE', 'I', 'PL', 'PP'];
+            const demoras = ['DI', 'DA', 'D'];
+            
+            for (let i = 1; i <= 25; i++) {
+                const selectLeft = document.querySelector(`select[data-row="${i}"][data-col="simb-left"]`);
+                const timeLeft = document.querySelector(`[data-row="${i}"][data-col="time-left"]`);
+                const selectRight = document.querySelector(`select[data-row="${i}"][data-col="simb-right"]`);
+                const timeRight = document.querySelector(`[data-row="${i}"][data-col="time-right"]`);
+                
+                if (selectLeft && selectLeft.value && timeLeft) {
+                    const symbol = selectLeft.value;
+                    const time = parseFloat(timeLeft.textContent.trim()) || 0;
+                    
+                    if (time > 0) {
+                        totalLeft += time;
+                        countLeft++;
+                        
+                        if (efectivos.includes(symbol)) {
+                            therbligStats.efectivos.count++;
+                            therbligStats.efectivos.time += time;
+                        } else if (inefectivos.includes(symbol)) {
+                            therbligStats.inefectivos.count++;
+                            therbligStats.inefectivos.time += time;
+                        } else if (demoras.includes(symbol)) {
+                            therbligStats.demoras.count++;
+                            therbligStats.demoras.time += time;
+                        }
+                    }
+                }
+                
+                if (selectRight && selectRight.value && timeRight) {
+                    const symbol = selectRight.value;
+                    const time = parseFloat(timeRight.textContent.trim()) || 0;
+                    
+                    if (time > 0) {
+                        totalRight += time;
+                        countRight++;
+                        
+                        if (efectivos.includes(symbol)) {
+                            therbligStats.efectivos.count++;
+                            therbligStats.efectivos.time += time;
+                        } else if (inefectivos.includes(symbol)) {
+                            therbligStats.inefectivos.count++;
+                            therbligStats.inefectivos.time += time;
+                        } else if (demoras.includes(symbol)) {
+                            therbligStats.demoras.count++;
+                            therbligStats.demoras.time += time;
+                        }
+                    }
+                }
+            }
+            
+            document.getElementById('total-left').textContent = totalLeft.toFixed(2);
+            document.getElementById('total-right').textContent = totalRight.toFixed(2);
+            document.getElementById('count-left').textContent = countLeft;
+            document.getElementById('count-right').textContent = countRight;
+            
+            const totalCycle = Math.max(totalLeft, totalRight);
+            document.getElementById('total-cycle').textContent = totalCycle.toFixed(2) + ' seg';
+            
+            const totalTherbligs = therbligStats.efectivos.count + therbligStats.inefectivos.count + therbligStats.demoras.count;
+            
+            document.getElementById('efectivos-cant').textContent = therbligStats.efectivos.count;
+            document.getElementById('efectivos-time').textContent = therbligStats.efectivos.time.toFixed(2);
+            document.getElementById('efectivos-pct').textContent = totalTherbligs > 0 ? ((therbligStats.efectivos.count / totalTherbligs) * 100).toFixed(1) : '0.0';
+            
+            document.getElementById('inefectivos-cant').textContent = therbligStats.inefectivos.count;
+            document.getElementById('inefectivos-time').textContent = therbligStats.inefectivos.time.toFixed(2);
+            document.getElementById('inefectivos-pct').textContent = totalTherbligs > 0 ? ((therbligStats.inefectivos.count / totalTherbligs) * 100).toFixed(1) : '0.0';
+            
+            document.getElementById('demoras-cant').textContent = therbligStats.demoras.count;
+            document.getElementById('demoras-time').textContent = therbligStats.demoras.time.toFixed(2);
+            document.getElementById('demoras-pct').textContent = totalTherbligs > 0 ? ((therbligStats.demoras.count / totalTherbligs) * 100).toFixed(1) : '0.0';
+        }
+        
+        function saveToLocalStorage() {
+            const observacion = document.querySelector('[data-field="observacion"]').textContent || '1';
+            const storageKey = `cronometraje_obs_${observacion}`;
+            const data = {};
+            
+            editableCells.forEach(cell => {
+                const field = cell.dataset.field || `${cell.dataset.row}_${cell.dataset.col}`;
+                data[field] = cell.textContent;
+            });
+            
+            document.querySelectorAll('select').forEach(select => {
+                const field = `${select.dataset.row}_${select.dataset.col}`;
+                data[field] = select.value;
+            });
+            
+            localStorage.setItem(storageKey, JSON.stringify(data));
+        }
+        
+        function loadFromLocalStorage() {
+            const observacion = document.querySelector('[data-field="observacion"]').textContent || '1';
+            const storageKey = `cronometraje_obs_${observacion}`;
+            const saved = localStorage.getItem(storageKey);
+            
+            if (!saved) return;
+            
+            const data = JSON.parse(saved);
+            
+            editableCells.forEach(cell => {
+                const field = cell.dataset.field || `${cell.dataset.row}_${cell.dataset.col}`;
+                if (data[field]) {
+                    cell.textContent = data[field];
+                }
+            });
+            
+            document.querySelectorAll('select').forEach(select => {
+                const field = `${select.dataset.row}_${select.dataset.col}`;
+                if (data[field]) {
+                    select.value = data[field];
+                }
+            });
+            
+            calculateAllTotals();
+        }
+        
+        function saveData() {
+            saveToLocalStorage();
+            alert('✓ Datos guardados correctamente en tu navegador');
+        }
+        
+        function clearData() {
+            if (confirm('¿Estás seguro de que quieres borrar todos los datos de esta observación?')) {
+                const observacion = document.querySelector('[data-field="observacion"]').textContent || '1';
+                const storageKey = `cronometraje_obs_${observacion}`;
+                localStorage.removeItem(storageKey);
+                location.reload();
+            }
+        }
+        
+        window.addEventListener('load', () => {
+            loadFromLocalStorage();
+            
+            const obsField = document.querySelector('[data-field="observacion"]');
+            let previousObs = obsField.textContent;
+            
+            obsField.addEventListener('blur', () => {
+                if (obsField.textContent !== previousObs) {
+                    loadFromLocalStorage();
+                    previousObs = obsField.textContent;
+                }
+            });
+        });
+        
+        setTimeout(calculateAllTotals, 100);
+    </script>
+</body>
+</html>
