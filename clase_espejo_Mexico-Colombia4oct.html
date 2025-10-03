@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Clase Espejo - 4 de Octubre 2025</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -13,7 +12,7 @@
         }
         
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
             background: linear-gradient(135deg, #003B73 0%, #0078D4 50%, #F9A825 100%);
             min-height: 100vh;
             display: flex;
@@ -78,19 +77,9 @@
         }
         
         .flag-box {
-            width: 120px;
-            height: 80px;
+            font-size: 5rem;
             animation: wave 3s ease-in-out infinite;
             filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
-            border-radius: 8px;
-            overflow: hidden;
-            border: 2px solid rgba(255,255,255,0.3);
-        }
-        
-        .flag-box img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
         }
         
         .flag-box:nth-child(1) {
@@ -103,8 +92,8 @@
         
         @keyframes wave {
             0%, 100% { transform: rotate(0deg) scale(1); }
-            25% { transform: rotate(-3deg) scale(1.05); }
-            75% { transform: rotate(3deg) scale(1.05); }
+            25% { transform: rotate(-5deg) scale(1.05); }
+            75% { transform: rotate(5deg) scale(1.05); }
         }
         
         .flag-separator {
@@ -131,7 +120,6 @@
         }
         
         .header h1 {
-            font-family: 'Poppins', sans-serif;
             font-size: 2rem;
             font-weight: 700;
             margin-bottom: 10px;
@@ -167,7 +155,6 @@
         }
         
         .section-title {
-            font-family: 'Poppins', sans-serif;
             font-size: 1.1rem;
             font-weight: 600;
             color: #003B73;
@@ -222,7 +209,6 @@
         }
         
         .highlight .time {
-            font-family: 'Poppins', sans-serif;
             font-size: 2rem;
             font-weight: 700;
             color: #E65100;
@@ -323,7 +309,6 @@
         }
         
         .cta-title {
-            font-family: 'Poppins', sans-serif;
             font-size: 1.3rem;
             font-weight: 700;
             margin-bottom: 10px;
@@ -343,6 +328,39 @@
             opacity: 0.9;
         }
         
+        .teams-btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #6264A7 0%, #464775 100%);
+            color: white;
+            padding: 18px 40px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.2rem;
+            box-shadow: 0 5px 20px rgba(98,100,167,0.4);
+            transition: all 0.3s;
+        }
+        
+        .teams-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(98,100,167,0.6);
+        }
+        
+        ul {
+            margin: 15px 0 15px 20px;
+            color: #334155;
+            line-height: 1.8;
+        }
+        
+        a {
+            color: #0078D4;
+            text-decoration: none;
+        }
+        
+        a:hover {
+            text-decoration: underline;
+        }
+        
         @media (max-width: 768px) {
             .header h1 {
                 font-size: 1.5rem;
@@ -359,19 +377,9 @@
             .university-card .logo-container {
                 height: 80px;
             }
-        }
-        
-        @media print {
-            body {
-                background: white;
-            }
             
-            .container {
-                box-shadow: none;
-            }
-            
-            .section:hover {
-                transform: none;
+            .flag-box {
+                font-size: 3rem;
             }
         }
     </style>
@@ -380,13 +388,9 @@
     <div class="container">
         <div class="header">
             <div class="flags-container">
-                <div class="flag-box">
-                    <img src="https://quo.mx/wp-content/uploads/2023/12/que-significan-los-colores-dela-bandera-de-mexico.webp" alt="Bandera de México">
-                </div>
+                <div class="flag-box">🇲🇽</div>
                 <div class="flag-separator">✦</div>
-                <div class="flag-box">
-                    <img src="https://th.bing.com/th/id/R.6042333dac17ae5d7ba19c66c7124318?rik=Mq2EbLnQYJZlmw&riu=http%3a%2f%2fcolombianresearch.weebly.com%2fuploads%2f2%2f0%2f4%2f6%2f20463232%2f763723803.jpg&ehk=wxD87%2bvfVfdZ26u2C9tfoDC3olm3E0vF102sMm%2bqAt0%3d&risl=&pid=ImgRaw&r=0" alt="Bandera de Colombia">
-                </div>
+                <div class="flag-box">🇨🇴</div>
             </div>
             <div class="badge">CLASE ESPEJO INTERNACIONAL</div>
             <h1>México - Colombia</h1>
@@ -542,7 +546,7 @@
                         Se trabajarán <strong>5 casos reales de la industria actual:</strong>
                     </span>
                 </div>
-                <ul style="margin: 15px 0 15px 20px; color: #334155; line-height: 1.8;">
+                <ul>
                     <li><strong>Caso 1:</strong> Producción de celdas solares (tasa 80%)</li>
                     <li><strong>Caso 2:</strong> Ensamble de drones agrícolas (tasa 85%)</li>
                     <li><strong>Caso 3:</strong> Impresión 3D de prótesis médicas (tasa 90%)</li>
@@ -593,7 +597,7 @@
                         <div style="font-weight: 600; color: #F57C00; margin-bottom: 8px;">1. Acceder a Google Colab:</div>
                         <a href="https://colab.research.google.com" 
                            target="_blank" 
-                           style="display: inline-block; background: white; color: #0078D4; padding: 10px 20px; border-radius: 6px; text-decoration: none; font-weight: 600; border: 2px solid #0078D4; transition: all 0.3s;">
+                           style="display: inline-block; background: white; color: #0078D4; padding: 10px 20px; border-radius: 6px; text-decoration: none; font-weight: 600; border: 2px solid #0078D4;">
                             https://colab.research.google.com
                         </a>
                     </div>
@@ -602,7 +606,7 @@
                         <div style="font-weight: 600; color: #F57C00; margin-bottom: 8px;">2. Requisitos de cuenta:</div>
                         <ul style="margin-left: 20px; color: #E65100; line-height: 1.6;">
                             <li>Necesitas una cuenta de Google (Gmail)</li>
-                            <li>Si no tienes, créala en <a href="https://accounts.google.com/signup" target="_blank" style="color: #0078D4;">accounts.google.com/signup</a></li>
+                            <li>Si no tienes, créala en <a href="https://accounts.google.com/signup" target="_blank">accounts.google.com/signup</a></li>
                             <li>Es completamente gratuito</li>
                         </ul>
                     </div>
@@ -634,7 +638,7 @@
                     </div>
                     <a href="https://teams.microsoft.com/l/meetup-join/19%3ameeting_Zjg0ZDBiZjYtN2Y5NS00YTVjLWI1NWUtODM4OTJkOGI1Mzll%40thread.v2/0?context=%7b%22Tid%22%3a%2224a04731-cdaa-4c8b-870e-2994a9d7ef8a%22%2c%22Oid%22%3a%22cb3a0a8e-82f3-4c03-9979-9670628b5d55%22%7d" 
                        target="_blank"
-                       style="display: inline-block; background: linear-gradient(135deg, #6264A7 0%, #464775 100%); color: white; padding: 18px 40px; border-radius: 10px; text-decoration: none; font-weight: 700; font-size: 1.2rem; box-shadow: 0 5px 20px rgba(98,100,167,0.4); transition: all 0.3s; border: none;">
+                       class="teams-btn">
                         <span style="font-size: 1.4rem; margin-right: 10px;">📹</span>
                         Unirse a la Clase Espejo
                     </a>
