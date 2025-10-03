@@ -1,1 +1,466 @@
-
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clase Espejo - 4 de Octubre 2025</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 900px;
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            animation: fadeIn 0.6s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: pulse 8s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.1) rotate(180deg); }
+        }
+        
+        .badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+            border: 1px solid rgba(255,255,255,0.3);
+            position: relative;
+            z-index: 1;
+        }
+        
+        .header h1 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .header .subtitle {
+            font-size: 1.1rem;
+            font-weight: 500;
+            opacity: 0.95;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .content {
+            padding: 40px 30px;
+        }
+        
+        .section {
+            margin-bottom: 30px;
+            padding: 25px;
+            background: #f8fafc;
+            border-radius: 12px;
+            border-left: 4px solid #3b82f6;
+            transition: all 0.3s ease;
+        }
+        
+        .section:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .section-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #1e3a8a;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .icon {
+            font-size: 1.4rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 35px;
+            height: 35px;
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            border-radius: 8px;
+            color: white;
+        }
+        
+        .info-row {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 12px;
+            line-height: 1.6;
+        }
+        
+        .info-row:last-child {
+            margin-bottom: 0;
+        }
+        
+        .info-label {
+            font-weight: 600;
+            color: #1e40af;
+            min-width: 120px;
+            flex-shrink: 0;
+        }
+        
+        .info-value {
+            color: #334155;
+            flex: 1;
+        }
+        
+        .highlight {
+            background: linear-gradient(120deg, #fef3c7 0%, #fde68a 100%);
+            padding: 20px;
+            border-radius: 12px;
+            border: 2px solid #fbbf24;
+            margin: 30px 0;
+            text-align: center;
+        }
+        
+        .highlight .time {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: #92400e;
+            margin: 10px 0;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+        
+        .universities {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .university-card {
+            background: white;
+            padding: 25px 20px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            border: 2px solid #e2e8f0;
+            position: relative;
+        }
+        
+        .university-card:hover {
+            border-color: #3b82f6;
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(59,130,246,0.25);
+        }
+        
+        .university-card .logo-container {
+            width: 100%;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+            padding: 10px;
+        }
+        
+        .university-card img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+        
+        .university-card .flag {
+            font-size: 1.5rem;
+            margin-bottom: 8px;
+        }
+        
+        .university-card .name {
+            font-weight: 600;
+            color: #1e3a8a;
+            font-size: 0.95rem;
+            line-height: 1.4;
+            min-height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .university-card .location {
+            font-size: 0.8rem;
+            color: #64748b;
+            margin-top: 8px;
+        }
+        
+        .university-card .role {
+            font-size: 0.75rem;
+            color: white;
+            margin-top: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 6px 15px;
+            border-radius: 20px;
+            display: inline-block;
+            font-weight: 600;
+        }
+        
+        .role-transmite {
+            background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+        }
+        
+        .role-recibe {
+            background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%);
+        }
+        
+        .cta {
+            background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 12px;
+            text-align: center;
+            margin-top: 30px;
+            box-shadow: 0 10px 25px rgba(220,38,38,0.3);
+        }
+        
+        .cta-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        
+        .cta-text {
+            font-size: 1rem;
+            opacity: 0.95;
+        }
+        
+        .footer {
+            background: #1e293b;
+            color: white;
+            padding: 20px 30px;
+            text-align: center;
+            font-size: 0.85rem;
+            opacity: 0.9;
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.5rem;
+            }
+            
+            .highlight .time {
+                font-size: 1.5rem;
+            }
+            
+            .universities {
+                grid-template-columns: 1fr;
+            }
+            
+            .university-card .logo-container {
+                height: 80px;
+            }
+        }
+        
+        @media print {
+            body {
+                background: white;
+            }
+            
+            .container {
+                box-shadow: none;
+            }
+            
+            .section:hover {
+                transform: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="badge">CLASE ESPEJO INTERNACIONAL</div>
+            <h1>México - Colombia</h1>
+            <div class="subtitle">Experiencia de Aprendizaje Colaborativo</div>
+        </div>
+        
+        <div class="content">
+            <div class="section">
+                <div class="section-title">
+                    <span class="icon">📅</span>
+                    <span>Fecha y Horario</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Fecha:</span>
+                    <span class="info-value"><strong>Sábado 4 de octubre de 2025</strong></span>
+                </div>
+            </div>
+            
+            <div class="highlight">
+                <div style="font-weight: 600; color: #92400e; margin-bottom: 5px;">HORARIO</div>
+                <div class="time">09:00 - 10:30 hrs</div>
+                <div style="color: #78350f; font-size: 0.95rem;">
+                    Ciudad de México (UTC-6)<br>
+                    <strong>|</strong><br>
+                    10:00 - 11:30 hrs Colombia (UTC-5)
+                </div>
+            </div>
+            
+            <div class="section">
+                <div class="section-title">
+                    <span class="icon">👨‍🏫</span>
+                    <span>Docente</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Profesor:</span>
+                    <span class="info-value"><strong>Fausto Noé Jiménez</strong></span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Institución:</span>
+                    <span class="info-value">Universidad del SABES, Campus San Felipe</span>
+                </div>
+            </div>
+            
+            <div class="section">
+                <div class="section-title">
+                    <span class="icon">💻</span>
+                    <span>Tema del Taller</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-value" style="font-size: 1.1rem; font-weight: 600; color: #1e3a8a;">
+                        Del Excel a Python: Simulación y Cálculo de Curvas de Aprendizaje
+                    </span>
+                </div>
+                <div class="info-row" style="margin-top: 15px;">
+                    <span class="info-value" style="font-style: italic; color: #64748b;">
+                        Taller 100% práctico con ejercicios reales de la industria
+                    </span>
+                </div>
+            </div>
+            
+            <div class="section">
+                <div class="section-title">
+                    <span class="icon">🏛️</span>
+                    <span>Universidades Participantes</span>
+                </div>
+                
+                <div class="universities">
+                    <div class="university-card">
+                        <div class="logo-container">
+                            <img src="https://raw.githubusercontent.com/fnjimenez/Curso_Estudio_Trabajo/main/Logo%20Universidad%20SABES%20Vect%20JPG.jpg" alt="Logo SABES">
+                        </div>
+                        <div class="flag">🇲🇽</div>
+                        <div class="name">Universidad del SABES</div>
+                        <div class="location">Campus San Felipe, México</div>
+                        <div class="role role-transmite">Transmite</div>
+                    </div>
+                    
+                    <div class="university-card">
+                        <div class="logo-container">
+                            <img src="https://raw.githubusercontent.com/fnjimenez/Curso_Estudio_Trabajo/main/logo_usta.webp" alt="Logo USTA">
+                        </div>
+                        <div class="flag">🇨🇴</div>
+                        <div class="name">Universidad Santo Tomás</div>
+                        <div class="location">Sede Bucaramanga, Colombia</div>
+                        <div class="role role-recibe">Recibe</div>
+                    </div>
+                    
+                    <div class="university-card">
+                        <div class="logo-container">
+                            <img src="https://raw.githubusercontent.com/fnjimenez/Curso_Estudio_Trabajo/main/logo_UNIMINUTO.png" alt="Logo UNIMINUTO">
+                        </div>
+                        <div class="flag">🇨🇴</div>
+                        <div class="name">Corporación Universitaria Minuto de Dios</div>
+                        <div class="location">Sede Bucaramanga, Colombia</div>
+                        <div class="role role-recibe">Recibe</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section">
+                <div class="section-title">
+                    <span class="icon">📡</span>
+                    <span>Detalles de Transmisión</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Dirección:</span>
+                    <span class="info-value">México → Colombia</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Sede transmite:</span>
+                    <span class="info-value">Universidad del SABES (Campus San Felipe)</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Sedes receptoras:</span>
+                    <span class="info-value">UNIMINUTO y USTA (Bucaramanga, Colombia)</span>
+                </div>
+            </div>
+            
+            <div class="cta">
+                <div class="cta-title">ASISTENCIA OBLIGATORIA</div>
+                <div class="cta-text">
+                    Realiza pruebas técnicas (audio y video) 10 minutos antes<br>
+                    Conexión puntual • Participación activa • Ejercicios prácticos
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            Clase Espejo Internacional • Octubre 2025<br>
+            Colaboración académica SABES-USTA-UNIMINUTO
+        </div>
+    </div>
+</body>
+</html>
