@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plantilla Excel - Curvas de Aprendizaje</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2c3e50;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #34495e;
+            margin-top: 30px;
+        }
+        .excel-table {
+            margin: 20px 0;
+            border-collapse: collapse;
+            width: 100%;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .excel-table th {
+            background: #217346;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+        }
+        .excel-table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            background: white;
+        }
+        .excel-table tr:hover {
+            background: #f8f9fa;
+        }
+        .formula-cell {
+            background: #e8f4f8;
+            font-family: 'Courier New', monospace;
+            color: #2c5aa0;
+        }
+        .input-cell {
+            background: #fff3cd;
+        }
+        .result-cell {
+            background: #d4edda;
+            font-weight: 600;
+        }
+        .instructions {
+            background: #e7f3ff;
+            border-left: 4px solid #2196F3;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        .warning {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        .case-section {
+            margin: 40px 0;
+            padding: 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+        }
+        .formula-example {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            margin: 10px 0;
+        }
+        .download-section {
+            background: #28a745;
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 30px 0;
+            text-align: center;
+        }
+        .download-section a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📊 Plantilla Excel - Curvas de Aprendizaje</h1>
+        
+        <div class="instructions">
+            <h3>📌 Instrucciones Generales</h3>
+            <p>Esta plantilla te ayudará a calcular curvas de aprendizaje en Excel. Sigue estos pasos:</p>
+            <ol>
+                <li>Abre un nuevo archivo de Excel</li>
+                <li>Copia la estructura de tablas que se muestra abajo</li>
+                <li>Ingresa los valores iniciales (celdas amarillas)</li>
+                <li>Aplica las fórmulas indicadas (celdas azules)</li>
+                <li>Crea una gráfica de dispersión con líneas</li>
+            </ol>
+        </div>
+
+        <div class="warning">
+            <strong>⚠️ Importante:</strong> Las celdas con signo $ (ej: $B$2) son referencias absolutas. No cambies el $ al copiar las fórmulas hacia abajo.
+        </div>
+
+        <h2>Estructura Base para Todos los Casos</h2>
+        
+        <table class="excel-table">
+            <thead>
+                <tr>
+                    <th>Celda</th>
+                    <th>Descripción</th>
+                    <th>Valor/Fórmula</th>
+                    <th>Ejemplo</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>B2</td>
+                    <td class="input-cell">a (Tiempo primera unidad)</td>
+                    <td>Valor numérico</td>
+                    <td>100</td>
+                </tr>
+                <tr>
+                    <td>B3</td>
+                    <td class="input-cell">r (Tasa de aprendizaje)</td>
+                    <td>Decimal entre 0 y 1</td>
+                    <td>0.80</td>
+                </tr>
+                <tr>
+                    <td>B4</td>
+                    <td class="formula-cell">b (Exponente)</td>
+                    <td>=LN(B3)/LN(2)</td>
+                    <td>-0.322</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Tabla de Cálculo</h2>
+        
+        <table class="excel-table">
+            <thead>
+                <tr>
+                    <th>Columna A</th>
+                    <th>Columna B</th>
+                    <th>Fórmula</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Unidad</td>
+                    <td>Tiempo (min)</td>
+                    <td>Descripción</td>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td class="formula-cell">=$B$2*A7^$B$4</td>
+                    <td>Primera unidad</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td class="formula-cell">=$B$2*A8^$B$4</td>
+                    <td>Segunda unidad</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td class="formula-cell">=$B$2*A9^$B$4</td>
+                    <td>Tercera unidad</td>
+                </tr>
+                <tr>
+                    <td>...</td>
+                    <td class="formula-cell">Copiar fórmula</td>
+                    <td>Hasta la última unidad</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="case-section">
+            <h2>CASO 1: Celdas Solares</h2>
+            <div class="formula-example">
+                B2: 50 (minutos primera unidad)<br>
+                B3: 0.80 (tasa 80%)<br>
+                B4: =LN(B3)/LN(2)<br>
+                <br>
+                A7: 1 | B7: =$B$2*A7^$B$4<br>
+                A8: 2 | B8: =$B$2*A8^$B$4<br>
+                A9: 4 | B9: =$B$2*A9^$B$4<br>
+                A10: 8 | B10: =$B$2*A10^$B$4
+            </div>
+            <p><strong>Cálculos adicionales:</strong></p>
+            <ul>
+                <li>Total: =SUMA(B7:B10)</li>
+                <li>Promedio: =PROMEDIO(B7:B10)</li>
+            </ul>
+        </div>
+
+        <div class="case-section">
+            <h2>CASO 2: Drones Agrícolas</h2>
+            <div class="formula-example">
+                B2: 120 (minutos)<br>
+                B3: 0.85 (tasa 85%)<br>
+                B4: =LN(B3)/LN(2)<br>
+                <br>
+                Crear columna adicional C para comparar con tasa 80%:<br>
+                C3: 0.80<br>
+                C4: =LN(C3)/LN(2)<br>
+                C7: =$B$2*A7^$C$4 (copiar hacia abajo)
+            </div>
+        </div>
+
+        <div class="case-section">
+            <h2>CASO 3: Prótesis 3D</h2>
+            <div class="formula-example">
+                B2: 300 (minutos)<br>
+                B3: 0.90 (tasa 90%)<br>
+                B4: =LN(B3)/LN(2)<br>
+                <br>
+                A7: 1<br>
+                A8: 2<br>
+                A9: 3<br>
+                A10: 4<br>
+                A11: 6 (nota: unidades no consecutivas)
+            </div>
+        </div>
+
+        <div class="case-section">
+            <h2>CASO 4: Baterías EV</h2>
+            <div class="formula-example">
+                B2: 600 (minutos = 10 horas)<br>
+                B3: 0.75 (tasa 75%)<br>
+                B4: =LN(B3)/LN(2)<br>
+                <br>
+                Crear 16 filas (unidades 1 a 16)<br>
+                <br>
+                Cálculo de ahorro en dinero:<br>
+                D7: =(B7-B22)/60*500 (diferencia unidad 1 vs 16, convertida a horas y multiplicada por $500/h)
+            </div>
+        </div>
+
+        <div class="case-section">
+            <h2>CASO 5: Software con IA</h2>
+            <div class="formula-example">
+                B2: 40 (horas)<br>
+                B3: 0.85 (tasa 85%)<br>
+                B4: =LN(B3)/LN(2)<br>
+                <br>
+                A7: 1 | B7: =$B$2*A7^$B$4<br>
+                A8: 2 | B8: =$B$2*A8^$B$4<br>
+                A9: 4 | B9: =$B$2*A9^$B$4<br>
+                A10: 8 | B10: =$B$2*A10^$B$4<br>
+                <br>
+                Total horas: =SUMA(B7:B10)
+            </div>
+        </div>
+
+        <h2>📈 Crear la Gráfica</h2>
+        <div class="instructions">
+            <ol>
+                <li>Selecciona los datos de las columnas A y B (Unidad y Tiempo)</li>
+                <li>Ve a Insertar → Gráficos → Dispersión</li>
+                <li>Elige "Dispersión con líneas suaves"</li>
+                <li>Agrega títulos:
+                    <ul>
+                        <li>Título del gráfico: "Curva de Aprendizaje - [Tu Caso]"</li>
+                        <li>Eje X: "Unidad (n)"</li>
+                        <li>Eje Y: "Tiempo (minutos o horas)"</li>
+                    </ul>
+                </li>
+                <li>Formatea la línea: color sólido, grosor 2-3 puntos</li>
+                <li>Activa los marcadores de datos</li>
+            </ol>
+        </div>
+
+        <h2>✅ Lista de Verificación</h2>
+        <div class="instructions">
+            <p>Antes de pasar a Python, verifica que tu Excel tenga:</p>
+            <ul>
+                <li>✓ Valores de a, r y b claramente identificados</li>
+                <li>✓ Tabla con todas las unidades solicitadas</li>
+                <li>✓ Fórmulas correctas (verifica al menos 2 celdas manualmente)</li>
+                <li>✓ Gráfica con títulos y etiquetas</li>
+                <li>✓ Cálculos adicionales (totales, promedios, ahorros)</li>
+                <li>✓ Respuestas escritas a las preguntas del caso</li>
+            </ul>
+        </div>
+
+        <h2>🔧 Solución de Problemas Comunes</h2>
+        <div class="warning">
+            <p><strong>Error #NAME?</strong></p>
+            <p>Verifica que escribiste LN correctamente (logaritmo natural)</p>
+            
+            <p><strong>Error #DIV/0!</strong></p>
+            <p>Revisa que B3 (tasa) no sea cero</p>
+            
+            <p><strong>Valores negativos</strong></p>
+            <p>La tasa debe estar entre 0 y 1 (no uses porcentajes como 80)</p>
+            
+            <p><strong>Gráfica plana</strong></p>
+            <p>Verifica que b sea negativo y que estés usando referencias absolutas ($B$2, $B$4)</p>
+        </div>
+
+        <div class="download-section">
+            <h3>📥 Alternativa: Usar archivo Excel pre-formateado</h3>
+            <p>Tu instructor puede proporcionarte un archivo .xlsx con las tablas ya estructuradas.</p>
+            <p>Consulta en el material del curso o solicítalo durante la sesión.</p>
+        </div>
+
+        <footer style="margin-top: 50px; text-align: center; color: #7f8c8d; border-top: 1px solid #ddd; padding-top: 20px;">
+            <p>Clase Espejo: Del Excel a Python | Fausto Noé Jiménez | Universidad del SABES</p>
+        </footer>
+    </div>
+</body>
+</html>
