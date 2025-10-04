@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Curvas de Aprendizaje - Clase Espejo</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/theme/night.min.css">
+    <style>
+        .reveal {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-size: 24px !important;
+            line-height: 1.6 !important;
+        }
+        
+        .reveal .slides { text-align: left; }
+        
+        .reveal h1 {
+            font-size: 56px !important;
+            color: #FFB300 !important;
+            font-weight: 800 !important;
+            margin-bottom: 30px !important;
+            text-align: center;
+        }
+        
+        .reveal h2 {
+            font-size: 42px !important;
+            color: #FFB300 !important;
+            font-weight: 700 !important;
+            border-bottom: 4px solid #0078D4;
+            padding-bottom: 15px !important;
+            margin-bottom: 25px !important;
+        }
+        
+        .reveal h3 {
+            font-size: 32px !important;
+            color: #0078D4 !important;
+            font-weight: 600 !important;
+            margin-bottom: 20px !important;
+        }
+        
+        .reveal p { font-size: 24px !important; line-height: 1.6 !important; margin-bottom: 15px !important; }
+        .reveal li { font-size: 24px !important; line-height: 1.6 !important; margin-bottom: 12px !important; }
+        .reveal ul, .reveal ol { margin-left: 40px !important; }
+        
+        .portada {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            height: 100%;
+            background: linear-gradient(135deg, #003B73 0%, #0078D4 100%);
+        }
+        
+        .portada h1 { color: white !important; font-size: 72px !important; text-shadow: 3px 3px 6px rgba(0,0,0,0.6); }
+        .portada .subtitulo { color: #FFB300; font-size: 36px !important; margin-top: 25px; font-weight: 600; }
+        .portada .detalles { color: white; margin-top: 40px; font-size: 26px !important; line-height: 1.5; }
+        .portada .detalles p { font-size: 26px !important; }
+        .banderas { font-size: 80px !important; margin: 30px 0; }
+        
+        .formula {
+            background: rgba(255,255,255,0.15);
+            padding: 30px !important;
+            border-radius: 12px;
+            border: 4px solid #FFB300;
+            margin: 25px 0 !important;
+            font-size: 36px !important;
+            text-align: center;
+            font-family: 'Courier New', monospace;
+            font-weight: 700;
+        }
+        
+        .ejemplo { background: rgba(0,120,212,0.25); padding: 20px !important; border-radius: 10px; margin: 20px 0 !important; border-left: 6px solid #0078D4; }
+        .ejemplo p, .ejemplo li { font-size: 24px !important; }
+        
+        .caso { background: rgba(249,168,37,0.15); padding: 25px !important; border-radius: 12px; margin: 25px 0 !important; border-left: 6px solid #FFB300; }
+        .caso p, .caso li { font-size: 24px !important; }
+        
+        .solucion { background: rgba(0,255,0,0.15); padding: 20px !important; border-radius: 10px; margin: 20px 0 !important; border-left: 5px solid #00ff00; }
+        .solucion p, .solucion li { font-size: 24px !important; }
+        
+        .recursos { background: rgba(255,255,255,0.08); padding: 20px !important; border-radius: 10px; margin-top: 25px !important; font-size: 22px !important; }
+        .recursos p, .recursos li { font-size: 22px !important; }
+        
+        .cita { font-style: italic; color: #bbb; font-size: 20px !important; margin-top: 25px !important; border-left: 4px solid #FFB300; padding-left: 20px !important; line-height: 1.6; }
+        
+        .referencias { font-size: 20px !important; line-height: 1.7; }
+        .referencias li { margin-bottom: 20px !important; font-size: 20px !important; }
+        
+        .timer-container {
+            position: fixed; top: 10px; right: 10px; background: rgba(0,0,0,0.9);
+            padding: 15px 30px !important; border-radius: 10px; font-size: 32px !important;
+            font-weight: 800; color: #00ff00; z-index: 1000; border: 3px solid rgba(0,255,0,0.4);
+            font-family: 'Courier New', monospace; min-width: 200px; text-align: center;
+        }
+        
+        #slideTimer { top: 100px !important; background: rgba(249,168,37,0.95) !important; color: #1a1a1a !important; font-size: 36px !important; border: 3px solid #FFB300 !important; }
+        
+        .highlight { color: #FFD54F; font-weight: 700; background: rgba(255,213,79,0.2); padding: 3px 8px; border-radius: 4px; }
+        
+        table { width: 100%; border-collapse: collapse; margin: 25px 0 !important; font-size: 22px !important; }
+        table th { background: #0078D4; padding: 18px !important; border: 1px solid #555; font-size: 26px !important; font-weight: 700; }
+        table td { padding: 15px 18px !important; border: 1px solid #555; font-size: 22px !important; }
+        
+        .dos-columnas { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+        
+        .objetivo {
+            background: linear-gradient(135deg, rgba(0,59,115,0.4) 0%, rgba(0,120,212,0.4) 100%);
+            padding: 25px !important; border-radius: 12px; margin: 25px 0 !important; border: 3px solid #0078D4;
+        }
+        .objetivo p, .objetivo li { font-size: 24px !important; }
+        
+        pre { background: #0d1117 !important; border-radius: 12px; padding: 25px !important; margin: 25px 0 !important; overflow-x: auto; border: 1px solid rgba(255,255,255,0.1); }
+        pre code { font-family: 'Courier New', 'Consolas', monospace; font-size: 18px !important; line-height: 1.8 !important; color: #f0f0f0 !important; font-weight: 500 !important; }
+        
+        strong { font-weight: 700; }
+        
+        /* ANIMACIONES Y EFECTOS VISUALES */
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 5px #FFB300; }
+            50% { box-shadow: 0 0 20px #FFB300, 0 0 30px #FFB300; }
+        }
+        
+        .animate-pulse { animation: pulse 2s ease-in-out infinite; }
+        .animate-fadeIn { animation: fadeInUp 0.8s ease-out; }
+        .animate-slideLeft { animation: slideInLeft 0.6s ease-out; }
+        .animate-slideRight { animation: slideInRight 0.6s ease-out; }
+        .animate-glow { animation: glow 2s ease-in-out infinite; }
+        
+        /* Iconos grandes */
+        .big-icon { font-size: 80px !important; display: inline-block; margin: 20px; }
+        .medium-icon { font-size: 48px !important; display: inline-block; margin: 10px; }
+        
+        /* Gráfico ASCII de curvas */
+        .ascii-graph {
+            font-family: 'Courier New', monospace;
+            font-size: 20px !important;
+            line-height: 1.3 !important;
+            background: rgba(0,0,0,0.3);
+            padding: 20px;
+            border-radius: 8px;
+            white-space: pre;
+            color: #00ff00;
+        }
+        
+        /* Estadísticas visuales */
+        .stat-box {
+            background: linear-gradient(135deg, rgba(0,120,212,0.3), rgba(0,59,115,0.3));
+            border: 3px solid #0078D4;
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .stat-number {
+            font-size: 64px !important;
+            font-weight: 800;
+            color: #FFB300;
+            display: block;
+            margin: 10px 0;
+        }
+        
+        .stat-label {
+            font-size: 24px !important;
+            color: #fff;
+        }
+        
+        /* Warning box */
+        .warning-box {
+            background: rgba(255,100,0,0.2);
+            border: 3px solid #ff6400;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+            
+            <!-- SLIDE 0 -->
+            <section style="background: linear-gradient(135deg, #1e293b 0%, #334155 100%);">
+                <h2>✅ Checklist Pre-Clase (DOCENTE)</h2>
+                <div class="dos-columnas">
+                    <div class="animate-slideLeft">
+                        <h3>📋 Antes de iniciar:</h3>
+                        <div class="caso">
+                            <ul>
+                                <li>☐ Probar audio/video Teams</li>
+                                <li>☐ Abrir presentación</li>
+                                <li>☐ Verificar cronómetro (R)</li>
+                                <li>☐ Link Colab listo</li>
+                                <li>☐ Excel abierto</li>
+                                <li>☐ Dataset Caso 6</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="animate-slideRight">
+                        <h3>🎯 Durante clase:</h3>
+                        <div class="objetivo">
+                            <ul>
+                                <li>☐ Min 0: Iniciar ⏰</li>
+                                <li>☐ Min 15: 6 equipos 👥</li>
+                                <li>☐ Min 20: Timer Excel 📊</li>
+                                <li>☐ Min 45: STOP Excel 🛑</li>
+                                <li>☐ Min 50: Timer Python 🐍</li>
+                                <li>☐ Min 70: STOP Python 🛑</li>
+                                <li>☐ Min 85: Integradora 🎯</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SLIDE 1 -->
+            <section class="portada">
+                <div class="banderas animate-pulse">🇲🇽 🇨🇴</div>
+                <h1 class="animate-fadeIn">Curvas de Aprendizaje</h1>
+                <div class="subtitulo animate-fadeIn">Del Excel a Python: Simulación y Cálculo</div>
+                <div class="detalles">
+                    <p><strong>Clase Espejo Internacional</strong></p>
+                    <p style="font-size: 30px; margin: 25px 0;">🇲🇽 <strong>México</strong> ↔ <strong>Colombia</strong> 🇨🇴</p>
+                    <p>Universidad del SABES (San Felipe, México)</p>
+                    <p>Universidad Santo Tomás (Bucaramanga)</p>
+                    <p>UNIMINUTO (Bucaramanga)</p>
+                    <p style="margin-top: 30px;">📅 4 de octubre 2025</p>
+                    <p>👨‍🏫 Fausto Noé Jiménez</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 2 -->
+            <section>
+                <h2>⏱️ Cronograma de la Sesión</h2>
+                <table>
+                    <thead><tr><th>Tiempo</th><th>Actividad</th><th>Duración</th></tr></thead>
+                    <tbody>
+                        <tr><td>00:00-00:05</td><td>🎬 Apertura</td><td>5 min</td></tr>
+                        <tr><td>00:05-00:15</td><td>📚 Marco teórico</td><td>10 min</td></tr>
+                        <tr><td>00:15-00:20</td><td>📝 Asignación casos (6)</td><td>5 min</td></tr>
+                        <tr><td>00:20-00:45</td><td>📊 Excel (casos 1-5)</td><td>25 min</td></tr>
+                        <tr><td>00:45-00:50</td><td>🔄 Transición Python</td><td>5 min</td></tr>
+                        <tr><td>00:50-01:10</td><td>🐍 Python + Caso 6</td><td>20 min</td></tr>
+                        <tr><td>01:10-01:20</td><td>🎤 Presentaciones</td><td>10 min</td></tr>
+                        <tr><td>01:20-01:35</td><td>🎯 Actividad integradora</td><td>15 min</td></tr>
+                        <tr><td>01:35-01:40</td><td>🏁 Cierre</td><td>5 min</td></tr>
+                    </tbody>
+                </table>
+                <div class="recursos"><strong>Total:</strong> 100 minutos ⏳</div>
+            </section>
+
+            <!-- SLIDE 3 -->
+            <section>
+                <h2>🎯 Objetivos de la Sesión</h2>
+                <div class="objetivo animate-fadeIn">
+                    <h3>Objetivo General</h3>
+                    <p>Comprender, calcular, <strong>validar</strong> y aplicar curvas de aprendizaje en contextos industriales reales utilizando Excel y Python.</p>
+                </div>
+                <h3>Objetivos Específicos</h3>
+                <ul>
+                    <li class="fragment">📈 Entender el concepto matemático</li>
+                    <li class="fragment">🔢 Calcular tiempos con <span class="highlight">Y = a × X<sup>b</sup></span></li>
+                    <li class="fragment">🏭 Aplicar a 6 casos industriales</li>
+                    <li class="fragment">⚖️ Comparar Excel vs Python</li>
+                    <li class="fragment">✅ <strong>Validar cuándo el modelo es confiable</strong></li>
+                </ul>
+            </section>
+
+            <!-- SLIDE 4 -->
+            <section>
+                <h2>❓ ¿Qué es una Curva de Aprendizaje?</h2>
+                <div class="ejemplo">
+                    <p><strong>Definición:</strong> Relación matemática que describe cómo el tiempo de producción disminuye con la experiencia acumulada.</p>
+                </div>
+                <div class="stat-box animate-fadeIn">
+                    <span class="big-icon">📈</span>
+                    <p style="font-size: 28px; color: #FFB300; font-weight: 600;">"Al duplicar producción acumulada, el tiempo se reduce en porcentaje constante"</p>
+                </div>
+                <h3>🏛️ Origen</h3>
+                <p><strong>T.P. Wright (1936)</strong> - Industria aeronáutica ✈️</p>
+            </section>
+
+            <!-- SLIDE 5 -->
+            <section>
+                <h2>🔢 Modelo Matemático</h2>
+                <div class="formula animate-glow">Y = a × X<sup>b</sup></div>
+                <h3>Donde:</h3>
+                <div class="dos-columnas">
+                    <ul style="font-size: 26px;" class="fragment">
+                        <li><strong>Y</strong> ⏱️ = Tiempo unidad X</li>
+                        <li><strong>a</strong> 🥇 = Tiempo primera unidad</li>
+                    </ul>
+                    <ul style="font-size: 26px;" class="fragment">
+                        <li><strong>X</strong> 🔢 = Número de unidad</li>
+                        <li><strong>b</strong> 📉 = Exponente de aprendizaje</li>
+                    </ul>
+                </div>
+                <div class="ejemplo fragment">
+                    <h3>Cálculo de b:</h3>
+                    <div class="formula" style="font-size: 28px;">b = ln(tasa) / ln(2)</div>
+                    <p><strong>Ejemplo:</strong> tasa = 80% → b ≈ -0.322</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6 -->
+            <section>
+                <h2>📊 Tasas de Aprendizaje</h2>
+                <table>
+                    <thead><tr><th>Tasa</th><th>Velocidad</th><th>Aplicación</th></tr></thead>
+                    <tbody>
+                        <tr class="fragment"><td>90% 🐌</td><td>Lento</td><td>Personalización</td></tr>
+                        <tr class="fragment"><td>85% 🚶</td><td>Moderado</td><td>Manufactura estándar</td></tr>
+                        <tr class="fragment"><td>80% 🏃</td><td>Común</td><td>Ensamblaje</td></tr>
+                        <tr class="fragment"><td>75% 🚀</td><td>Rápido</td><td>Aeronáutica</td></tr>
+                        <tr class="fragment"><td>70% ⚡</td><td>Muy rápido</td><td>Electrónica</td></tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- SLIDE 7 -->
+            <section>
+                <h2>🧮 Ejemplo Paso a Paso</h2>
+                <div class="ejemplo"><p><strong>Datos:</strong> a=100 min, tasa=80% 📊</p></div>
+                <table>
+                    <thead><tr><th>Unidad</th><th>Cálculo</th><th>Tiempo</th></tr></thead>
+                    <tbody>
+                        <tr class="fragment"><td>1️⃣</td><td>100 × 1<sup>-0.322</sup></td><td>100.0 min</td></tr>
+                        <tr class="fragment"><td>2️⃣</td><td>100 × 2<sup>-0.322</sup></td><td>80.0 min ⬇️</td></tr>
+                        <tr class="fragment"><td>4️⃣</td><td>100 × 4<sup>-0.322</sup></td><td>64.0 min ⬇️</td></tr>
+                        <tr class="fragment"><td>8️⃣</td><td>100 × 8<sup>-0.322</sup></td><td>51.2 min ⬇️</td></tr>
+                    </tbody>
+                </table>
+                <div class="solucion fragment">
+                    <p><strong>✅ Verificación:</strong> 2→4: 80→64 (exactamente 80%)</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 8 -->
+            <section>
+                <h2>🏭 Aplicaciones Industriales</h2>
+                <div class="dos-columnas">
+                    <div class="fragment">
+                        <h3>📅 Planeación</h3>
+                        <ul><li>Tiempos de entrega</li><li>Capacidad real</li><li>Programación</li></ul>
+                        <h3>💰 Costos</h3>
+                        <ul><li>Pronosticar MO</li><li>Viabilidad</li></ul>
+                    </div>
+                    <div class="fragment">
+                        <h3>👥 RRHH</h3>
+                        <ul><li>Capacitación</li><li>Estándares</li></ul>
+                        <h3>🔄 Mejora</h3>
+                        <ul><li>Oportunidades</li><li>Benchmarking</li></ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SLIDE 9 -->
+            <section style="background: linear-gradient(135deg, rgba(0,59,115,0.3) 0%, rgba(0,120,212,0.3) 100%);">
+                <h2>📋 Trabajo en Excel (25 min)</h2>
+                <div class="objetivo">
+                    <h3>🎓 Docente:</h3>
+                    <ol><li>Min 15: 6 equipos 👥</li><li>Min 20: Timer ⏰</li><li>Min 45: STOP 🛑</li></ol>
+                </div>
+                <div class="caso">
+                    <h3>👨‍🎓 Estudiantes:</h3>
+                    <ol>
+                        <li>📊 Tabla Excel</li>
+                        <li>🔢 Calcular b</li>
+                        <li>✏️ Aplicar fórmula</li>
+                        <li>📈 Gráfica</li>
+                    </ol>
+                </div>
+            </section>
+
+            <!-- CASOS (versión resumida con iconos) -->
+            <section>
+                <h2>☀️ Caso 1: Celdas Solares</h2>
+                <div class="caso">
+                    <h3>Contexto</h3>
+                    <p>🏭 Guadalajara - Paneles solares portátiles para zonas rurales</p>
+                    <h3>Datos</h3>
+                    <ul><li>a = 50 min ⏱️</li><li>Tasa = 80% 📉</li><li>Unidades: 1,2,4,8 🔢</li></ul>
+                </div>
+                <h3>❓ Preguntas</h3>
+                <ol><li>¿Tiempo 8ª unidad?</li><li>¿Total acumulado?</li><li>¿% reducción?</li></ol>
+            </section>
+
+            <section>
+                <h2>✅ Solución Caso 1</h2>
+                <table>
+                    <thead><tr><th>Unidad</th><th>Tiempo</th></tr></thead>
+                    <tbody>
+                        <tr class="fragment"><td>1️⃣</td><td>50.0 min</td></tr>
+                        <tr class="fragment"><td>2️⃣</td><td>40.0 min</td></tr>
+                        <tr class="fragment"><td>4️⃣</td><td>32.0 min</td></tr>
+                        <tr class="fragment"><td>8️⃣</td><td>25.6 min</td></tr>
+                    </tbody>
+                </table>
+                <div class="solucion fragment">
+                    <ol>
+                        <li>8ª: <span class="highlight">25.6 min ⏱️</span></li>
+                        <li>Total: <span class="highlight">147.6 min 📊</span></li>
+                        <li>Reducción: <span class="highlight">48.8% 📉</span></li>
+                    </ol>
+                </div>
+            </section>
+
+            <section>
+                <h2>🚁 Caso 2: Drones Agrícolas</h2>
+                <div class="caso">
+                    <p>🏭 Querétaro - Drones fumigación 🌾</p>
+                    <ul><li>a = 120 min</li><li>Comparar: tasa 85% vs 80%</li></ul>
+                </div>
+            </section>
+
+            <section>
+                <h2>✅ Solución Caso 2</h2>
+                <div class="dos-columnas">
+                    <div class="fragment"><h3>85% 🐌</h3><p>Total: 382.4 min</p></div>
+                    <div class="fragment"><h3>80% 🚀</h3><p>Total: 354.2 min</p></div>
+                </div>
+                <div class="solucion fragment">
+                    <p><strong>💡 Diferencia:</strong> 28.2 min (7.4% más rápido)</p>
+                    <p>Mejor capacitación = mayor ahorro ⏱️💰</p>
+                </div>
+            </section>
+
+            <section>
+                <h2>🦾 Caso 3: Prótesis 3D</h2>
+                <div class="caso">
+                    <p>🏭 Monterrey - Prótesis personalizadas 🖨️</p>
+                    <ul><li>a = 300 min</li><li>Tasa = 90% (lento por personalización)</li></ul>
+                </div>
+                <table>
+                    <thead><tr><th>Unidad</th><th>Tiempo</th></tr></thead>
+                    <tbody>
+                        <tr class="fragment"><td>1️⃣</td><td>300 min (5h)</td></tr>
+                        <tr class="fragment"><td>6️⃣</td><td>226 min (3.8h)</td></tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section>
+                <h2>🔋 Caso 4: Baterías EV</h2>
+                <div class="caso">
+                    <p>🏭 Guanajuato - Baterías ion-litio ⚡</p>
+                    <ul><li>a = 600 min</li><li>Tasa = 75% 🚀</li><li>Costo: $500/h 💰</li></ul>
+                </div>
+                <div class="stat-box fragment">
+                    <span class="stat-number">$3,418</span>
+                    <span class="stat-label">Ahorro por batería (unidad 1 vs 16)</span>
+                </div>
+            </section>
+
+            <!-- CASO 5 REDISEÑADO CON OLVIDO -->
+            <section>
+                <h2>💻 Caso 5: Software con IA</h2>
+                <div class="caso">
+                    <h3>🤖 Fase 1 (sin IA):</h3>
+                    <p>a=40h, tasa 85%</p>
+                    <h3>⚡ Fase 2 (con IA):</h3>
+                    <p>Módulo 5: 20h, tasa 75%</p>
+                </div>
+                <h3>❓ Preguntas Críticas</h3>
+                <ol>
+                    <li class="fragment">Calcular ambas fases</li>
+                    <li class="fragment">Ahorro por IA</li>
+                    <li class="fragment"><strong>¿Aprendizaje o dependencia? 🤔</strong></li>
+                    <li class="fragment">Si IA falla, ¿qué pasa? ⚠️</li>
+                </ol>
+            </section>
+
+            <section>
+                <h2>✅ Solución Caso 5 + Efecto Olvido</h2>
+                <div class="dos-columnas">
+                    <div class="fragment"><h3>Sin IA 👨‍💻</h3><p>Total: 133.2h</p></div>
+                    <div class="fragment"><h3>Con IA 🤖</h3><p>Total: 58.9h</p></div>
+                </div>
+                <div class="solucion fragment"><p>Ahorro: <strong>74.3h ⏱️</strong></p></div>
+                
+                <div class="warning-box fragment">
+                    <p><strong>⚠️ MODELANDO EL OLVIDO 🧠:</strong></p>
+                    <p>Si IA falla en módulo 9 (3 semanas desde último código manual):</p>
+                    <ul>
+                        <li>Curva ideal: 20h continuación 📈</li>
+                        <li>Curva con olvido: 32-35h (pérdida ~40% velocidad) 📉</li>
+                        <li>Razón: Sin práctica manual → curva del olvido activa 🧠</li>
+                    </ul>
+                    <p class="highlight">💡 Lección: IA debe COMPLEMENTAR práctica, no sustituirla</p>
+                </div>
+            </section>
+
+            <!-- CASO 6 CON EXPLICACIÓN OLVIDO -->
+            <section>
+                <h2>📞 Caso 6: Centro de Llamadas</h2>
+                <div class="caso">
+                    <p>🏢 CDMX - 20 casos con nuevo CRM</p>
+                    <table style="font-size: 18px;">
+                        <tr><th>Caso</th><th>1-5</th><th>6</th><th>7 ⚠️</th><th>8-13</th><th>14 ⚠️</th><th>15-20</th></tr>
+                        <tr><td>Tiempo</td><td>45-29</td><td>28</td><td><span class="highlight">42</span></td><td>25-20</td><td><span class="highlight">35</span></td><td>19-16</td></tr>
+                    </table>
+                </div>
+                <h3>🎯 Tarea (Diferente)</h3>
+                <ol>
+                    <li>¿Siguen curva? 📈</li>
+                    <li>Identificar anomalías ⚠️</li>
+                    <li>Calcular R² 📊</li>
+                    <li>Explicar causas 🧠</li>
+                </ol>
+            </section>
+
+            <section>
+                <h2>✅ Solución Caso 6 + Análisis Olvido</h2>
+                <div class="dos-columnas">
+                    <div class="fragment">
+                        <h3>📊 Ajuste</h3>
+                        <ul><li>a ≈ 45 min</li><li>tasa ≈ 85%</li><li><strong>R² = 0.78</strong></li></ul>
+                    </div>
+                    <div class="fragment">
+                        <h3>⚠️ Anomalías</h3>
+                        <p>Caso 7: 42 vs 26</p>
+                        <p>Caso 14: 35 vs 20</p>
+                    </div>
+                </div>
+                
+                <div class="warning-box fragment">
+                    <p><strong>🧠 CASO 7 explicado con olvido:</strong></p>
+                    <p>Posibles causas validadas:</p>
+                    <ul>
+                        <li>📅 Pausa 4-5 días → pérdida ~30-35%</li>
+                        <li>📊 Predicción: 26 × 1.35 = 35 min (cercano a 42 real)</li>
+                        <li>🔄 Rotación temporal de puesto</li>
+                        <li>📈 Complejidad atípica</li>
+                    </ul>
+                    <p class="highlight">→ Datos sugieren efecto olvido + complejidad</p>
+                </div>
+                
+                <div class="solucion fragment">
+                    <p>✅ SIEMPRE validar antes de decidir</p>
+                </div>
+            </section>
+
+            <!-- PYTHON -->
+            <section style="background: linear-gradient(135deg, rgba(249,168,37,0.3) 0%, rgba(245,124,0,0.3) 100%);">
+                <h2>🐍 Transición a Python</h2>
+                <div class="stat-box">
+                    <div class="big-icon">📊 vs 🐍</div>
+                    <p style="font-size: 28px;">"Excel: 4 puntos / 25 min"</p>
+                    <p style="font-size: 28px;">"Python: 50 puntos / 5 seg + validación ✅"</p>
+                </div>
+                <div class="caso">
+                    <h3>🎬 Acciones (45-50):</h3>
+                    <ol>
+                        <li>📤 Compartir Colab</li>
+                        <li>✅ Verificar acceso</li>
+                        <li>▶️ Ejecutar Bloques 1-2</li>
+                    </ol>
+                </div>
+            </section>
+
+            <section style="background: linear-gradient(135deg, rgba(0,120,212,0.3) 0%, rgba(0,59,115,0.3) 100%);">
+                <h2>🐍 Instrucciones Python</h2>
+                <div class="objetivo">
+                    <ul>
+                        <li>⏰ Min 50-52: Bloques 1-2 juntos</li>
+                        <li>⚙️ Min 52-65: Bloques 3-4 (tu caso)</li>
+                        <li>✅ Min 65-70: Bloques 5-6 (validación)</li>
+                    </ul>
+                </div>
+                <div class="caso">
+                    <p><strong>📝 Bloque 3:</strong> Modificar solo:</p>
+                    <ul><li><code>a = 50</code> ⏱️</li><li><code>r = 0.80</code> 📉</li></ul>
+                </div>
+            </section>
+
+            <!-- BLOQUES PYTHON (resumidos) -->
+            <section>
+                <h2>📋 Bloque 1: Importaciones</h2>
+                <pre><code>import numpy as np
+import matplotlib.pyplot as plt
+import pandas as pd
+from scipy.optimize import curve_fit
+from sklearn.metrics import r2_score
+
+plt.style.use('seaborn-v0_8-darkgrid')
+print("✅ Listo")</code></pre>
+            </section>
+
+            <section>
+                <h2>📋 Bloque 3: Tu Caso</h2>
+                <pre><code># ===== MODIFICA AQUÍ =====
+a = 50      # ⏱️ Tu tiempo
+r = 0.80    # 📉 Tu tasa
+# =========================
+
+resultado_excel = calcular_curva_aprendizaje(a, r, [1,2,4,8])
+resultado_completo = calcular_curva_aprendizaje(a, r, range(1,51))
+
+print(f"Excel: 4 puntos 📊")
+print(f"Python: 50 puntos 🐍")
+print(f"Unidad 50: {resultado_completo['tiempos'][49]:.2f}")</code></pre>
+            </section>
+
+            <section>
+                <h2>📋 Bloques 5-6: Validación</h2>
+                <div class="caso">
+                    <p><strong>Bloque 5:</strong> Ajusta modelo, calcula R², detecta anomalías ⚠️</p>
+                    <p><strong>Bloque 6:</strong> Gráficas validación 📊</p>
+                </div>
+                <div class="solucion">
+                    <p>Salida esperada:</p>
+                    <ul>
+                        <li>✅ R² = 0.78</li>
+                        <li>⚠️ Anomalías: casos 7, 14</li>
+                        <li>💡 Conclusión: factores externos</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section>
+                <h2>🎤 Presentaciones (10 min)</h2>
+                <div class="objetivo">
+                    <h3>Cada equipo (2 min):</h3>
+                    <ol>
+                        <li>15 seg: ❓ ¿Qué caso?</li>
+                        <li>30 seg: 📊 Excel vs 🐍 Python</li>
+                        <li>30 seg: 💡 Diferencia clave</li>
+                        <li>30 seg: ✅ Conclusión</li>
+                        <li>15 seg: 📈 Gráfica</li>
+                    </ol>
+                </div>
+            </section>
+
+            <!-- COMPARACIÓN -->
+            <section>
+                <h2>📊 vs 🐍 Excel vs Python</h2>
+                <table>
+                    <thead><tr><th>Aspecto</th><th>Excel</th><th>Python</th></tr></thead>
+                    <tbody>
+                        <tr class="fragment"><td>Puntos</td><td>4-5 📊</td><td>50-100 🚀</td></tr>
+                        <tr class="fragment"><td>Tiempo</td><td>25 min ⏱️</td><td>5 seg ⚡</td></tr>
+                        <tr class="fragment"><td>Validación</td><td>Difícil ❌</td><td>R², MAPE ✅</td></tr>
+                        <tr class="fragment"><td>Uso</td><td>Aprendizaje 📚</td><td>Industrial 🏭</td></tr>
+                    </tbody>
+                </table>
+                <div class="stat-box fragment">
+                    <p class="highlight" style="font-size: 28px;">📊 Excel enseña | 🐍 Python valida</p>
+                </div>
+            </section>
+
+            <!-- SLIDE NUEVA: CURVA DEL OLVIDO -->
+            <section style="background: linear-gradient(135deg, rgba(150,0,150,0.3) 0%, rgba(80,0,80,0.3) 100%);">
+                <h2>🧠 El Enemigo Invisible: Curva del Olvido</h2>
+                
+                <div class="dos-columnas">
+                    <div class="fragment">
+                        <h3>📈 Curva Aprendizaje</h3>
+                        <p>⬆️ Ascendente con práctica</p>
+                        <div class="ascii-graph">
+Retención
+    ^
+100%|     /----
+    |    /
+ 50%|   /
+    |  /
+    +---------> Práctica</div>
+                    </div>
+                    
+                    <div class="fragment">
+                        <h3>📉 Curva Olvido</h3>
+                        <p>⬇️ Descendente sin repaso</p>
+                        <div class="ascii-graph">
+Retención
+    ^
+100%|----\
+    |     \
+ 50%|      \___
+    |
+    +---------> Tiempo</div>
+                    </div>
+                </div>
+                
+                <div class="warning-box fragment">
+                    <p><strong>⚠️ REALIDAD INDUSTRIAL:</strong></p>
+                    <p>Sin práctica continua → Pérdida <span class="highlight">30-50%</span> en 2 semanas</p>
+                </div>
+                
+                <div class="solucion fragment">
+                    <p><strong>📊 EJEMPLO REAL:</strong></p>
+                    <p>Trabajador alcanza 25 min (unidad 8) ✅</p>
+                    <p>Pausa de 3 semanas 📅</p>
+                    <p>Unidad 9: regresa a <span class="highlight">35 min</span> (pérdida ~40%) 📉</p>
+                </div>
+                
+                <div class="caso fragment">
+                    <h3>💡 SOLUCIÓN INDUSTRIAL:</h3>
+                    <ul>
+                        <li>🔄 Rotación planificada (no parar completamente)</li>
+                        <li>⏰ Microprácticas durante pausas (15 min/día)</li>
+                        <li>🎓 Re-entrenamiento periódico (cada 3 meses)</li>
+                        <li>🎮 Simuladores para mantener habilidades activas</li>
+                    </ul>
+                </div>
+                
+                <div class="recursos fragment">
+                    <p><strong>🧠 Ebbinghaus (1885):</strong> "Repetición espaciada vence al olvido"</p>
+                </div>
+            </section>
+
+            <!-- INTEGRADORA MEJORADA -->
+            <section style="background: linear-gradient(135deg, rgba(255,100,0,0.3) 0%, rgba(200,0,100,0.3) 100%);">
+                <h2>🎯 Actividad Integradora</h2>
+                <div class="caso">
+                    <p>🏭 Planta automotriz (R²=0.92) prometió 100 motores/45 días.</p>
+                    <p>⚠️ Unidad 51: nuevo proveedor → tiempos +60%</p>
+                    <p>📅 Decisión: Pausa 2 semanas para ajustes</p>
+                </div>
+                <h3>📝 Tareas (15 min):</h3>
+                <ol>
+                    <li class="fragment">🔍 Supuestos violados (3 min)</li>
+                    <li class="fragment">🚨 Solución inmediata (5 min)</li>
+                    <li class="fragment"><strong>🧠 Prevención considerando OLVIDO (5 min):</strong>
+                        <ul>
+                            <li>¿Qué hacer durante pausa? 🤔</li>
+                            <li>¿Cómo evitar "reseteo" de curva? ⚡</li>
+                            <li>Sistema mantenimiento habilidades 🎯</li>
+                        </ul>
+                    </li>
+                    <li class="fragment">🤖 Herramienta 4.0 (2 min)</li>
+                </ol>
+            </section>
+
+            <section>
+                <h2>💡 Soluciones Industria 4.0</h2>
+                <div class="dos-columnas">
+                    <div class="fragment">
+                        <h3>🏭 Supuestos Violados</h3>
+                        <ul>
+                            <li>❌ Producto constante</li>
+                            <li>❌ Condiciones estables</li>
+                            <li>❌ No interrupciones</li>
+                        </ul>
+                    </div>
+                    <div class="fragment">
+                        <h3>🧠 Gestión del Olvido</h3>
+                        <ul>
+                            <li>🎮 Simuladores durante pausa</li>
+                            <li>📱 Microprácticas diarias</li>
+                            <li>🔄 Rotación controlada</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="solucion fragment">
+                    <p><strong>🤖 Digital Twin:</strong> Simular antes ✅</p>
+                    <p><strong>📊 MES+ML:</strong> Detectar desviaciones 🔍</p>
+                    <p><strong>⚙️ Control adaptativo:</strong> Nueva curva vs anomalía 📈</p>
+                </div>
+            </section>
+
+            <!-- LIMITACIONES -->
+            <section>
+                <h2>⚠️ Limitaciones del Modelo</h2>
+                <div class="dos-columnas">
+                    <div class="fragment">
+                        <h3>📋 Supuestos</h3>
+                        <ul>
+                            <li>❌ Sin cambios tech</li>
+                            <li>❌ Producto constante</li>
+                            <li>❌ No interrupciones</li>
+                            <li>❌ <strong>Sin olvido 🧠</strong></li>
+                        </ul>
+                    </div>
+                    <div class="fragment">
+                        <h3>💥 Disruptores</h3>
+                        <ul>
+                            <li>🔄 Rotación personal</li>
+                            <li>🤖 Nueva tecnología</li>
+                            <li>⚡ Automatización</li>
+                            <li>📉 <strong>Curva olvido</strong></li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <h2>💡 Recomendaciones</h2>
+                <h3>✅ Análisis Confiable</h3>
+                <ol>
+                    <li class="fragment">📊 Mín 20 observaciones</li>
+                    <li class="fragment"><strong>✅ Validar: R² > 0.85</strong></li>
+                    <li class="fragment">🔍 Verificar supuestos</li>
+                    <li class="fragment">🔄 Actualizar cada 3-6 meses</li>
+                    <li class="fragment">🧠 <strong>Combatir olvido: repasos espaciados</strong></li>
+                </ol>
+                <h3 class="fragment">🏭 Industria 4.0</h3>
+                <ul class="fragment">
+                    <li>📡 MES captura automática</li>
+                    <li>🌐 IoT monitoreo real-time</li>
+                    <li>🤖 ML predicciones</li>
+                    <li><strong>⚠️ Evitar dependencia IA ciega</strong></li>
+                </ul>
+            </section>
+
+            <!-- CONCLUSIONES -->
+            <section>
+                <h2>🎓 Conclusiones</h2>
+                <div class="objetivo">
+                    <ol>
+                        <li class="fragment">📈 Curvas: herramienta fundamental</li>
+                        <li class="fragment">📊 Excel: concepto | 🐍 Python: validación</li>
+                        <li class="fragment"><strong>✅ SIEMPRE validar (R², residuales)</strong></li>
+                        <li class="fragment"><strong>🤖 IA acelera → ⚠️ riesgo deskilling</strong></li>
+                        <li class="fragment"><strong>🧠 Sin práctica → curva olvido activa (pérdida 30-50%)</strong></li>
+                        <li class="fragment">🔄 Modelo tiene limitaciones → validación continua</li>
+                    </ol>
+                </div>
+            </section>
+
+            <!-- CIERRE -->
+            <section style="background: linear-gradient(135deg, rgba(0,59,115,0.5) 0%, rgba(0,120,212,0.5) 100%);">
+                <h2>🏁 Cierre y Reflexión</h2>
+                <div class="objetivo">
+                    <p style="font-size: 28px;" class="fragment"><strong>❓ P1:</strong> "Si reducen 20% al duplicar, ¿cómo planean recursos?" 📊</p>
+                    <p style="font-size: 28px;" class="fragment"><strong>❓ P2:</strong> "¿3 situaciones donde NO confiar en el modelo?" ⚠️</p>
+                    <p style="font-size: 28px;" class="fragment"><strong>❓ P3:</strong> "¿Cómo aplicarán repetición espaciada para NO olvidar esto?" 🧠</p>
+                </div>
+                <div class="warning-box fragment">
+                    <p><strong>🎓 META-APRENDIZAJE:</strong></p>
+                    <p>Lo que aprendieron HOY también se olvida 📉</p>
+                    <p>✅ Repasar en: 1 día, 3 días, 1 semana</p>
+                    <p>💡 Usar Anki/flashcards para fórmulas</p>
+                </div>
+                <div class="recursos fragment"><strong>📅 Próxima:</strong> 11 oct - FlexSim (Colombia) 🇨🇴</div>
+            </section>
+
+            <!-- CONTROL TIEMPOS -->
+            <section style="background: linear-gradient(135deg, rgba(255,0,0,0.2) 0%, rgba(200,0,0,0.2) 100%);">
+                <h2>⏱️ Control de Tiempos</h2>
+                <table>
+                    <thead><tr><th>Min</th><th>Acción</th></tr></thead>
+                    <tbody>
+                        <tr><td>0</td><td>⏰ Iniciar (R)</td></tr>
+                        <tr><td>15</td><td>👥 6 equipos</td></tr>
+                        <tr><td>20</td><td>📊 Excel (R)</td></tr>
+                        <tr><td>45</td><td>🛑 STOP Excel</td></tr>
+                        <tr><td>50</td><td>🐍 Python (R)</td></tr>
+                        <tr><td>70</td><td>🛑 STOP Python</td></tr>
+                        <tr><td>85</td><td>🎯 Integradora</td></tr>
+                        <tr><td>100</td><td>✅ Fin</td></tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- REFERENCIAS -->
+            <section>
+                <h2>📚 Referencias</h2>
+                <div class="referencias">
+                    <ol>
+                        <li>Badiru, A. B. (1992). IEEE Trans. Eng. Management, 39(2), 176-188.</li>
+                        <li>Chase, R. et al. (2009). Administración de Operaciones. McGraw-Hill.</li>
+                        <li><strong>Ebbinghaus, H. (1885). Über das Gedächtnis. Memory: A Contribution to Experimental Psychology.</strong></li>
+                        <li>Jaber, M. Y. (2011). Learning curves. CRC Press.</li>
+                        <li>Wright, T. P. (1936). J. Aeronautical Sciences, 3(4), 122-128.</li>
+                    </ol>
+                </div>
+            </section>
+
+            <!-- CONTACTO -->
+            <section class="portada">
+                <h1 class="animate-fadeIn">¡Gracias! 🙏</h1>
+                <div class="detalles">
+                    <p><strong>Fausto Noé Jiménez</strong></p>
+                    <p>Universidad del SABES</p>
+                    <p>📧 fausto.noej@sabes.edu.mx</p>
+                </div>
+                <div class="banderas animate-pulse">🇲🇽 🇨🇴</div>
+            </section>
+
+        </div>
+    </div>
+
+    <div class="timer-container" id="timer">⏱️ 00:00</div>
+    <div class="timer-container" id="slideTimer">⏳ --:--</div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.js"></script>
+    <script>
+        Reveal.initialize({
+            hash: true,
+            slideNumber: 'c/t',
+            transition: 'slide',
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.5,
+            maxScale: 2.0,
+            autoAnimate: true,
+            autoAnimateDuration: 0.8
+        });
+
+        let startTime = Date.now(), isPaused = false;
+        setInterval(() => {
+            if (!isPaused) {
+                const e = Date.now() - startTime, m = Math.floor(e/60000), s = Math.floor((e%60000)/1000);
+                document.getElementById('timer').textContent = `⏱️ ${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+            }
+        }, 1000);
+
+        document.addEventListener('keydown', e => {
+            if (e.key === 'r' || e.key === 'R') startTime = Date.now();
+            if (e.key === 'p' || e.key === 'P') isPaused = !isPaused;
+        });
+    </script>
+</body>
+</html>
